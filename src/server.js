@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const cookieParser = require('cookie-parser')
 
 // Functions
 const {startDB, account, setSchema} = require("./Libraries/Accounts.js")
@@ -11,7 +12,7 @@ const RouteFunctions = require("./Functions/Routes.js")
 
 // Main
 socketFunctions(io, account)//Start socket
-RouteFunctions(express, app)//Start routes
+RouteFunctions(express, app, cookieParser)//Start routes
 
 // Passa a ouvir a porta 3000
 http.listen(3000, async()=>{
