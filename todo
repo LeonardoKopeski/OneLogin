@@ -1,3 +1,4 @@
 Password Encryption
 Email Verification
-Save token on cookies
+Validar token no midleware
+Receber a lingua preferida por cookies

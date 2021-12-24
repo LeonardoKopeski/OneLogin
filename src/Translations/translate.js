@@ -11,6 +11,8 @@ async function translate(){
             elm.value = translationKeys[elm.value]
         }
     })
+
+    document.querySelector("div#empty").remove()
 }
 
 function isTranslateKey(str){

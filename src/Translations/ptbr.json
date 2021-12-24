@@ -6,5 +6,10 @@
     "%Email%": "Email",
     "%Password%": "Senha",
     "%Login%": "Login",
-    "%Register%": "Registrar"
+    "%Register%": "Registrar",
+    "%AboutUs%": "Sobre Nós",
+    "%Logout%": "Sair",
+    "%ConnectedServices%": "Serviços conectados",
+    "%MyAccount%": "Minha Conta",
+    "%Slogan%": "Um unico login para muitas coisas!"
 }
