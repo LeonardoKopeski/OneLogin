@@ -1,0 +1,91 @@
+/* GLOBAL */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f0fff1;
+}
+
+/* HOME */
+div.homeScreen div#title h1{
+    color: #5603AD;
+    font-family: monospace;
+    font-size: 150px;
+    text-align: center;
+}
+
+div.homeScreen div#title h2{
+    color: black;
+    font-family: monospace;
+    font-size: 40px;
+    text-align: center;
+}
+
+div.homeScreen div#menu{
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+div.homeScreen div#menu button{
+    font-size: 30px;
+    padding: 5px;
+    border-radius: 20px;
+    text-align: center;
+    width: 350px;
+    border: 3px solid #5603AD;
+    color: black;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* LOGIN AND REGISTER */
+
+form.loginScreen{
+    border: 3px solid #5603AD;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+    border-radius: 20px;
+    width: 450px;
+}
+form.loginScreen h1{
+    font-family: monospace;
+    color: #5603AD;
+    font-size: 40px;
+}
+form.loginScreen h2{
+    font-family: monospace;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+form.loginScreen input{
+    font-size: 25px;
+    padding: 5px;
+    border-radius: 20px;
+    text-align: center;
+    width: 100%;
+    margin: 20px 0px 0px 0px;
+    border: 3px solid #5603AD;
+}
+form.loginScreen input#btnBack{
+    width: 49%;
+    color: #5603AD;
+    border-radius: 20px 0px 0px 20px;
+    margin-top: 50px;
+    cursor: pointer;
+}
+form.loginScreen input#btnSubmit{
+    width: 49%;
+    background-color:#5603AD;
+    color: white;
+    border-radius: 0px 20px 20px 0px;
+    cursor: pointer;
+}
