@@ -1,3 +1,8 @@
+var regEx = {
+    email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    username: /^(.[a-z0-9_-]*)$/
+}
+
 function getScreen(){
     var pathname = window.location.pathname.split("/")
 

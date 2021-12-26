@@ -31,13 +31,9 @@ class AccountScreen extends React.Component{
         return (
         <div className="accountScreen">
             <img src={accountInfo.imageUrl || alternativePhoto} alt="image"/>
-            <h1 id="username">{accountInfo.username || "User not found"}</h1>
+            <h1 id="username">@{accountInfo.username || "User not found"}</h1>
             <button>Editar Perfil</button>
-            <div id="follows">
-                <p id="following">{0} Following</p>
-                <p id="followers">{0} Followers</p>
-            </div>
-            <p id="bio">{accountInfo.bio || "No bio yet"}</p>
+            <p id="bio">"{accountInfo.bio || "No bio yet"}"</p>
         </div>
         )
     }

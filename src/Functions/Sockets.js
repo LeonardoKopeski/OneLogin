@@ -1,4 +1,7 @@
-const res = require("express/lib/response")
+var regEx = {
+    email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    username: /^(.[a-z0-9_-]*)$/
+}
 
 function validateResponse(res, expected){
     if(res == null){return false}
@@ -8,7 +11,12 @@ function validateResponse(res, expected){
 
     Object.keys(expected).forEach(key => {
         if(res[key] == null){ok = false}
-        if(typeof res[key] != expected[key]){ok = false}
+        if(typeof expected[key] == "string"){
+            if(typeof res[key] != expected[key]){ok = false}
+        }else{
+            if(!expected[key].test(res[key])){ok = false}
+        }
+        
     })
     
     return ok
@@ -32,7 +40,7 @@ module.exports = (io, accountsClass)=>{
             }
         })
         socket.on('register', async(obj) => {
-            var validRequest = validateResponse(obj, {username: "string", email: "string", password: "string"})
+            var validRequest = validateResponse(obj, {username: regEx.username, email: regEx.email, password: regEx.username})
             if(!validRequest){
                 socket.emit("registerResponse", {status: "InvalidRequest"})
                 return
@@ -53,8 +61,10 @@ module.exports = (io, accountsClass)=>{
             var token = accountsClass.createAccount({
                 username: obj.username,
                 email: obj.email,
-                password: obj.password
-            })
+                password: obj.password,
+                imageUrl: null,
+                bio: "No bio yet"
+            }).token
 
             socket.emit("registerResponse", {status: "Created", token})            
         })
@@ -69,7 +79,9 @@ module.exports = (io, accountsClass)=>{
             if(account[0]){
                 var response = {
                     username: account[0].username,
-                    email: account[0].email
+                    email: account[0].email,
+                    imageUrl: account[0].imageUrl,
+                    bio: account[0].bio
                 }
                 socket.emit("userInfoResponseByToken", {status: "Ok", ...response})
             }else{
@@ -86,7 +98,9 @@ module.exports = (io, accountsClass)=>{
             var account = await accountsClass.getAccount({...obj})
             if(account[0]){
                 var response = {
-                    username: account[0].username
+                    username: account[0].username,
+                    imageUrl: account[0].imageUrl,
+                    bio: account[0].bio
                 }
                 socket.emit("userInfoResponse", {status: "Ok", ...response})
             }else{
