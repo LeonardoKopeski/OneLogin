@@ -1,3 +1,5 @@
+const res = require("express/lib/response")
+
 function validateResponse(res, expected){
     if(res == null){return false}
 
@@ -55,6 +57,41 @@ module.exports = (io, accountsClass)=>{
             })
 
             socket.emit("registerResponse", {status: "Created", token})            
+        })
+        socket.on('getUserInfoByToken', async(obj) => {
+            var validRequest = validateResponse(obj, {token: "string"})
+            if(!validRequest){
+                socket.emit("userInfoResponseByToken", {status: "InvalidRequest"})
+                return
+            }
+
+            var account = await accountsClass.getAccount({token: obj.token})
+            if(account[0]){
+                var response = {
+                    username: account[0].username,
+                    email: account[0].email
+                }
+                socket.emit("userInfoResponseByToken", {status: "Ok", ...response})
+            }else{
+                socket.emit("userInfoResponseByToken", {status: "InvalidToken"})
+            }
+        })
+        socket.on('getUserInfo', async(obj) => {
+            var validRequest = validateResponse(obj, {})
+            if(!validRequest){
+                socket.emit("userInfoResponse", {status: "InvalidRequest"})
+                return
+            }
+
+            var account = await accountsClass.getAccount({...obj})
+            if(account[0]){
+                var response = {
+                    username: account[0].username
+                }
+                socket.emit("userInfoResponse", {status: "Ok", ...response})
+            }else{
+                socket.emit("userInfoResponse", {status: "InvalidQuery"})
+            }
         })
     })
 }

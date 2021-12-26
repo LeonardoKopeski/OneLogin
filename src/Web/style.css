@@ -9,6 +9,10 @@ body{
     background-color: #f0fff1;
 }
 
+button, input[type=button]{
+    cursor: pointer;
+}
+
 /* HOME */
 div.homeScreen div#title h1{
     color: #5603AD;
@@ -40,7 +44,7 @@ div.homeScreen div#menu button{
     border: 3px solid #5603AD;
     color: black;
     margin-top: 10px;
-    cursor: pointer;
+    
 }
 
 /* LOGIN AND REGISTER */
@@ -80,12 +84,63 @@ form.loginScreen input#btnBack{
     color: #5603AD;
     border-radius: 20px 0px 0px 20px;
     margin-top: 50px;
-    cursor: pointer;
 }
 form.loginScreen input#btnSubmit{
     width: 49%;
     background-color:#5603AD;
     color: white;
     border-radius: 0px 20px 20px 0px;
-    cursor: pointer;
+}
+
+/* ACCOUNTS */
+
+div.accountScreen{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: 150px 400px;
+    grid-template-rows: repeat(75px, 3);
+    grid-template-areas: "img username" "img followbtn" "bio bio";
+    column-gap: 40px;
+    margin: 50px 0px;
+}
+
+div.accountScreen img{
+    grid-area: img;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #5603AD;
+    box-shadow: 0px 0px 10px #5603AD;
+}
+
+div.accountScreen h1#username{
+    grid-area: username;
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 40px;
+    align-self: center;
+}
+
+div.accountScreen button{
+    grid-area: followbtn;
+    font-size: 30px;
+    font-family: monospace;
+    height: 50px;
+    align-self: center;
+    background-color: #5603AD;
+    color: #f0fff1;
+    font-weight: bolder;
+    border: none;
+    border-radius: 7px;
+}
+
+div.accountScreen p#bio{
+    grid-area: bio;
+    font-family: monospace;
+    font-size: 25px;
+    align-self: end;
+    margin-top: 20px;
 }

@@ -6,44 +6,63 @@ class App extends React.Component{
         super()
 
         this.state = {
-            screen: getScreen().path
+            screen: getScreen().path,
+            logged: false,
+            infoRequested: false,
+            userInfo: {}
         }
 
-        var url = "/" + getScreen().path
-        var args = getScreen().args
-        if(args){url += "/" + args}
+        this.setScene = (screen) => {
+            if(screen == "myAccount"){
+                screen = "account/"+this.state.userInfo.username
+            }
+            open(screen, "_SELF")
+        }
+
+        socket.on("userInfoResponseByToken", (res)=>{
+            if(res.status == "Ok"){
+                this.setState({logged: true, userInfo: {...res}})
+            }else{
+                this.setState({logged: false})
+            }
+            socket.off("userInfoResponseByToken")
+        })
 
         document.title = "OneLogin - "+this.state.screen
-        window.history.pushState("", null, url)
+    }
+    componentDidMount(){
+        if(this.state.infoRequested == false){
+            socket.emit("getUserInfoByToken", {token: getCookie("token")})
+            this.setState({infoRequested: true})
+        }
     }
     render(){
-        var changeScreen = (screen, args) => {
-            var url = "/" + screen
-            if(args){url += "/" + args}
-
-            document.title = "OneLogin - "+screen
-            window.history.pushState("", null, url)
-            this.setState({screen})
-        }
-
         switch (this.state.screen) {
             case "home":
                 return <HomeScreen
-                    changeScreen={changeScreen}
+                    changeScreen={this.setScene}
                     translationKey={translation}
-                    socket={socket}
+                    logged={this.state.logged}
+                    userInfo={this.state.userInfo}
                 />
             case "login":
                 return <LoginScreen
-                    changeScreen={changeScreen}
+                    changeScreen={this.setScene}
                     translationKey={translation}
                     socket={socket}
                 />
             case "register":
                 return <RegisterScreen
-                    changeScreen={changeScreen}
+                    changeScreen={this.setScene}
                     translationKey={translation}
                     socket={socket}
+                />
+            case "account":
+                return <AccountScreen
+                    changeScreen={this.setScene}
+                    translationKey={translation}
+                    socket={socket}
+                    username={getScreen().args}
                 />
             default:
                 return <h1>{this.state.screen}</h1>

@@ -1,12 +1,4 @@
 class HomeScreen extends React.Component{
-    constructor(props){
-        super(props)
-
-        this.props.socket.emit("getUserInfo", {token: getCookie("token")})
-        this.props.socket.on("userInfoResponse", (data)=>{
-            console.log(data)
-        })
-    }
     render(){
         var translationKey = this.props.translationKey
 
@@ -17,19 +9,19 @@ class HomeScreen extends React.Component{
                 <h2>{translationKey["Slogan"]}</h2>
             </div>
             <div id="menu">
-                <button onClick={()=>this.props.changeScreen("myAccount")} id="button1">
-                    {translationKey["MyAccount"]}
+                <button onClick={()=>this.props.changeScreen(this.props.logged ? "myAccount": "login")}>
+                    {this.props.logged ? translationKey["MyAccount"] : translationKey["Login"]}
                 </button><br/>
 
-                <button onClick={()=>this.props.changeScreen("connectedServices")} id="button2">
-                    {translationKey["ConnectedServices"]}
+                <button onClick={()=>this.props.changeScreen(this.props.logged ? "connectedServices" : "register")}>
+                    {this.props.logged ? translationKey["ConnectedServices"] : translationKey["Register"]}
                 </button><br/>
 
-                <button onClick={()=>this.props.changeScreen("aboutUs")} id="button3">
+                <button onClick={()=>this.props.changeScreen("aboutUs")}>
                     {translationKey["AboutUs"]}
                 </button><br/>
 
-                <button onClick={()=>this.props.changeScreen("logout")} id="button4">
+                <button onClick={()=>this.props.changeScreen("logout")}>
                     {translationKey["Logout"]}
                 </button>
             </div>
