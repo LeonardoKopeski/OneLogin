@@ -25,7 +25,7 @@ function validateResponse(res, expected){
 module.exports = (io, accountsClass)=>{
     io.on('connection', (socket) => {
         socket.on('login', async(obj) => {
-            var validRequest = validateResponse(obj, {email: "string", password: "string"})
+            var validRequest = validateResponse(obj, {email: regEx.email, password: regEx.username})
             if(!validRequest){
                 socket.emit("loginResponse", {status: "InvalidRequest"})
                 return

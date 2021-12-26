@@ -48,7 +48,7 @@ class RegisterScreen extends React.Component{
                 this.setState({usernameTriggered: true})
                 ok = false
             }
-            if(!regEx.username.test(password)){
+            if(password.length < 5){
                 this.setState({passwordTriggered: true})
                 ok = false
             }
