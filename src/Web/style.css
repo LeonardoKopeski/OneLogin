@@ -100,8 +100,8 @@ div.accountScreen{
     transform: translateX(-50%);
     display: grid;
     grid-template-columns: 150px 400px;
-    grid-template-rows: repeat(75px, 3);
-    grid-template-areas: "img username" "img followbtn" "bio bio";
+    grid-template-rows: repeat(75px, 4);
+    grid-template-areas: "img username" "img followbtn" "following followers" "bio bio";
     column-gap: 40px;
     margin: 50px 0px;
 }
@@ -135,6 +135,20 @@ div.accountScreen button{
     font-weight: bolder;
     border: none;
     border-radius: 7px;
+}
+
+div.accountScreen div#follows * {
+    display: inline
+}
+
+div.accountScreen div#follows p#following{
+    grid-area: following;
+    background-color: red;
+}
+
+div.accountScreen div#follows p#followers{
+    grid-area: followers;
+    background-color: blue;
 }
 
 div.accountScreen p#bio{
