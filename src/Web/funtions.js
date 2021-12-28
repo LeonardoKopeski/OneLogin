@@ -12,6 +12,10 @@ async function sha256(message){
     return hashHex
 }
 
+function deleteCookie(name) {
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/"
+}
+
 function setCookie(name, value, days) {
     const d = new Date()
     d.setTime(d.getTime() + (days*24*60*60*1000))

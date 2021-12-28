@@ -8,40 +8,49 @@ class App extends React.Component{
         super()
 
         this.state = {
-            accountInfo: {},
+            logged: false,
             infoRequested: false,
+            userInfo: {}
         }
 
-        socket.on("userInfoResponse", (res)=>{
-            socket.off("userInfoResponse")
-            this.setState({accountInfo: {...res}})
+        socket.on("userInfoResponseByToken", (res)=>{
+            if(res.status == "Ok"){
+                this.setState({logged: true, userInfo: {...res}})
+            }else{
+                this.setState({logged: false})
+            }
+            socket.off("userInfoResponseByToken")
         })
     }
     componentDidMount(){
-        if(!this.state.infoRequested){
-            const urlParams = new URLSearchParams(window.location.search)
-            const user = urlParams.get('user')
-            socket.emit("getUserInfo", {username: user}, {token: getCookie("token")})
+        if(this.state.infoRequested == false){
+            socket.emit("getUserInfoByToken", {token: getCookie("token")})
             this.setState({infoRequested: true})
         }
     }
     render(){
-        var accountInfo = this.state.accountInfo
-        var me = this.state.accountInfo.sameToken
+        const logged = getCookie("token") != ""
+        const userInfo = this.state.userInfo
 
-        if(accountInfo.status == undefined){
+        if(!logged){
+            open("/login", "_SELF")
+        }
+
+        if(this.state.userInfo.username == undefined){
             return <Spinner/>
-        }else if(accountInfo.status != "Ok"){
-            return <h1>User not found</h1>
         }else{
             return (
-            <div className="accountScreen">
-                <img src={accountInfo.imageUrl || alternativePhoto} alt="image"/>
-                <h1 id="username">@{accountInfo.username}{accountInfo.verified? verifiedBadge : null}</h1>
-                <button className={!me ? "colored": ""}>
-                    {me ? translation["EditProfile"] : translation["AddAsFriend"]}
-                </button>
-                <p id="bio">"{accountInfo.bio}"</p>
+            <div className="homeScreen">
+                <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
+                <h1 id="username">Olá {userInfo.username}!</h1>
+                <button> {translation["EditProfile"]} </button>
+                <p id="bio">"{userInfo.bio}"</p>
+                <nav id="menu">
+                    <button>{translation["Friends"]}</button>
+                    <button>{translation["Connections"]}</button>
+                    <button>{translation["Share"]}</button>
+                    <button onClick={()=>open("/logout", "_SELF")}>{translation["Logout"]}</button>
+                </nav>
             </div>
             )
         }

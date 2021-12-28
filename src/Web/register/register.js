@@ -13,17 +13,10 @@ class App extends React.Component{
             email: "",
             password: ""
         }
-
-        this.setScreen = (screen) => {
-            if(screen == "myAccount"){
-                screen = "account?user="+this.state.userInfo.username
-            }
-            open("/"+screen, "_SELF")
-        }
-
+        
         socket.on("verifiedEmail", (res)=>{
             setCookie("token", res, 365)
-            open("/home", "_SELF")
+            open("/dashboard", "_SELF")
         })
 
         socket.on("registerResponse", (res)=>{

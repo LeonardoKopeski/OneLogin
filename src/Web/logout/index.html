@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OneLogin - Account</title>
+    <title>OneLogin - Logout</title>
     <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <!-- Main div(react.js) -->
@@ -14,15 +13,16 @@
     <!-- Libraries -->
     <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://kit.fontawesome.com/36a6603eaa.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/_translations/ptbr.js"></script>
     <script src="/funtions.js"></script>
 
     <!-- React.js scripts -->
     <script type="text/babel" src="/_components/spinner.js"></script>
-    <script type="text/babel" src="./account.js"></script>
+    <script type="text/babel">
+        var root = document.querySelector("div#root")
+        deleteCookie("token")
+        open("/login", "_SELF")
+        ReactDOM.render(<Spinner />,root)
+    </script>
 </body>
 </html>

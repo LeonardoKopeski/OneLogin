@@ -17,9 +17,7 @@ const regEx = require("./Functions/regEx.js")
 // Routes
 app.use(express.static('Web'))
 app.use(cookieParser())
-app.get("*",(req, res)=>{
-    res.redirect("/notFound")
-})
+app.get("*",(req, res)=> res.redirect("/notFound") )
 app.get("/verifyEmail", async(req, res)=>{
     var randomId = req.query.randomId
     if(Object.keys(unverifiedEmails).indexOf(randomId) == -1){
@@ -141,7 +139,7 @@ http.listen(PORT, async()=>{
         serverAddr = add
         console.log("Listening on "+serverAddr+":"+PORT)
     })
-    
+
     setSchema({
         username: String,
         email: String,

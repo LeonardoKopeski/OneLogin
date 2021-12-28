@@ -12,17 +12,10 @@ class App extends React.Component{
             password: ""
         }
 
-        this.setScreen = (screen) => {
-            if(screen == "myAccount"){
-                screen = "account?user="+this.state.userInfo.username
-            }
-            open("/"+screen, "_SELF")
-        }
-
         socket.on("loginResponse", (res)=>{
             if(res.status == "Ok"){
                 setCookie("token", res.token, 365)
-                this.setScreen("home")
+                open("/dashboard", "_SELF")
             }else{
                 alert(res.status)
             }
