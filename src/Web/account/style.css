@@ -30,6 +30,10 @@ div.accountScreen h1#username{
     align-self: center;
 }
 
+div.accountScreen h1#username svg#verifiedBadge{
+    margin-left: 10px;
+}
+
 div.accountScreen button{
     grid-area: followbtn;
     font-size: 30px;

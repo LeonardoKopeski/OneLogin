@@ -17,9 +17,22 @@ const regEx = require("./Functions/regEx.js")
 // Routes
 app.use(express.static('Web'))
 app.use(cookieParser())
-app.get("/verifyEmail", (req, res)=>{
-    console.log(req.query.randomId)
-    res.send("Ok?")
+app.get("*",(req, res)=>{
+    res.redirect("/notFound")
+})
+app.get("/verifyEmail", async(req, res)=>{
+    var randomId = req.query.randomId
+    if(Object.keys(unverifiedEmails).indexOf(randomId) == -1){
+        res.send("Invalid Email, sorry!")
+    }else{
+        io.to(unverifiedEmails[randomId].socketId).emit("verifiedEmail", unverifiedEmails[randomId].token)
+
+        var accounts = await account.getAccount({token: unverifiedEmails[randomId].token})
+        accounts[0].update({confirmed: true})
+
+        delete unverifiedEmails[randomId]
+        res.send("Ok :)")
+    }
 })
 
 // Main
@@ -64,11 +77,12 @@ io.on('connection', (socket) => {
             password: obj.password,
             imageUrl: null,
             bio: "No bio yet",
-            confirmed: false
+            confirmed: false,
+            verified: false
         }).token
 
         var random = Math.floor(Math.random() * 100000000000)
-        unverifiedEmails[random] = {token: token, email: obj.email, socket: socket}
+        unverifiedEmails[random] = {token: token, email: obj.email, socketId: socket.id}
         var email = mailer.generateEmail("VerifyEmail", `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`)
         mailer.sendEmail(obj.email, email)
 
@@ -81,34 +95,38 @@ io.on('connection', (socket) => {
             return
         }
 
-        var accounts = await account.getAccount({token: obj.token})
+        var accounts = await account.getAccount({token: obj.token, confirmed: true})
         if(accounts[0]){
             var response = {
                 username: accounts[0].username,
                 email: accounts[0].email,
                 imageUrl: accounts[0].imageUrl,
-                bio: accounts[0].bio
+                bio: accounts[0].bio,
+                verified: accounts[0].verified
             }
             socket.emit("userInfoResponseByToken", {status: "Ok", ...response})
         }else{
             socket.emit("userInfoResponseByToken", {status: "InvalidToken"})
         }
     })
-    socket.on('getUserInfo', async(obj) => {
-        var validRequest = validateRequest(obj, {})
-        if(!validRequest){
+    socket.on('getUserInfo', async(obj, query) => {
+        var validRequest1 = validateRequest(obj, {})
+        var validRequest2 = validateRequest(query, {token: "string"})
+        if(!validRequest1 || ! validRequest2){
             socket.emit("userInfoResponse", {status: "InvalidRequest"})
             return
         }
 
-        var accounts = await account.getAccount({...obj})
+        var accounts = await account.getAccount({...obj, confirmed: obj.confirmed || true})
         if(accounts[0]){
             var response = {
                 username: accounts[0].username,
                 imageUrl: accounts[0].imageUrl,
-                bio: accounts[0].bio
+                bio: accounts[0].bio,
+                verified: accounts[0].verified
             }
-            socket.emit("userInfoResponse", {status: "Ok", ...response})
+            var sameToken = accounts[0].token == query.token
+            socket.emit("userInfoResponse", {status: "Ok", sameToken ,...response})
         }else{
             socket.emit("userInfoResponse", {status: "InvalidQuery"})
         }
@@ -119,6 +137,11 @@ io.on('connection', (socket) => {
 var serverAddr
 const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
+    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+        serverAddr = add
+        console.log("Listening on "+serverAddr+":"+PORT)
+    })
+    
     setSchema({
         username: String,
         email: String,
@@ -126,14 +149,10 @@ http.listen(PORT, async()=>{
         token: String,
         imageUrl: String,
         bio: String,
-        confirmed: Boolean
+        confirmed: Boolean,
+        verified: Boolean
     })
 
     await startDB("DB_URI")
     mailer.createTransporter()
-
-    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-        serverAddr = add
-        console.log("Listening on "+serverAddr+":"+PORT)
-    })
 })

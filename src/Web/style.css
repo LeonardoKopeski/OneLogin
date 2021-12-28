@@ -1,7 +1,17 @@
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: all .5s;
 }
 
 body{
@@ -10,4 +20,15 @@ body{
 
 button, input[type=button]{
     cursor: pointer;
+}
+
+svg.spinner{
+    animation: spin infinite 1s linear;
+    color: #5603AD;
+    width: 30vh;
+    height: 30vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -15vh 0 0 -15vh;
 }

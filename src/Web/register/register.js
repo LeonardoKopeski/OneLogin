@@ -21,6 +21,11 @@ class App extends React.Component{
             open("/"+screen, "_SELF")
         }
 
+        socket.on("verifiedEmail", (res)=>{
+            setCookie("token", res, 365)
+            open("/home", "_SELF")
+        })
+
         socket.on("registerResponse", (res)=>{
             switch (res.status){
                 case "Created":
@@ -40,7 +45,7 @@ class App extends React.Component{
         })
     }
     render(){
-        var submit = ()=>{
+        var submit = async()=>{
             var username = this.state.username
             var email = this.state.email
             var password = this.state.password
@@ -60,6 +65,7 @@ class App extends React.Component{
             }
 
             if(ok){
+                password = await sha256(password)
                 socket.emit("register", {username, email, password})
             }
         }

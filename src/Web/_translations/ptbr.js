@@ -13,5 +13,6 @@ var translation = {
     "MyAccount": "Minha Conta",
     "Slogan": "Um unico login para muitas coisas!",
     "AddAsFriend": "Adicionar como amigo",
-    "EditProfile": "Editar perfil"
+    "EditProfile": "Editar perfil",
+    "NotFoundSlogan": "Essa pagina... Não exite!"
 }

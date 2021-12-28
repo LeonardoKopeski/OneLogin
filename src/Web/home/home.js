@@ -35,6 +35,10 @@ class App extends React.Component{
             open("/"+screen, "_SELF")
         }
 
+        if(this.state.userInfo.username == undefined){
+            return <Spinner/>
+        }
+
         return (
         <div className="homeScreen">
             <div id="title">

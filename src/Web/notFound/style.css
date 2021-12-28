@@ -1,0 +1,15 @@
+div.notFoundScreen div#title h1{
+    color: #5603AD;
+    font-family: monospace;
+    font-size: 150px;
+    text-align: center;
+    margin-top: 100px;
+}
+
+div.notFoundScreen div#title h2{
+    color: black;
+    font-family: monospace;
+    font-size: 40px;
+    text-align: center;
+    margin-top: 100px;
+}

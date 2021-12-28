@@ -29,7 +29,7 @@ class App extends React.Component{
         })
     }
     render(){
-        var submit = ()=>{
+        var submit = async()=>{
             var email = this.state.email
             var password = this.state.password
             var ok = true
@@ -44,6 +44,7 @@ class App extends React.Component{
             }
 
             if(ok){
+                password = await sha256(password)
                 socket.emit("login", {email, password})
             }
         }
