@@ -1,22 +1,7 @@
-var regEx = {
+const alternativePhoto = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Xdf9OyXn9BpWL30gb6cpyLnkiCCbSaH8wVB1007o9WpYBDgb6J1_afDQTdJuqwgE3xM&usqp=CAU"
+const regEx = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     username: /^(.[a-z0-9_-]*)$/
-}
-
-function getScreen(){
-    var pathname = window.location.pathname.split("/")
-
-    var path = pathname[1] || "home"
-    var args = pathname[2] || null
-    
-    var validPath = ["home", "login", "register", "account"]
-
-    if(validPath.indexOf(path) == -1){
-        path = "notFound"
-        args = null
-    }
-    
-    return {path, args}
 }
 
 function setCookie(name, value, days) {

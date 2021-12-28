@@ -11,5 +11,7 @@ var translation = {
     "Logout": "Sair",
     "ConnectedServices": "Serviços conectados",
     "MyAccount": "Minha Conta",
-    "Slogan": "Um unico login para muitas coisas!"
+    "Slogan": "Um unico login para muitas coisas!",
+    "AddAsFriend": "Adicionar como amigo",
+    "EditProfile": "Editar perfil"
 }
