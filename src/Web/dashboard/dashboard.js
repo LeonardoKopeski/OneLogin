@@ -13,18 +13,18 @@ class App extends React.Component{
             userInfo: {}
         }
 
-        socket.on("userInfoResponseByToken", (res)=>{
+        socket.on("userInfoResponse", (res)=>{
             if(res.status == "Ok"){
                 this.setState({logged: true, userInfo: {...res}})
             }else{
                 this.setState({logged: false})
             }
-            socket.off("userInfoResponseByToken")
+            socket.off("userInfoResponse")
         })
     }
     componentDidMount(){
         if(this.state.infoRequested == false){
-            socket.emit("getUserInfoByToken", {token: getCookie("token")})
+            socket.emit("getUserInfo", {token: getCookie("token")})
             this.setState({infoRequested: true})
         }
     }
@@ -43,7 +43,7 @@ class App extends React.Component{
             <div className="homeScreen">
                 <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
                 <h1 id="username">Olá {userInfo.username}!</h1>
-                <button> {translation["EditProfile"]} </button>
+                <button  onClick={()=>open("/editProfile", "_SELF")}> {translation["EditProfile"]} </button>
                 <p id="bio">"{userInfo.bio}"</p>
                 <nav id="menu">
                     <button>{translation["Friends"]}</button>

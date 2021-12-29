@@ -86,31 +86,9 @@ io.on('connection', (socket) => {
 
         socket.emit("registerResponse", {status: "Created"})            
     })
-    socket.on('getUserInfoByToken', async(obj) => {
-        var validRequest = validateRequest(obj, {token: "string"})
-        if(!validRequest){
-            socket.emit("userInfoResponseByToken", {status: "InvalidRequest"})
-            return
-        }
-
-        var accounts = await account.getAccount({token: obj.token, confirmed: true})
-        if(accounts[0]){
-            var response = {
-                username: accounts[0].username,
-                email: accounts[0].email,
-                imageUrl: accounts[0].imageUrl,
-                bio: accounts[0].bio,
-                verified: accounts[0].verified
-            }
-            socket.emit("userInfoResponseByToken", {status: "Ok", ...response})
-        }else{
-            socket.emit("userInfoResponseByToken", {status: "InvalidToken"})
-        }
-    })
     socket.on('getUserInfo', async(obj, query) => {
-        var validRequest1 = validateRequest(obj, {})
-        var validRequest2 = validateRequest(query, {token: "string"})
-        if(!validRequest1 || ! validRequest2){
+        var validRequest = validateRequest(obj, {})
+        if(!validRequest){
             socket.emit("userInfoResponse", {status: "InvalidRequest"})
             return
         }
@@ -123,10 +101,28 @@ io.on('connection', (socket) => {
                 bio: accounts[0].bio,
                 verified: accounts[0].verified
             }
-            var sameToken = accounts[0].token == query.token
-            socket.emit("userInfoResponse", {status: "Ok", sameToken ,...response})
+            socket.emit("userInfoResponse", {status: "Ok" ,...response})
         }else{
             socket.emit("userInfoResponse", {status: "InvalidQuery"})
+        }
+    })
+    socket.on("updateUserInfo", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string"})
+        if(!validRequest){
+            socket.emit("userInfoResponseByToken", {status: "InvalidRequest"})
+            return
+        }
+
+        var accounts = await account.getAccount({token: obj.token})
+        if(accounts[0]){
+            var data = {
+                username: obj.username || accounts[0].username,
+                imageUrl: obj.imageUrl || accounts[0].imageUrl,
+                bio: obj.bio || accounts[0].bio,
+                verified: accounts[0].verified
+            }
+
+            accounts[0].update(data)
         }
     })
 })

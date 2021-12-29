@@ -73,37 +73,3 @@ div.homeScreen nav#menu button{
     border: 3px solid #5603AD;
     border-radius: 7px;
 }
-/*
-div.homeScreen div#title h1{
-    color: #5603AD;
-    font-family: monospace;
-    font-size: 150px;
-    text-align: center;
-}
-
-div.homeScreen div#title h2{
-    color: black;
-    font-family: monospace;
-    font-size: 40px;
-    text-align: center;
-}
-
-div.homeScreen div#menu{
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-div.homeScreen div#menu button{
-    font-size: 30px;
-    padding: 5px;
-    border-radius: 20px;
-    text-align: center;
-    width: 400px;
-    border: 3px solid #5603AD;
-    color: black;
-    margin-top: 10px;
-    background-color: #f0fff1;
-}
-*/
