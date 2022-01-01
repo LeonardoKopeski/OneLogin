@@ -10,8 +10,7 @@ class App extends React.Component{
         this.state = {
             logged: false,
             infoRequested: false,
-            userInfo: {},
-            showShareModal: false
+            userInfo: {}
         }
 
         socket.on("userInfoResponse", (res)=>{
@@ -25,52 +24,30 @@ class App extends React.Component{
     }
     componentDidMount(){
         if(this.state.infoRequested == false){
-            socket.emit("getUserInfo", {token: getCookie("token")})
+            const params = new URLSearchParams(window.location.search)
+            
+            socket.emit("getUserInfo", {username: params.get("user")})
             this.setState({infoRequested: true})
         }
     }
     render(){
-        const logged = getCookie("token") != ""
         const userInfo = this.state.userInfo
-
-        const shareModalButtons = {
-            "close": { display: true, action: ()=>this.setState({showShareModal: false}) },
-            "cancel": { display: true, text: "Cancelar", action: ()=>this.setState({showShareModal: false}) },
-            "ok": {
-                display: true,
-                text: "Copiar!",
-                action: ()=>{
-                    this.setState({showShareModal: false})
-                    navigator.clipboard.writeText(window.location.host+"/account?user="+userInfo.username)
-                }
-            }
-        }
-        
-        if(!logged){
-            open("/login", "_SELF")
-        }
 
         if(this.state.userInfo.username == undefined){
             return <Spinner/>
         }else{
             return (
-            <div className="dashboardScreen">
+            <div className="accountScreen">
                 <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
-                <h1 id="username">Olá {userInfo.username}!</h1>
-                <button  onClick={()=>open("/editProfile", "_SELF")}> {translation["EditProfile"]} </button>
+                <h1 id="username">@{userInfo.username}{userInfo.verified? verifiedBadge : null}</h1>
+                <button id="AddAsFriend" onClick={()=>alert("Work In Progress")}> {translation["AddAsFriend"]} </button>
                 <p id="bio">"{userInfo.bio}"</p>
                 <nav id="menu">
-                    <button>{translation["Friends"]}</button>
-                    <button>{translation["Connections"]}</button>
-                    <button onClick={()=>this.setState({showShareModal: true})}>{translation["ShareProfile"]}</button>
-                    <button onClick={()=>open("/logout", "_SELF")}>{translation["Logout"]}</button>
+                    <button>{translation["WIP"]}</button>
+                    <button>{translation["WIP"]}</button>
+                    <button>{translation["WIP"]}</button>
+                    <button>{translation["WIP"]}</button>
                 </nav>
-                <Modal
-                    title="Compartilhar conta!"
-                    buttons={shareModalButtons}
-                    body={<h2>Ao confirmar, um link de acesso à sua conta será copiado para sua area de transferencia</h2>}
-                    display={this.state.showShareModal}
-                />
             </div>
             )
         }

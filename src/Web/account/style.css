@@ -1,17 +1,17 @@
-div.dashboardScreen{
+div.accountScreen{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     display: grid;
     grid-template-columns: 150px 400px;
     grid-template-rows: repeat(75px, 4);
-    grid-template-areas: "img username" "img editProfile" "bio bio" "menu menu";
+    grid-template-areas: "img username" "img addAsFriend" "bio bio" "menu menu";
     column-gap: 40px;
     row-gap: 20px;
     margin: 50px 0px;
 }
 
-div.dashboardScreen img{
+div.accountScreen img{
     grid-area: img;
     width: 150px;
     height: 150px;
@@ -21,7 +21,7 @@ div.dashboardScreen img{
     box-shadow: 0px 0px 10px #5603AD;
 }
 
-div.dashboardScreen h1#username{
+div.accountScreen h1#username{
     grid-area: username;
     font-family: monospace;
     font-weight: bolder;
@@ -29,20 +29,24 @@ div.dashboardScreen h1#username{
     align-self: center;
 }
 
-div.dashboardScreen button{
-    grid-area: editProfile;
+div.accountScreen h1#username svg#verifiedBadge{
+    margin-left: 12px;
+}
+
+div.accountScreen button{
+    grid-area: addAsFriend;
     font-size: 30px;
     font-family: monospace;
     height: 50px;
     align-self: center;
-    background-color: #f0fff1;
-    color: #5603AD;
+    background-color: #5603AD;
+    color: #f0fff1;
     font-weight: bolder;
     border: 3px solid #5603AD;
     border-radius: 7px;
 }
 
-div.dashboardScreen p#bio{
+div.accountScreen p#bio{
     grid-area: bio;
     font-family: monospace;
     font-size: 25px;
@@ -56,12 +60,12 @@ div.dashboardScreen p#bio{
     text-align: center;
 }
 
-div.dashboardScreen nav#menu{
+div.accountScreen nav#menu{
     grid-area: menu;
     margin-top: 100px;
 }
 
-div.dashboardScreen nav#menu button{
+div.accountScreen nav#menu button{
     font-size: 30px;
     font-family: monospace;
     height: 50px;

@@ -10,7 +10,7 @@ var translation = {
     "Logout": "Desconectar",
     "Connections": "Conexões",
     "Friends": "Amigos",
-    "Share": "Compartilhar",
+    "ShareProfile": "Compartilhar",
     "AddAsFriend": "Adicionar como amigo",
     "EditProfile": "Editar perfil",
     "NotFoundSlogan": "Essa pagina... Não exite!"
