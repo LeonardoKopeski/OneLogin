@@ -109,17 +109,23 @@ io.on('connection', (socket) => {
     })
     socket.on("updateBio", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string", bio: "string"})
-        if(!validRequest){
-            socket.emit("updateBioResponse", {status: "InvalidRequest"})
-            return
-        }
+        if(!validRequest){ return }
 
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
             accounts[0].update({bio: obj.bio})
-            socket.emit("updateBioResponse", {status: "Updated"})
-        }else{
-            socket.emit("updateBioResponse", {status: "InvalidRequest"})
+        }
+    })
+    socket.on("updateImage", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", imageUrl: "string"})
+        if(!validRequest){ return }
+
+        var imageBytes = encodeURI(obj.imageUrl).split(/%..|./).length - 1
+        if(imageBytes > 500*1024){ return }
+
+        var accounts = await account.getAccount({token: obj.token})
+        if(accounts[0]){
+            accounts[0].update({imageUrl: obj.imageUrl})
         }
     })
 })
@@ -128,6 +134,7 @@ io.on('connection', (socket) => {
 var serverAddr
 const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
+    console.log("Starting...")
     require('dns').lookup(require('os').hostname(), function (err, add, fam) {
         serverAddr = add
         console.log("Listening on "+serverAddr+":"+PORT)

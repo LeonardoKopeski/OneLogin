@@ -51,6 +51,7 @@ class App extends React.Component{
 
                 <SubPage
                     changeScreen={(screen)=>this.setState({subpage: screen})}
+                    forceUpdate={()=>this.forceUpdate()}
                     returnSVG={returnSVG}
                     userInfo={userInfo}
                 />

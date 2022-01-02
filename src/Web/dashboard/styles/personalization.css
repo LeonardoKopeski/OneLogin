@@ -13,8 +13,9 @@ ul.personalizationSubpage li{
     border-top: 2px solid gray;
     padding: 10px;
     position: relative;
+    padding: 20px;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
 ul.personalizationSubpage li#header{
@@ -34,20 +35,21 @@ ul.personalizationSubpage .key{
     font-family: monospace;
     font-weight: bolder;
     font-size: 30px;
+    color: #5603AD;
 }
 
 ul.personalizationSubpage .key::after{
     content: ":";
 }
 
-ul.personalizationSubpage .value{
+ul.personalizationSubpage .value{    
+    margin: 10px 0px;
     font-family: monospace;
     font-size: 30px;
-    text-align: right;
     background-color: transparent;
     border: 1.5px solid gray;
     border-radius: 7px;
-    width: 60%;
+    width: 100%;
     overflow: hidden;
 }
 
@@ -55,6 +57,7 @@ ul.personalizationSubpage label.value{
     color: #5603AD;
     border: 3px solid #5603AD;
     cursor: pointer;
+    text-align: center;
 }
 
 
@@ -69,20 +72,5 @@ ul.personalizationSubpage label.value{
     ul.personalizationSubpage li#header h2{
         font-size: 6vw;
         line-height: 6vw;
-    }
-    ul.personalizationSubpage li{
-        flex-direction: column;
-        padding: 20px;
-    }
-    ul.personalizationSubpage .key{
-        color: #5603AD;
-    }
-    ul.personalizationSubpage .value{
-        width: 100%;
-        text-align: left;
-        margin: 10px 0px;
-    }
-    ul.personalizationSubpage label.value{
-        text-align: center;
     }
 }
