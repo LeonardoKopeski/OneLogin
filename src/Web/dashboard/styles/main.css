@@ -10,6 +10,7 @@ svg.returnSVG{
     border-radius: 50%;
     padding: 2.5px;
     color: #5603AD;
+    z-index: 5;
 }
 
 div.dashboardScreen{

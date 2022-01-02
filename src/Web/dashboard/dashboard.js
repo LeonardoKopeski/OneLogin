@@ -54,6 +54,7 @@ class App extends React.Component{
                     forceUpdate={()=>this.forceUpdate()}
                     returnSVG={returnSVG}
                     userInfo={userInfo}
+                    socket={socket}
                 />
             </div>
             )

@@ -116,6 +116,22 @@ io.on('connection', (socket) => {
             accounts[0].update({bio: obj.bio})
         }
     })
+    socket.on("updateUsername", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", username: regEx.username})
+        if(!validRequest){ return }
+
+        var usernameQuery = await account.getAccount({username: obj.username})
+        if(usernameQuery[0]){
+            socket.emit("updateUsernameResponse", {status: "UsernameAlreadyUsed"})
+            return
+        }
+
+        var accounts = await account.getAccount({token: obj.token})
+        if(accounts[0]){
+            accounts[0].update({username: obj.username})
+            socket.emit("updateUsernameResponse", {status: "updated"})
+        }
+    })
     socket.on("updateImage", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string", imageUrl: "string"})
         if(!validRequest){ return }

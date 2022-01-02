@@ -1,11 +1,26 @@
 subpages["personalization"] = class extends React.Component{
     constructor(props){
         super(props)
+
+        this.props.socket.on("updateUsernameResponse", ({status})=>{
+            var input = document.querySelector("input#username")
+            if(status == "updated"){
+                this.props.userInfo.username = input.value
+                this.props.forceUpdate()
+            }else{
+                input.value = this.props.userInfo.username
+                input.focus()
+                alert("Username already used!")
+            }
+        })
+
         this.saveChanges = this.saveChanges.bind(this)
         this.fileToBase64 = this.fileToBase64.bind(this)
     }
     async saveChanges(ev){
         var value = ev.target.type == "file" ? await this.fileToBase64(ev.target.files[0]) : ev.target.value
+
+        if(this.props.userInfo[ev.target.id] == value){ return }
 
         switch (ev.target.id){
             case "bio":
@@ -14,8 +29,14 @@ subpages["personalization"] = class extends React.Component{
             case "imageUrl":
                 socket.emit("updateImage", {token: getCookie("token"), imageUrl: value})
                 break
-            default:
+            case "username":
+                socket.emit("updateUsername", {token: getCookie("token"), username: value})
+                return
+            case "highlightColor":
+                alert("wip")
                 break
+            default:
+                return
         }
 
         this.props.userInfo[ev.target.id] = value
