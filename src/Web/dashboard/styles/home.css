@@ -14,7 +14,6 @@ nav.homeSubpage div.block{
     margin: 5px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
-    height: 200px;
     width: 100%;
     border: 2px solid gray;
     border-radius: 7px;
@@ -30,7 +29,14 @@ nav.homeSubpage div.block h1{
     font-family: monospace;
     font-weight: bolder;
     font-size: 35px;
-    margin-bottom: 10px;
+}
+
+nav.homeSubpage div.block p{
+    margin: 13px 0px;
+}
+
+nav.homeSubpage div.block[data-size="full"] p{
+    margin-bottom: 28px;
 }
 
 nav.homeSubpage div.block a{
@@ -39,4 +45,16 @@ nav.homeSubpage div.block a{
     font-weight: bolder;
     color: #5603AD;
     font-size: 20px;
+}
+
+@media (min-width: 600px){
+    nav.homeSubpage div.block{
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    nav.homeSubpage, nav.homeSubpage div.block[data-size="half"]{
+        width: 100%;
+    }
 }

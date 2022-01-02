@@ -17,6 +17,19 @@ ul.personalizationSubpage li{
     justify-content: space-between;
 }
 
+ul.personalizationSubpage li#header{
+    line-height: 60px;
+    border-top: none;
+}
+
+ul.personalizationSubpage li#header h2{
+    font-family: monospace;
+    font-size: 35px;
+    text-align: right;
+    position: relative;
+    color: #5603AD;
+}
+
 ul.personalizationSubpage .key{
     font-family: monospace;
     font-weight: bolder;
@@ -44,10 +57,18 @@ ul.personalizationSubpage label.value{
     cursor: pointer;
 }
 
-ul.personalizationSubpage h2{
-    font-family: monospace;
-    font-size: 35px;
-    text-align: center;
-    position: relative;
-    color: #5603AD;
+
+@media screen and (max-width: 750px) {
+    ul.personalizationSubpage{
+        width: 100%;
+    }
+    ul.personalizationSubpage h2{
+        font-size: 6vw;
+        margin: 5px 0px;
+    }
+    ul.personalizationSubpage li#header h2{
+        font-size: 6vw;
+        line-height: 6vw;
+    }
+
 }

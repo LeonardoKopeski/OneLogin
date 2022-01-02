@@ -3,8 +3,9 @@ svg.returnSVG{
     width: 38px;
     height: 38px;
     position: absolute;
-    left: 0px;
-    transform: translateY(-100%);
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     border: 3px solid #5603AD;
     border-radius: 50%;
     padding: 2.5px;
@@ -33,4 +34,20 @@ div.dashboardScreen h1#username{
     font-weight: bolder;
     font-size: 40px;
     text-align: center;
+}
+
+@media screen and (max-width: 750px) {
+    svg.returnSVG{
+        width: 8vw;
+        height: 8vw;
+    }
+
+    div.dashboardScreen h1#username{
+        font-size: 7vw;
+    }
+
+    div.dashboardScreen img{
+        width: calc(15vw + 50px);
+        height: calc(15vw + 50px);
+    }
 }

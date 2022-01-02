@@ -7,12 +7,14 @@ subpages["friendList"] = class extends React.Component{
     render(){
         return (
         <ul className="friendsSubpage">
-            <h2>
-                Lista de amigos:
-            </h2>
-            <div onClick={()=>this.props.changeScreen("home")}>
-                {this.props.returnSVG}
-            </div>
+            <li id="header">
+                <div onClick={()=>this.props.changeScreen("home")}>
+                    {this.props.returnSVG}
+                </div>
+                <h2>
+                    Lista de amigos:
+                </h2>
+            </li>
             <li>
                 <img src={alternativePhoto} alt="image"/>
                 <h1>@minimnonad{verifiedBadge}</h1>

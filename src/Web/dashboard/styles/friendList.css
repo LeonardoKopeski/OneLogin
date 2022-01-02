@@ -9,18 +9,24 @@ ul.friendsSubpage{
     margin: 50px 0px;
 }
 
-ul.friendsSubpage h2{
+ul.friendsSubpage li{
+    position: relative;
+    border-top: 2px solid gray;
+    padding: 10px;
+    height: 80px;
+}
+
+ul.friendsSubpage li#header{
+    line-height: 60px;
+    border-top: none;
+}
+
+ul.friendsSubpage li#header h2{
     font-family: monospace;
     font-size: 35px;
     text-align: center;
     position: relative;
     color: #5603AD;
-}
-
-ul.friendsSubpage li{
-    border-top: 2px solid gray;
-    padding: 10px;
-    height: 80px;
 }
 
 ul.friendsSubpage li img{
@@ -41,15 +47,45 @@ ul.friendsSubpage li h1{
     display: inline-block;
     font-family: monospace;
     font-size: 35px;
-    position: relative;
-    top: 3px;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    transform: translateY(-45%);
 }
 
 ul.friendsSubpage li h1 svg#verifiedBadge{
     position: relative;
     left: 12px;
     top: 2px; 
+}
+
+@media screen and (max-width: 750px) {
+    ul.friendsSubpage{
+        width: 100%;
+    }
+    ul.friendsSubpage h2{
+        font-size: 6vw;
+        margin: 5px 0px;
+    }
+    ul.friendsSubpage li{
+        height: 10vw;
+        padding: 1vw;
+    }
+    ul.friendsSubpage li#header h2{
+        font-size: 6vw;
+        line-height: 6vw;
+    }
+
+    ul.friendsSubpage li img{
+        width: 8vw;
+        height: 8vw;
+        margin-right: 10px;
+    }
+    ul.friendsSubpage li h1{
+        font-size: 6vw;
+        transform: translateY(-35%);
+    }
+    ul.friendsSubpage li h1 svg#verifiedBadge{
+        position: relative;
+        left: 5px;
+        width: 5vw;
+        height: 5vw;
+    }
 }

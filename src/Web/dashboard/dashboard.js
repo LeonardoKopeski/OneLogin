@@ -11,13 +11,13 @@ if(getCookie("token") == ""){
 class App extends React.Component{
     constructor(){
         super()
-
+    
         this.state = {
             infoRequested: false,
             userInfo: {},
-            subpage: "personalization"
+            subpage: "home"
         }
-
+        
         socket.on("userInfoResponse", (res)=>{
             if(res.status == "Ok"){
                 this.setState({userInfo: {...res}})

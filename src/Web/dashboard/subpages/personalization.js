@@ -7,12 +7,14 @@ subpages["personalization"] = class extends React.Component{
     render(){
         return (
         <ul className="personalizationSubpage">
-            <h2>
-                Personalização
-            </h2>
-            <div onClick={()=>this.props.changeScreen("home")}>
-                {this.props.returnSVG}
-            </div>
+            <li id="header">
+                <div onClick={()=>this.props.changeScreen("home")}>
+                    {this.props.returnSVG}
+                </div>
+                <h2>
+                    Personalização
+                </h2>
+            </li>
             <li>
                 <span className="key">Username</span>
                 <input className="value" placeholder="username" defaultValue={this.props.userInfo.username}/>

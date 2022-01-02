@@ -95,11 +95,10 @@ class App extends React.Component{
                     placeholder={translation["Password"]}
                     onKeyUp={setValue}
                 /><br/>
-                <a>{translation["ForgotenPassword"]}</a><br/>
                 <input
                     type="button"
                     id="btnBack"
-                    onClick={()=>this.setScreen("login")}
+                    onClick={()=>open("/login", "_SELF")}
                     value={translation["Login"]}
                 />
                 <input

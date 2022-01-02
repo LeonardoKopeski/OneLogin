@@ -71,7 +71,7 @@ class App extends React.Component{
                 <input
                     type="button"
                     id="btnBack"
-                    onClick={()=>this.setScreen("register")}
+                    onClick={()=>open("/register", "_SELF")}
                     value={translation["Register"]}
                 />
                 <input
