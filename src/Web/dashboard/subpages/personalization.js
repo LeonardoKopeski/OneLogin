@@ -15,15 +15,15 @@ subpages["personalization"] = class extends React.Component{
             </div>
             <li>
                 <span className="key">Username</span>
-                <input className="value" placeholder="username" defaultValue="leonardokop"/>
+                <input className="value" placeholder="username" defaultValue={this.props.userInfo.username}/>
             </li>
             <li>
                 <span className="key">Bio</span>
-                <input className="value" placeholder="bio" defaultValue="No Bio Yet!"/>
+                <input className="value" placeholder="bio" defaultValue={this.props.userInfo.bio}/>
             </li>
             <li>
                 <span className="key">Email</span>
-                <span className="value">leonardokop22@gmail.com</span>
+                <span className="value">{this.props.userInfo.email}</span>
             </li>
             <li>
                 <span className="key">Image</span>

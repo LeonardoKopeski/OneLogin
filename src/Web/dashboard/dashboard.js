@@ -13,17 +13,16 @@ class App extends React.Component{
         super()
 
         this.state = {
-            logged: false,
             infoRequested: false,
             userInfo: {},
-            subpage: "home"
+            subpage: "personalization"
         }
 
         socket.on("userInfoResponse", (res)=>{
             if(res.status == "Ok"){
-                this.setState({logged: true, userInfo: {...res}})
+                this.setState({userInfo: {...res}})
             }else{
-                this.setState({logged: false})
+                open("/logout")
             }
             socket.off("userInfoResponse")
         })
@@ -53,6 +52,7 @@ class App extends React.Component{
                 <SubPage
                     changeScreen={(screen)=>this.setState({subpage: screen})}
                     returnSVG={returnSVG}
+                    userInfo={userInfo}
                 />
             </div>
             )

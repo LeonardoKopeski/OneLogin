@@ -99,6 +99,7 @@ io.on('connection', (socket) => {
                 username: accounts[0].username,
                 imageUrl: accounts[0].imageUrl,
                 bio: accounts[0].bio,
+                email: accounts[0].email,
                 verified: accounts[0].verified
             }
             socket.emit("userInfoResponse", {status: "Ok" ,...response})
@@ -119,6 +120,7 @@ io.on('connection', (socket) => {
                 username: obj.username || accounts[0].username,
                 imageUrl: obj.imageUrl || accounts[0].imageUrl,
                 bio: obj.bio || accounts[0].bio,
+                email: accounts[0].email,
                 verified: accounts[0].verified
             }
 
