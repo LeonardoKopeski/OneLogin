@@ -1,12 +1,12 @@
 form.loginScreen{
-    border: 3px solid #5603AD;
+    border: 2px solid #5603AD;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 7px;
     width: 450px;
 }
 form.loginScreen h1{
@@ -22,7 +22,7 @@ form.loginScreen h2{
 form.loginScreen input{
     font-size: 25px;
     padding: 5px;
-    border-radius: 20px;
+    border-radius: 7px;
     text-align: center;
     width: 100%;
     margin: 20px 0px 0px 0px;

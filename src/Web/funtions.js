@@ -1,4 +1,5 @@
 const alternativePhoto = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Xdf9OyXn9BpWL30gb6cpyLnkiCCbSaH8wVB1007o9WpYBDgb6J1_afDQTdJuqwgE3xM&usqp=CAU"
+
 const regEx = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     username: /^(.[a-z0-9_-]*)$/
@@ -98,7 +99,6 @@ function getExifOrientation(file, callback){
     reader.readAsArrayBuffer(file)
 }
 
-// Derived from https://stackoverflow.com/a/40867559, cc by-sa
 function imgToCanvasWithOrientation(img, rawWidth, rawHeight, orientation){
     var canvas = document.createElement('canvas')
     if(orientation > 4){

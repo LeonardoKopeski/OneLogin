@@ -19,7 +19,7 @@ body{
     height: 100vh;
 }
 
-button, input[type=button]{
+button, input[type=button], a{
     cursor: pointer;
 }
 
@@ -57,7 +57,7 @@ div.modal div#box{
     text-align: center;
 }
 
-div.modal div#box h1{
+div.modal div#box *{
     font-family: monospace;
     font-weight: bolder;
     font-size: 30px;

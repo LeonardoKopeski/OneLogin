@@ -1,0 +1,55 @@
+ul.friendsSubpage{
+    list-style: none;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 750px;
+    border: 2px solid gray;
+    border-radius: 7px;
+    margin: 50px 0px;
+}
+
+ul.friendsSubpage h2{
+    font-family: monospace;
+    font-size: 35px;
+    text-align: center;
+    position: relative;
+    color: #5603AD;
+}
+
+ul.friendsSubpage li{
+    border-top: 2px solid gray;
+    padding: 10px;
+    height: 80px;
+}
+
+ul.friendsSubpage li img{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid black;
+    box-shadow: none;
+    position: relative;
+    left: 0;
+    transform: none;
+    margin-right: 20px;
+}
+
+ul.friendsSubpage li h1{
+    display: inline-block;
+    font-family: monospace;
+    font-size: 35px;
+    position: relative;
+    top: 3px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+ul.friendsSubpage li h1 svg#verifiedBadge{
+    position: relative;
+    left: 12px;
+    top: 2px; 
+}
