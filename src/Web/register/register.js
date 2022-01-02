@@ -36,40 +36,41 @@ class App extends React.Component{
                     alert(res.status)
             }
         })
+
+        this.setValue = this.setValue.bind(this)
+        this.submit = this.submit.bind(this)
+    }
+    async submit(){
+        var username = this.state.username
+        var email = this.state.email
+        var password = this.state.password
+        var ok = true
+
+        if(!regEx.email.test(email)){
+            this.setState({emailTriggered: true})
+            ok = false
+        }
+        if(!regEx.username.test(username)){
+            this.setState({usernameTriggered: true})
+            ok = false
+        }
+        if(password.length < 5){
+            this.setState({passwordTriggered: true})
+            ok = false
+        }
+
+        if(ok){
+            password = await sha256(password)
+            socket.emit("register", {username, email, password})
+        }
+    }
+    setValue(ev){
+        var obj = {}
+        obj[ev.target.id] = ev.target.value
+        obj[ev.target.id + "Triggered"] = false
+        this.setState(obj)
     }
     render(){
-        var submit = async()=>{
-            var username = this.state.username
-            var email = this.state.email
-            var password = this.state.password
-            var ok = true
-
-            if(!regEx.email.test(email)){
-                this.setState({emailTriggered: true})
-                ok = false
-            }
-            if(!regEx.username.test(username)){
-                this.setState({usernameTriggered: true})
-                ok = false
-            }
-            if(password.length < 5){
-                this.setState({passwordTriggered: true})
-                ok = false
-            }
-
-            if(ok){
-                password = await sha256(password)
-                socket.emit("register", {username, email, password})
-            }
-        }
-
-        var setValue = (ev) => {
-            var obj = {}
-            obj[ev.target.id] = ev.target.value
-            obj[ev.target.id + "Triggered"] = false
-            this.setState(obj)
-        }
-
         return(
             <form className="loginScreen">
                 <h1>OneLogin</h1>
@@ -79,21 +80,21 @@ class App extends React.Component{
                     type="text"
                     id="username"
                     placeholder={translation["Username"]}
-                    onKeyUp={setValue}
+                    onKeyUp={this.setValue}
                 /><br/>
                 <input
                     style={{borderColor: this.state.emailTriggered ? "#FA1133" : "#5603AD"}}
                     type="email"
                     id="email"
                     placeholder={translation["Email"]}
-                    onKeyUp={setValue}
+                    onKeyUp={this.setValue}
                 /><br/>
                 <input
                     style={{borderColor: this.state.passwordTriggered ? "#FA1133" : "#5603AD"}}
                     type="password"
                     id="password"
                     placeholder={translation["Password"]}
-                    onKeyUp={setValue}
+                    onKeyUp={this.setValue}
                 /><br/>
                 <input
                     type="button"
@@ -105,7 +106,7 @@ class App extends React.Component{
                     type="button"
                     id="btnSubmit"
                     value={translation["Register"]}
-                    onClick={submit}
+                    onClick={this.submit}
                 />
             </form>
         )

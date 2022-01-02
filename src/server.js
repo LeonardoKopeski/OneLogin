@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
 
         socket.emit("registerResponse", {status: "Created"})            
     })
-    socket.on('getUserInfo', async(obj, query) => {
+    socket.on('getUserInfo', async(obj) => {
         var validRequest = validateRequest(obj, {})
         if(!validRequest){
             socket.emit("userInfoResponse", {status: "InvalidRequest"})
@@ -107,24 +107,19 @@ io.on('connection', (socket) => {
             socket.emit("userInfoResponse", {status: "InvalidQuery"})
         }
     })
-    socket.on("updateUserInfo", async(obj) => {
-        var validRequest = validateRequest(obj, {token: "string"})
+    socket.on("updateBio", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", bio: "string"})
         if(!validRequest){
-            socket.emit("userInfoResponseByToken", {status: "InvalidRequest"})
+            socket.emit("updateBioResponse", {status: "InvalidRequest"})
             return
         }
 
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
-            var data = {
-                username: obj.username || accounts[0].username,
-                imageUrl: obj.imageUrl || accounts[0].imageUrl,
-                bio: obj.bio || accounts[0].bio,
-                email: accounts[0].email,
-                verified: accounts[0].verified
-            }
-
-            accounts[0].update(data)
+            accounts[0].update({bio: obj.bio})
+            socket.emit("updateBioResponse", {status: "Updated"})
+        }else{
+            socket.emit("updateBioResponse", {status: "InvalidRequest"})
         }
     })
 })

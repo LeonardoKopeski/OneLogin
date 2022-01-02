@@ -15,7 +15,7 @@ class App extends React.Component{
         this.state = {
             infoRequested: false,
             userInfo: {},
-            subpage: "home"
+            subpage: "personalization"
         }
         
         socket.on("userInfoResponse", (res)=>{
