@@ -4,13 +4,13 @@ ul.personalizationSubpage{
     left: 50%;
     transform: translateX(-50%);
     width: 750px;
-    border: 2px solid gray;
-    border-radius: 7px;
+    border: 2px solid var(--gray);
+    border-radius: var(--borderRadius);
     margin: 50px 0px;
 }
 
 ul.personalizationSubpage li{
-    border-top: 2px solid gray;
+    border-top: 2px solid var(--gray);
     padding: 10px;
     position: relative;
     padding: 20px;
@@ -28,14 +28,14 @@ ul.personalizationSubpage li#header h2{
     font-size: 35px;
     text-align: right;
     position: relative;
-    color: #5603AD;
+    color: var(--purple);
 }
 
 ul.personalizationSubpage .key{
     font-family: monospace;
     font-weight: bolder;
     font-size: 30px;
-    color: #5603AD;
+    color: var(--purple);
 }
 
 ul.personalizationSubpage .key::after{
@@ -47,15 +47,15 @@ ul.personalizationSubpage .value{
     font-family: monospace;
     font-size: 30px;
     background-color: transparent;
-    border: 1.5px solid gray;
-    border-radius: 7px;
+    border: 1.5px solid var(--gray);
+    border-radius: var(--borderRadius);
     width: 100%;
     overflow: hidden;
 }
 
 ul.personalizationSubpage label.value{
-    color: #5603AD;
-    border: 3px solid #5603AD;
+    color: var(--purple);
+    border: 3px solid var(--purple);
     cursor: pointer;
     text-align: center;
 }

@@ -4,14 +4,14 @@ ul.friendsSubpage{
     left: 50%;
     transform: translateX(-50%);
     width: 750px;
-    border: 2px solid gray;
-    border-radius: 7px;
+    border: 2px solid var(--gray);
+    border-radius: var(--borderRadius);
     margin: 50px 0px;
 }
 
 ul.friendsSubpage li{
     position: relative;
-    border-top: 2px solid gray;
+    border-top: 2px solid var(--gray);
     padding: 10px;
     height: 80px;
 }
@@ -26,7 +26,7 @@ ul.friendsSubpage li#header h2{
     font-size: 35px;
     text-align: center;
     position: relative;
-    color: #5603AD;
+    color: var(--purple);
 }
 
 ul.friendsSubpage li img{
@@ -35,7 +35,7 @@ ul.friendsSubpage li img{
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid black;
+    border: 2px solid var(--black);
     box-shadow: none;
     position: relative;
     left: 0;

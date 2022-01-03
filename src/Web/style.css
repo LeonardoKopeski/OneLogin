@@ -14,8 +14,17 @@
     transition: all .5s;
 }
 
+:root{
+    --purple: #5603AD;
+    --white: #F0FFF1;
+    --black: #050505;
+    --gray: #9C9C9C;
+    --red: #FA1133;
+    --borderRadius: 7px;
+}
+
 body{
-    background-color: #f0fff1;
+    background-color: var(--white);
     height: 100vh;
 }
 
@@ -25,11 +34,67 @@ button, input[type=button], a{
 
 svg.spinner{
     animation: spin infinite 1s linear;
-    color: #5603AD;
+    color: var(--purple);
     width: 30vh;
     height: 30vh;
     position: absolute;
     top: 50%;
     left: 50%;
     margin: -15vh 0 0 -15vh;
+}
+
+header{
+    position: absolute;
+    height: 50px;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+header div#logo h1{
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 40px;
+    color: var(--purple);
+    margin: 5px 10px 0px 10px;
+}
+
+header div#logo h2{
+    font-family: monospace;
+    font-size: 15px;
+    color: var(--black);
+    margin: 0px 10px;
+}
+
+header div#right div#notification{
+    background-color: var(--gray);
+    padding: 5px 10px;
+    border-radius: var(--borderRadius);
+    margin: 20px;
+    cursor: pointer;
+}
+
+header div#right div#notification span{
+    display: inline-block;
+    font-family: monospace;
+    font-size: 30px;
+    line-height: 35px;
+    color: var(--white);
+    margin-right: 10px;
+}
+
+header div#right div#notification.alert{
+    border: 3px solid var(--red);
+}
+
+header div#right div#notification.alert svg{
+    color: var(--red);
+}
+
+header div#right div#notification svg{
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    color: var(--white);
 }

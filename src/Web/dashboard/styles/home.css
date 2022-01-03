@@ -15,8 +15,8 @@ nav.homeSubpage div.block{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     width: 100%;
-    border: 2px solid gray;
-    border-radius: 7px;
+    border: 2px solid var(--gray);
+    border-radius: var(--borderRadius);
     padding: 20px;
     padding-bottom: 30px;
 }
@@ -43,7 +43,7 @@ nav.homeSubpage div.block a{
     position: absolute;
     bottom: 15px;
     font-weight: bolder;
-    color: #5603AD;
+    color: var(--purple);
     font-size: 20px;
 }
 

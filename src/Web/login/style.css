@@ -1,17 +1,17 @@
 form.loginScreen{
-    border: 2px solid #5603AD;
+    border: 2px solid var(--purple);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     padding: 20px;
-    border-radius: 7px;
+    border-radius: var(--borderRadius);
     width: 450px;
 }
 form.loginScreen h1{
     font-family: monospace;
-    color: #5603AD;
+    color: var(--purple);
     font-size: 40px;
 }
 form.loginScreen h2{
@@ -22,23 +22,30 @@ form.loginScreen h2{
 form.loginScreen input{
     font-size: 25px;
     padding: 5px;
-    border-radius: 7px;
+    border-radius: var(--borderRadius);
     text-align: center;
     width: 100%;
     margin-top: 20px;
-    border: 3px solid #5603AD;
+    border: 3px solid var(--purple);
 }
 form.loginScreen input#btnBack{
     width: 49%;
-    color: #5603AD;
-    border-radius: 7px 0px 0px 7px;
+    color: var(--purple);
+    border-radius: var(--borderRadius) 0px 0px var(--borderRadius);
     margin-top: 50px;
 }
 form.loginScreen input#btnSubmit{
     width: 49%;
-    background-color:#5603AD;
+    background-color: var(--purple);
     color: white;
-    border-radius: 0px 7px 7px 0px;
+    border-radius: 0px var(--borderRadius) var(--borderRadius) 0px;
+}
+form.loginScreen a{
+    color: var(--red);
+    font-family: monospace;
+    font-weight: bolder;
+    text-decoration: none;
+    font-size: 20px
 }
 @media screen and (max-width:450px) {
     form.loginScreen{
@@ -49,12 +56,12 @@ form.loginScreen input#btnSubmit{
 @media screen and (max-width:370px) {
     form.loginScreen input#btnBack{
         width: 100%;
-        border-radius: 7px;
+        border-radius: var(--borderRadius);
         margin-top: 80px;
     }
     form.loginScreen input#btnSubmit{
         width: 100%;
-        border-radius: 7px;
+        border-radius: var(--borderRadius);
         margin-top: 20px;
     }
 }

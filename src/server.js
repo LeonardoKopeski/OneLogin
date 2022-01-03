@@ -76,7 +76,9 @@ io.on('connection', (socket) => {
             imageUrl: null,
             bio: "No bio yet",
             confirmed: false,
-            verified: false
+            verified: false,
+            friendList: [],
+            notifications: []
         }).token
 
         var random = Math.floor(Math.random() * 100000000000)
@@ -100,7 +102,8 @@ io.on('connection', (socket) => {
                 imageUrl: accounts[0].imageUrl,
                 bio: accounts[0].bio,
                 email: accounts[0].email,
-                verified: accounts[0].verified
+                verified: accounts[0].verified,
+                notifications: accounts[0].notifications
             }
             socket.emit("userInfoResponse", {status: "Ok" ,...response})
         }else{
@@ -144,6 +147,19 @@ io.on('connection', (socket) => {
             accounts[0].update({imageUrl: obj.imageUrl})
         }
     })
+    socket.on("viewedNotifications", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string"})
+        if(!validRequest){ return }
+
+        var accounts = await account.getAccount({token: obj.token})
+        if(accounts[0]){
+            var notifications = accounts[0].notifications
+            notifications = notifications.map(elm => {
+                return {...elm, viewed: true}
+            })
+            accounts[0].update({notifications: notifications})
+        }
+    })
 })
 
 // Passa a ouvir o servidor
@@ -151,10 +167,6 @@ var serverAddr
 const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
     console.log("Starting...")
-    require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-        serverAddr = add
-        console.log("Listening on "+serverAddr+":"+PORT)
-    })
 
     setSchema({
         username: String,
@@ -164,9 +176,15 @@ http.listen(PORT, async()=>{
         imageUrl: String,
         bio: String,
         confirmed: Boolean,
-        verified: Boolean
+        verified: Boolean,
+        friendList: Array,
+        notifications: Array
     })
 
     await startDB("DB_URI")
     mailer.createTransporter()
+    
+    require('dns').lookup(require('os').hostname(), (err, serverAddr, fam) => {
+        console.log("Listening on "+serverAddr+":"+PORT)
+    })
 })
