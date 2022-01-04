@@ -24,13 +24,12 @@ class App extends React.Component{
         socket.on("userInfoResponse", (res)=>{
             if(res.status == "Ok"){
                 res.notifications.forEach(elm=>{
-                    if(!elm.viewed){
-                        this.notificationCount++
-                    }
+                    if(!elm.viewed){ this.notificationCount++ }
                 })
+                console.log(res)
                 this.setState({userInfo: {...res}})
             }else{
-                open("/logout")
+                open("/logout", "_SELF")
             }
             socket.off("userInfoResponse")
         })
@@ -74,8 +73,8 @@ class App extends React.Component{
                 <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
                 <h1 id="username">{
                     this.state.subpage == "home" ?
-                    "Olá "+userInfo.username+"!" :
-                    "@"+userInfo.username
+                    `${translation["DefaultGreeting"]} ${userInfo.username}!` :
+                    `@${userInfo.username}`
                 }</h1>
 
                 <SubPage

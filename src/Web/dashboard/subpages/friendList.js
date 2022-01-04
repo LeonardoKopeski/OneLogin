@@ -3,6 +3,19 @@ const verifiedBadge = <svg id="verifiedBadge" height="30" viewBox="0 0 512 512" 
 subpages["friendList"] = class extends React.Component{
     constructor(props){
         super(props)
+
+        this.makeList = this.makeList.bind(this)
+    }
+    makeList(){
+        return this.props.userInfo.friendList.map((elm, index) => {
+            return(
+            <li key={index}>
+                <img src={elm.imageUrl || alternativePhoto} alt="image"/>
+                <h1>@{elm.username}{elm.verified?verifiedBadge:null}</h1>
+                <h2>{elm.bio}</h2>
+            </li>
+            )
+        })
     }
     render(){
         return (
@@ -12,29 +25,10 @@ subpages["friendList"] = class extends React.Component{
                     {this.props.returnSVG}
                 </div>
                 <h2>
-                    Lista de amigos:
+                    {translation["Friends"]}
                 </h2>
             </li>
-            <li>
-                <img src={alternativePhoto} alt="image"/>
-                <h1>@minimnonad{verifiedBadge}</h1>
-            </li>
-            <li>
-                <img src={alternativePhoto} alt="image"/>
-                <h1>@veliteiusmod</h1>
-            </li>
-            <li>
-                <img src={alternativePhoto} alt="image"/>
-                <h1>@animexdo{verifiedBadge}</h1>
-            </li>
-            <li>
-                <img src={alternativePhoto} alt="image"/>
-                <h1>@ametpariatur{verifiedBadge}</h1>
-            </li>
-            <li>
-                <img src={alternativePhoto} alt="image"/>
-                <h1>@laborelaborum</h1>
-            </li>
+            {this.makeList()}
         </ul>
         )
     }

@@ -57,11 +57,11 @@ subpages["personalization"] = class extends React.Component{
                     {this.props.returnSVG}
                 </div>
                 <h2>
-                    Personalização
+                    {translation["Personalization"]}
                 </h2>
             </li>
             <li>
-                <span className="key">Username</span>
+                <span className="key">{translation["Username"]}</span>
                 <input
                     className="value"
                     onBlur={this.saveChanges}
@@ -71,7 +71,7 @@ subpages["personalization"] = class extends React.Component{
                 />
             </li>
             <li>
-                <span className="key">Bio</span>
+                <span className="key">{translation["Bio"]}</span>
                 <input
                     className="value"
                     onBlur={this.saveChanges}
@@ -81,11 +81,11 @@ subpages["personalization"] = class extends React.Component{
                 />
             </li>
             <li>
-                <span className="key">Email</span>
+                <span className="key">{translation["Email"]}</span>
                 <span className="value">{this.props.userInfo.email}</span>
             </li>
             <li>
-                <span className="key">Image</span>
+                <span className="key">{translation["ProfilePicture"]}</span>
                 <input
                     style={{display: "none"}}
                     onChange={this.saveChanges}
@@ -93,11 +93,11 @@ subpages["personalization"] = class extends React.Component{
                     type="file"
                 />
                 <label htmlFor="imageUrl" className="value">
-                    Change Profile Image
+                    {translation["ChangeProfilePicture"]}
                 </label>
             </li>
             <li>
-                <span className="key">Highlight color</span>
+                <span className="key">{translation["HighlightColor"]}</span>
                 <input
                     style={{display: "none"}}
                     onChange={this.saveChanges}
@@ -105,7 +105,7 @@ subpages["personalization"] = class extends React.Component{
                     type="color"
                 />
                 <label htmlFor="highlightColor" className="value">
-                    Change Highlight Color
+                    {translation["ChangeHighlightColor"]}
                 </label>
             </li>
         </ul>

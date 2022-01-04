@@ -52,7 +52,7 @@ subpages["notifications"] = class extends React.Component{
                     this.props.changeScreen("home")
                 }}>{this.props.returnSVG}</div>
                 <h2>
-                    Notificações:
+                    {translation["Notifications"]}
                 </h2>
             </li>
             {this.makeList()}

@@ -21,14 +21,6 @@ async function startDB(dotEnvName){
     model = conn.model("account", schema)
 }
 
-function generateToken(len){
-    var token = ""
-    for(var c = 0; c < len/10;c++){
-        token += Math.random().toString(36).substring(2)
-    }
-    return token.substring(0, len)
-}
-
 // Classes
 class account{
     constructor(data){
@@ -41,10 +33,15 @@ class account{
         model.updateOne(this, update, ()=>{})
     }
 
-    static createAccount(obj){
-        var token = generateToken(32)
+    static generateToken(len){
+        var token = ""
+        for(var c = 0; c < len/10;c++){
+            token += Math.random().toString(36).substring(2)
+        }
+        return token.substring(0, len)
+    }
 
-        obj.token = token
+    static createAccount(obj){
         var res = new model(obj)
         res.save()
 
