@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
             imageUrl: null,
             bio: "No bio yet",
             verified: false,
-            friendList: [],
+            following: [],
             notifications: [],
             token: token
         }}
@@ -89,26 +89,28 @@ io.on('connection', (socket) => {
         socket.emit("registerResponse", {status: "Created"})            
     })
     socket.on('getUserInfo', async(obj) => {
-        var validRequest = validateRequest(obj, {})
+        var validRequest = validateRequest(obj, {token: "string"})
         if(!validRequest){
             socket.emit("userInfoResponse", {status: "InvalidRequest"})
             return
         }
 
-        var accounts = await account.getAccount({...obj})
+        var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
             var friendList = []
             
-            for(var friend in accounts[0].friendList){
-                var username = accounts[0].friendList[friend]
+            for(var following in accounts[0].following){
+                var username = accounts[0].following[following]
                 var friendAccount = await account.getAccount({username})
                 
-                friendList.push({
-                    username: friendAccount[0].username,
-                    imageUrl: friendAccount[0].imageUrl,
-                    verified: friendAccount[0].verified,
-                    bio: friendAccount[0].bio,
-                })
+                if(friendAccount[0].following.indexOf(accounts[0].username) != -1){
+                    friendList.push({
+                        username: friendAccount[0].username,
+                        imageUrl: friendAccount[0].imageUrl,
+                        verified: friendAccount[0].verified,
+                        bio: friendAccount[0].bio,
+                    })
+                }
             }
 
             var response = {
@@ -125,6 +127,27 @@ io.on('connection', (socket) => {
             socket.emit("userInfoResponse", {status: "InvalidQuery"})
         }
     })
+    socket.on("getBasicInfo", async(obj) => {
+        var validRequest = validateRequest(obj, {username: "string"})
+        if(!validRequest){
+            socket.emit("basicInfoResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        var accounts = await account.getAccount({...obj})
+        if(accounts[0]){
+            var response = {
+                username: accounts[0].username,
+                imageUrl: accounts[0].imageUrl,
+                bio: accounts[0].bio,
+                verified: accounts[0].verified
+            }
+            socket.emit("basicInfoResponse", {status: "Ok" ,...response})
+        }else{
+            socket.emit("basicInfoResponse", {status: "InvalidQuery"})
+        }
+    })
+    
     socket.on("updateBio", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string", bio: "string"})
         if(!validRequest){ return }
@@ -175,6 +198,37 @@ io.on('connection', (socket) => {
             accounts[0].update({notifications: notifications})
         }
     })
+    socket.on("follow", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", follow: "string"})
+        if(!validRequest){ return }
+
+        var requester = await account.getAccount({token: obj.token})
+        var followAccount = await account.getAccount({username: obj.follow})
+
+        if(requester[0].token == followAccount[0].token){return}
+
+        requester[0].update({
+            following: [
+                ...requester[0].following,
+                followAccount[0].username
+            ]
+        })
+
+        if(followAccount[0].following.indexOf(requester[0].username) == -1){
+            followAccount[0].update({
+                notifications: [
+                    ...followAccount[0].notifications,
+                    {
+                        by: requester[0].username,
+                        type: "friendRequest",
+                        date: new Date,
+                        viewed: false,
+                        text: null
+                    }
+                ]
+            })
+        }
+    })
 })
 
 // Passa a ouvir o servidor
@@ -191,7 +245,7 @@ http.listen(PORT, async()=>{
         imageUrl: String,
         bio: String,
         verified: Boolean,
-        friendList: Array,
+        following: Array,
         notifications: Array,
     })
 

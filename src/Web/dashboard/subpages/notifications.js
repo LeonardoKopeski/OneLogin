@@ -31,13 +31,25 @@ subpages["notifications"] = class extends React.Component{
     makeList(){
         return this.props.userInfo.notifications.map((elm, index) => {
             var style = notificationStyles[elm.type]
+
+            var functions = {
+                "friendRequest": ()=>{
+                    alert("follow")
+                    this.props.socket.emit("follow", {token: getCookie("token"), follow: elm.by})
+                }
+            }
+
             return (
             <li key={index} className={elm.viewed? "viewed": ""}>
                 {style.image}
                 <h1>{elm.by || style.defaultTitle}</h1>
                 <h2>{elm.text || style.defaultText}</h2>
                 {style.buttonText?
-                    <div><button>{style.buttonText}</button></div>
+                    <div>
+                        <button onClick={functions[elm.type]}>
+                            {style.buttonText}
+                        </button>
+                    </div>
                 :null}
             </li>
             )

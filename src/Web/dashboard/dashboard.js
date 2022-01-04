@@ -13,10 +13,13 @@ class App extends React.Component{
     constructor(){
         super()
     
+        const urlParams = new URLSearchParams(window.location.search)
+        const subpage = urlParams.get('subpage')
+
         this.state = {
             infoRequested: false,
             userInfo: {},
-            subpage: "home"
+            subpage: subpage || "home"
         }
 
         this.notificationCount = 0
@@ -26,19 +29,30 @@ class App extends React.Component{
                 res.notifications.forEach(elm=>{
                     if(!elm.viewed){ this.notificationCount++ }
                 })
-                console.log(res)
                 this.setState({userInfo: {...res}})
             }else{
                 open("/logout", "_SELF")
             }
-            socket.off("userInfoResponse")
         })
+
+        this.openNotifications = this.openNotifications.bind(this)
+        this.changeScreen = this.changeScreen.bind(this)
     }
     componentDidMount(){
         if(this.state.infoRequested == false){
             socket.emit("getUserInfo", {token: getCookie("token")})
             this.setState({infoRequested: true})
         }
+    }
+    openNotifications(ev){
+        ev.target.classList.remove("alert")
+        this.notificationCount = 0
+
+        this.setState({subpage: "notifications"})
+    }
+    changeScreen(screen){
+        this.setState({subpage: screen})
+        socket.emit("getUserInfo", {token: getCookie("token")})
     }
     render(){
         const userInfo = this.state.userInfo
@@ -55,16 +69,7 @@ class App extends React.Component{
                         <h2>By One Network</h2>
                     </div>
                     <div id="right">
-                        <div
-                            id="notification"
-                            className={this.notificationCount == 0? "": "alert"}
-                            onClick={(ev)=>{
-                                ev.target.classList.remove("alert")
-                                this.notificationCount = 0
-
-                                this.setState({subpage: "notifications"})
-                            }}
-                        >
+                        <div id="notification" className={this.notificationCount == 0? "": "alert"} onClick={this.openNotifications}>
                             <span id="notificationCount">{this.notificationCount}</span>
                             {notificationSVG}
                         </div>
@@ -78,7 +83,7 @@ class App extends React.Component{
                 }</h1>
 
                 <SubPage
-                    changeScreen={(screen)=>this.setState({subpage: screen})}
+                    changeScreen={this.changeScreen}
                     forceUpdate={()=>this.forceUpdate()}
                     returnSVG={returnSVG}
                     userInfo={userInfo}
