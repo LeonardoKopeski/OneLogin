@@ -58,7 +58,7 @@ class App extends React.Component{
         const userInfo = this.state.userInfo
         const SubPage = subpages[this.state.subpage]
 
-        if(this.state.userInfo.username == undefined){
+        if(userInfo.username == undefined){
             return <Spinner/>
         }else{
             return(
@@ -76,7 +76,13 @@ class App extends React.Component{
                     </div>
                 </header>
                 <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
-                <h1 id="username">{
+                <h1 id="username" onClick={()=>{
+                    var res = confirm("Copy the share URL?")
+                    if(!res){return}
+                    setTimeout(()=>{
+                        navigator.clipboard.writeText(location.origin + "/account?user="+userInfo.username)
+                    },100)
+                }}>{
                     this.state.subpage == "home" ?
                     `${translation["DefaultGreeting"]} ${userInfo.username}!` :
                     `@${userInfo.username}`

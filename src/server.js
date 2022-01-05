@@ -102,8 +102,8 @@ io.on('connection', (socket) => {
             for(var following in accounts[0].following){
                 var username = accounts[0].following[following]
                 var friendAccount = await account.getAccount({username})
-                
-                if(friendAccount[0].following.indexOf(accounts[0].username) != -1){
+
+                if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
                     friendList.push({
                         username: friendAccount[0].username,
                         imageUrl: friendAccount[0].imageUrl,
@@ -135,6 +135,7 @@ io.on('connection', (socket) => {
         }
 
         var accounts = await account.getAccount({...obj})
+        var requester = await account.getAccount({token: obj.requester})
         if(accounts[0]){
             var response = {
                 username: accounts[0].username,
@@ -142,12 +143,18 @@ io.on('connection', (socket) => {
                 bio: accounts[0].bio,
                 verified: accounts[0].verified
             }
+
+            if(requester[0]){
+                response.samePerson = obj.requester == accounts[0].token
+                response.following = requester[0].following.indexOf(accounts[0].username) != -1
+            }
+
             socket.emit("basicInfoResponse", {status: "Ok" ,...response})
         }else{
             socket.emit("basicInfoResponse", {status: "InvalidQuery"})
         }
     })
-    
+
     socket.on("updateBio", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string", bio: "string"})
         if(!validRequest){ return }

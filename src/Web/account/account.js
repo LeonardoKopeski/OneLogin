@@ -1,7 +1,7 @@
 var root = document.querySelector("div#root")
 var socket = io()
 
-const returnSVG = <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-left" className="returnSVG" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M447.1 256C447.1 273.7 433.7 288 416 288H109.3l105.4 105.4c12.5 12.5 12.5 32.75 0 45.25C208.4 444.9 200.2 448 192 448s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L109.3 224H416C433.7 224 447.1 238.3 447.1 256z"></path></svg>
+const verifiedBadge = <svg id="verifiedBadge" height="30" viewBox="0 0 512 512" width="30" xmlns="http://www.w3.org/2000/svg"><path d="m512 268c0 17.9-4.3 34.5-12.9 49.7s-20.1 27.1-34.6 35.4c.4 2.7.6 6.9.6 12.6 0 27.1-9.1 50.1-27.1 69.1-18.1 19.1-39.9 28.6-65.4 28.6-11.4 0-22.3-2.1-32.6-6.3-8 16.4-19.5 29.6-34.6 39.7-15 10.2-31.5 15.2-49.4 15.2-18.3 0-34.9-4.9-49.7-14.9-14.9-9.9-26.3-23.2-34.3-40-10.3 4.2-21.1 6.3-32.6 6.3-25.5 0-47.4-9.5-65.7-28.6-18.3-19-27.4-42.1-27.4-69.1 0-3 .4-7.2 1.1-12.6-14.5-8.4-26-20.2-34.6-35.4-8.5-15.2-12.8-31.8-12.8-49.7 0-19 4.8-36.5 14.3-52.3s22.3-27.5 38.3-35.1c-4.2-11.4-6.3-22.9-6.3-34.3 0-27 9.1-50.1 27.4-69.1s40.2-28.6 65.7-28.6c11.4 0 22.3 2.1 32.6 6.3 8-16.4 19.5-29.6 34.6-39.7 15-10.1 31.5-15.2 49.4-15.2s34.4 5.1 49.4 15.1c15 10.1 26.6 23.3 34.6 39.7 10.3-4.2 21.1-6.3 32.6-6.3 25.5 0 47.3 9.5 65.4 28.6s27.1 42.1 27.1 69.1c0 12.6-1.9 24-5.7 34.3 16 7.6 28.8 19.3 38.3 35.1 9.5 15.9 14.3 33.4 14.3 52.4zm-266.9 77.1 105.7-158.3c2.7-4.2 3.5-8.8 2.6-13.7-1-4.9-3.5-8.8-7.7-11.4-4.2-2.7-8.8-3.6-13.7-2.9-5 .8-9 3.2-12 7.4l-93.1 140-42.9-42.8c-3.8-3.8-8.2-5.6-13.1-5.4-5 .2-9.3 2-13.1 5.4-3.4 3.4-5.1 7.7-5.1 12.9 0 5.1 1.7 9.4 5.1 12.9l58.9 58.9 2.9 2.3c3.4 2.3 6.9 3.4 10.3 3.4 6.7-.1 11.8-2.9 15.2-8.7z" fill="#5603AD"/></svg>
 
 class App extends React.Component{
     constructor(){
@@ -19,19 +19,30 @@ class App extends React.Component{
                 open("/notFound", "_SELF")
             }
         })
+
+        this.follow = this.follow.bind(this)
     }
     componentDidMount(){
         if(this.state.infoRequested == false){
             const urlParams = new URLSearchParams(window.location.search)
             const username = urlParams.get('user')
-            socket.emit("getBasicInfo", {username})
+            socket.emit("getBasicInfo", {username, requester: getCookie("token")})
             this.setState({infoRequested: true})
         }
+    }
+    follow(){
+        if(this.state.userInfo.samePerson || this.state.userInfo.following){
+            return
+        }
+        socket.emit("follow", {token: getCookie("token"), follow: this.state.userInfo.username})
+        var userInfo = this.state.userInfo
+        userInfo.following = true
+        this.setState({userInfo})
     }
     render(){
         const userInfo = this.state.userInfo
 
-        if(this.state.userInfo.username == undefined){
+        if(userInfo.username == undefined){
             return <Spinner/>
         }else{
             return(
@@ -42,15 +53,18 @@ class App extends React.Component{
                         <h2>By One Network</h2>
                     </div>
                 </header>
-                <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
-                <h1 id="username">{
-                    this.state.subpage == "home" ?
-                    `${translation["DefaultGreeting"]} ${userInfo.username}!` :
-                    `@${userInfo.username}`
-                }</h1>
-                <p id="bio">
-                    "{userInfo.bio}"
-                </p>
+                <div id="account">
+                    <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
+                    <h1 id="username">
+                        @{userInfo.username}{userInfo.verified? verifiedBadge: null}
+                    </h1>
+                    <p id="bio">
+                        "{userInfo.bio}"
+                    </p>
+                    <button onClick={this.follow} className={userInfo.samePerson || userInfo.following?"":"colored"}>
+                        {userInfo.samePerson?"Yourself!":userInfo.following?"Following":"Follow"}
+                    </button>
+                </div>
             </div>
             )
         }

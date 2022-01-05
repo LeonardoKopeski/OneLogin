@@ -13,11 +13,18 @@ svg.returnSVG{
     z-index: 5;
 }
 
-div.accountScreen{
-    margin-top: 50px;
+div.accountScreen div#account{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--gray);
+    padding: 40px;
+    border-radius: var(--borderRadius);
+    background-color: var(--white);
 }
 
-div.accountScreen img{
+div.accountScreen div#account img{
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -29,7 +36,9 @@ div.accountScreen img{
     transform: translateX(-50%);
 }
 
-div.accountScreen h1#username{
+div.accountScreen div#account h1#username{
+    display: flex;
+    align-items: center;
     margin-top: 20px;
     font-family: monospace;
     font-weight: bolder;
@@ -37,12 +46,34 @@ div.accountScreen h1#username{
     text-align: center;
 }
 
-div.accountScreen p#bio{
+div.accountScreen div#account p#bio{
     margin-top: 10px;
     font-family: monospace;
     font-size: 20px;
     text-align: center;
     color: var(--gray);
+}
+
+div.accountScreen div#account button{
+    border: 3px solid var(--red);
+    border-radius: var(--borderRadius);
+    background-color: var(--white);
+    color: var(--red);
+    height: 60px;
+    width: 300px;
+    text-align: center;
+    font-size: 30px;
+    font-family: monospace;
+    font-weight: bolder;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+}
+
+div.accountScreen div#account button.colored{
+    background-color: var(--red);
+    color: var(--white);
 }
 
 @media screen and (max-width: 750px) {
@@ -51,15 +82,15 @@ div.accountScreen p#bio{
         height: 8vw;
     }
 
-    div.accountScreen h1#username{
+    div#account.accountScreen div#account h1#username{
         font-size: 7vw;
     }
 
-    div.accountScreen p#bio{
+    div#account.accountScreen div#account p#bio{
         font-size: 2.8vw;
     }
 
-    div.accountScreen img{
+    div#account.accountScreen div#account img{
         width: calc(15vw + 50px);
         height: calc(15vw + 50px);
     }
