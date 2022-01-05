@@ -25,7 +25,7 @@ subpages["notifications"] = class extends React.Component{
     constructor(props){
         super(props)
 
-        this.props.socket.emit("viewedNotifications", {token: getCookie("token")})
+        this.props.socket.emit("viewNotifications", {token: getCookie("token")})
         this.makeList = this.makeList.bind(this)
     }
     makeList(){

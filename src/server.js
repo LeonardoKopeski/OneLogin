@@ -1,38 +1,48 @@
-// Bibliotecas
+/**
+ * By: Leonardo Kopeski
+ * Copyright: One Network - 2022
+ * License: Creative Commons Zero Universal
+ * Github: https://www.github.com/LeonardoKopeski/OneLogin
+ */
+
+// Import the libraries
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 const cookieParser = require('cookie-parser')
 
-// Variables
+// Create placeholder variables
 var unverifiedEmails = {}
 
-// Functions
+// Import functions
 const {startDB, account, setSchema} = require("./Libraries/Accounts.js")
 const mailer = require("./Libraries/Mailer.js")
 const validateRequest = require("./Functions/ValidateRequest.js")
 const regEx = require("./Functions/regEx.js")
 
-// Routes
+// Make the /Web public
 app.use(express.static('Web'))
 app.use(cookieParser())
+
+// Route the /verifyEmail
 app.get("/verifyEmail", async(req, res)=>{
-    var randomId = req.query.randomId
-    if(Object.keys(unverifiedEmails).indexOf(randomId) == -1){
-        res.send("Invalid Email, sorry!")
+    var randomId = req.query.randomId//Get id on querystring
+    if(Object.keys(unverifiedEmails).indexOf(randomId) == -1){//if this querystring doesn't exists
+        res.send("Invalid Email, sorry!")//return error
     }else{
-        io.to(unverifiedEmails[randomId].socketId).emit("verifiedEmail", unverifiedEmails[randomId].token)
+        io.to(unverifiedEmails[randomId].socketId).emit("verifiedEmail", unverifiedEmails[randomId].token)//send a message
 
-        account.createAccount(unverifiedEmails[randomId].data)
+        account.createAccount(unverifiedEmails[randomId].data)//create acount
 
-        delete unverifiedEmails[randomId]
-        res.send("Ok :)")
+        delete unverifiedEmails[randomId]//remove from the list
+        res.send("Ok :)")//and return
     }
 })
+// any url else, return /notFound
 app.get("*",(req, res)=> res.redirect("/notFound") )
 
-// Main
+// Socket.io
 io.on('connection', (socket) => {
     socket.on('login', async(obj) => {
         var validRequest = validateRequest(obj, {email: regEx.email, password: "string"})
@@ -83,6 +93,7 @@ io.on('connection', (socket) => {
             token: token
         }}
 
+        //send email to verify
         var email = mailer.generateEmail("VerifyEmail", `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`)
         mailer.sendEmail(obj.email, email)
 
@@ -99,10 +110,11 @@ io.on('connection', (socket) => {
         if(accounts[0]){
             var friendList = []
             
-            for(var following in accounts[0].following){
+            for(var following in accounts[0].following){// for each follow account
                 var username = accounts[0].following[following]
-                var friendAccount = await account.getAccount({username})
+                var friendAccount = await account.getAccount({username})// search for
 
+                // and save on the list
                 if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
                     friendList.push({
                         username: friendAccount[0].username,
@@ -134,8 +146,10 @@ io.on('connection', (socket) => {
             return
         }
 
+        //Get both accounts
         var accounts = await account.getAccount({...obj})
         var requester = await account.getAccount({token: obj.requester})
+
         if(accounts[0]){
             var response = {
                 username: accounts[0].username,
@@ -192,12 +206,13 @@ io.on('connection', (socket) => {
             accounts[0].update({imageUrl: obj.imageUrl})
         }
     })
-    socket.on("viewedNotifications", async(obj) => {
+    socket.on("viewNotifications", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string"})
         if(!validRequest){ return }
 
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
+            // set all notification as viewed
             var notifications = accounts[0].notifications
             notifications = notifications.map(elm => {
                 return {...elm, viewed: true}
@@ -209,11 +224,14 @@ io.on('connection', (socket) => {
         var validRequest = validateRequest(obj, {token: "string", follow: "string"})
         if(!validRequest){ return }
 
+        // get both accounts
         var requester = await account.getAccount({token: obj.token})
         var followAccount = await account.getAccount({username: obj.follow})
 
+        // if is the same person, don't do anything
         if(requester[0].token == followAccount[0].token){return}
 
+        // else, add follow
         requester[0].update({
             following: [
                 ...requester[0].following,
@@ -221,6 +239,7 @@ io.on('connection', (socket) => {
             ]
         })
 
+        // and notify
         if(followAccount[0].following.indexOf(requester[0].username) == -1){
             followAccount[0].update({
                 notifications: [
@@ -238,7 +257,7 @@ io.on('connection', (socket) => {
     })
 })
 
-// Passa a ouvir o servidor
+// Listen
 var serverAddr
 const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
@@ -256,9 +275,10 @@ http.listen(PORT, async()=>{
         notifications: Array,
     })
 
+    // start the account database and email system
     await startDB("DB_URI")
     mailer.createTransporter()
-    
+
     require('dns').lookup(require('os').hostname(), (err, addr, fam) => {
         serverAddr = addr
         console.log("Listening on "+serverAddr+":"+PORT)
