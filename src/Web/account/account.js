@@ -34,6 +34,9 @@ class App extends React.Component{
         if(this.state.userInfo.samePerson || this.state.userInfo.following){
             return
         }
+        if(getCookie("token") == ""){
+            open("/login", "_SELF")
+        }
         socket.emit("follow", {token: getCookie("token"), follow: this.state.userInfo.username})
         var userInfo = this.state.userInfo
         userInfo.following = true

@@ -1,0 +1,21 @@
+div#logo{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+div#logo h1{
+    font-family: monospace;
+    font-weight: bolder;
+    font-size: 160px;
+    color: var(--purple);
+    margin: 5px 10px 0px 10px;
+}
+
+div#logo h2{
+    font-family: monospace;
+    font-size: 40px;
+    color: var(--black);
+    margin: 0px 10px;
+    text-align: end;
+}

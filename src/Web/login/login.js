@@ -51,37 +51,45 @@ class App extends React.Component{
     }
     render(){
         return(
-            <form className="loginScreen">
-                <h1>OneLogin</h1>
-                <h2>{translation["LoginSubtitle"]}</h2>
-                <input
-                    style={{borderColor: this.state.emailTriggered ? "#FA1133" : "#5603AD"}}
-                    type="email"
-                    id="email"
-                    placeholder={translation["Email"]}
-                    onKeyUp={this.setValue}
-                /><br/>
-                <input
-                    style={{borderColor: this.state.passwordTriggered ? "#FA1133" : "#5603AD"}}
-                    type="password"
-                    id="password"
-                    placeholder={translation["Password"]}
-                    onKeyUp={this.setValue}
-                /><br/>
-                <a>{translation["ForgotenPassword"]}</a><br/>
-                <input
-                    type="button"
-                    id="btnBack"
-                    onClick={()=>open("/register", "_SELF")}
-                    value={translation["Register"]}
-                />
-                <input
-                    type="button"
-                    id="btnSubmit"
-                    value={translation["Login"]}
-                    onClick={this.submit}
-                />
-            </form>
+            <div className="loginScreen">
+                <header>
+                    <div id="logo">
+                        <h1>OneLogin</h1>
+                        <h2>By One Network</h2>
+                    </div>
+                </header>
+                <form>
+                    <h1>OneLogin</h1>
+                    <h2>{translation["LoginSubtitle"]}</h2>
+                    <input
+                        style={{borderColor: this.state.emailTriggered ? "#FA1133" : "#5603AD"}}
+                        type="email"
+                        id="email"
+                        placeholder={translation["Email"]}
+                        onKeyUp={this.setValue}
+                    /><br/>
+                    <input
+                        style={{borderColor: this.state.passwordTriggered ? "#FA1133" : "#5603AD"}}
+                        type="password"
+                        id="password"
+                        placeholder={translation["Password"]}
+                        onKeyUp={this.setValue}
+                    /><br/>
+                    <a>{translation["ForgotenPassword"]}</a><br/>
+                    <input
+                        type="button"
+                        id="btnBack"
+                        onClick={()=>open("/register", "_SELF")}
+                        value={translation["Register"]}
+                    />
+                    <input
+                        type="button"
+                        id="btnSubmit"
+                        value={translation["Login"]}
+                        onClick={this.submit}
+                    />
+                </form>
+            </div>
         )
     }
 }

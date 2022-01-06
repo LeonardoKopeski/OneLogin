@@ -24,6 +24,9 @@ const regEx = require("./Functions/regEx.js")
 // Make the /Web public
 app.use(express.static('Web'))
 app.use(cookieParser())
+app.get("/", (req, res)=>{
+    res.sendFile(__dirname + "/Web/home/index.html")
+})
 
 // Route the /verifyEmail
 app.get("/verifyEmail", async(req, res)=>{
@@ -40,7 +43,7 @@ app.get("/verifyEmail", async(req, res)=>{
     }
 })
 // any url else, return /notFound
-app.get("*",(req, res)=> res.redirect("/notFound") )
+app.get("*",(req, res)=> res.redirect("/notFound"))
 
 // Socket.io
 io.on('connection', (socket) => {
