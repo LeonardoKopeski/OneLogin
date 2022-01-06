@@ -17,7 +17,7 @@ class App extends React.Component{
                 setCookie("token", res.token, 365)
                 open("/dashboard", "_SELF")
             }else{
-                alert(res.status)
+                alert(translation[res.status + "Account"] || translation["UnknownError"])
             }
         })
 

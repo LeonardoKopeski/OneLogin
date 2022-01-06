@@ -10,12 +10,15 @@ subpages["personalization"] = class extends React.Component{
             }else{
                 input.value = this.props.userInfo.username
                 input.focus()
-                alert("Username already used!")
+                alert(translation["UsedUsername"])
             }
         })
 
         this.saveChanges = this.saveChanges.bind(this)
         this.fileToBase64 = this.fileToBase64.bind(this)
+    }
+    componentDidMount(){
+        document.querySelector("#highlightColor").addEventListener("change", this.saveChanges, false)
     }
     async saveChanges(ev){
         var value = ev.target.type == "file" ? await this.fileToBase64(ev.target.files[0]) : ev.target.value
@@ -33,7 +36,6 @@ subpages["personalization"] = class extends React.Component{
                 socket.emit("updateUsername", {token: getCookie("token"), username: value})
                 return
             case "highlightColor":
-                alert("wip")
                 break
             default:
                 return
@@ -100,7 +102,6 @@ subpages["personalization"] = class extends React.Component{
                 <span className="key">{translation["HighlightColor"]}</span>
                 <input
                     style={{display: "none"}}
-                    onChange={this.saveChanges}
                     id="highlightColor"
                     type="color"
                 />

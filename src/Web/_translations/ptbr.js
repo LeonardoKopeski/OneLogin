@@ -23,5 +23,21 @@ var translation = {
     "Notifications": "Notificações",
     "ChangeProfilePicture": "Mudar foto de perfil",
     "HighlightColor": "Cor de destaque",
-    "ChangeHighlightColor": "Mudar cor de destaque"
+    "ChangeHighlightColor": "Mudar cor de destaque",
+    "CopyShareURL": "Copiar o link da sua conta?",
+    "Somebody": "Alguém",
+    "NewFriendRequest": "Novo pedido de amizade!",
+    "Accept": "Aceitar",
+    "NewMessage": "Nova mensagem!",
+    "Open": "Abrir",
+    "VerificationGroup": "Serviço de verificação",
+    "VerifiedAccount": "Sua conta foi verificada!",
+    "Yourself": "Você mesmo!",
+    "Follow": "Seguir",
+    "Following": "Seguindo",
+    "UnknownError": "Erro desconhecido, tente mais tarde!",
+    "NotFoundAccount": "Conta não encontrada!",
+    "UsedUsername": "Este nome de usuário já existe!",
+    "UsedEmail": "Este email já foi usado, que tal fazer login?",
+    "VerifyYourEmail": "Ok, mas agora verifique seu email!"
 }

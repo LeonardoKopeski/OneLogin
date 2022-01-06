@@ -65,7 +65,7 @@ class App extends React.Component{
                         "{userInfo.bio}"
                     </p>
                     <button onClick={this.follow} className={userInfo.samePerson || userInfo.following?"":"colored"}>
-                        {userInfo.samePerson?"Yourself!":userInfo.following?"Following":"Follow"}
+                        {userInfo.samePerson?translation["Yourself"]:userInfo.following?translation["Following"]:translation["Follow"]}
                     </button>
                 </div>
             </div>

@@ -77,11 +77,11 @@ class App extends React.Component{
                 </header>
                 <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
                 <h1 id="username" onClick={()=>{
-                    var res = confirm("Copy the share URL?")
+                    var res = confirm(translation["CopyShareURL"])
                     if(!res){return}
                     setTimeout(()=>{
                         navigator.clipboard.writeText(location.origin + "/account?user="+userInfo.username)
-                    },100)
+                    },1000)
                 }}>{
                     this.state.subpage == "home" ?
                     `${translation["DefaultGreeting"]} ${userInfo.username}!` :

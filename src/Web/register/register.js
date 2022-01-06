@@ -22,18 +22,18 @@ class App extends React.Component{
         socket.on("registerResponse", (res)=>{
             switch (res.status){
                 case "Created":
-                    alert("Now, verify your email!")
+                    alert(translation["VerifyYourEmail"])
                     return
                 case "EmailAlreadyUsed":
                     this.setState({emailTriggered: true})
-                    alert("Email Already Used!")
+                    alert(translation["usedEmail"])
                     return
                 case "UsernameAlreadyUsed":
                     this.setState({usernameTriggered: true})
-                    alert("Username Already Used!")
+                    alert(translation["UsedUsername"])
                     return
                 default:
-                    alert(res.status)
+                    alert(translation["UnknownError"])
             }
         })
 
