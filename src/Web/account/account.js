@@ -57,7 +57,7 @@ class App extends React.Component{
                     </div>
                 </header>
                 <div id="account">
-                    <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
+                    <img src={userInfo.imageUrl || alternativePhoto} style={{borderColor: userInfo.highlightColor}} alt="image"/>
                     <h1 id="username">
                         @{userInfo.username}{userInfo.verified? verifiedBadge: null}
                     </h1>

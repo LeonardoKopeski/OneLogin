@@ -75,7 +75,7 @@ class App extends React.Component{
                         </div>
                     </div>
                 </header>
-                <img src={userInfo.imageUrl || alternativePhoto} alt="image"/>
+                <img style={{borderColor: userInfo.highlightColor}} src={userInfo.imageUrl || alternativePhoto} alt="image"/>
                 <h1 id="username" onClick={()=>{
                     var res = confirm(translation["CopyShareURL"])
                     if(!res){return}

@@ -36,6 +36,7 @@ subpages["personalization"] = class extends React.Component{
                 socket.emit("updateUsername", {token: getCookie("token"), username: value})
                 return
             case "highlightColor":
+                socket.emit("updateHighlightColor", {token: getCookie("token"), color: value})
                 break
             default:
                 return
@@ -104,6 +105,7 @@ subpages["personalization"] = class extends React.Component{
                     style={{display: "none"}}
                     id="highlightColor"
                     type="color"
+                    defaultValue={this.props.userInfo.highlightColor}
                 />
                 <label htmlFor="highlightColor" className="value">
                     {translation["ChangeHighlightColor"]}

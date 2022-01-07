@@ -93,7 +93,8 @@ io.on('connection', (socket) => {
             verified: false,
             following: [],
             notifications: [],
-            token: token
+            token: token,
+            highlightColor: "#5603AD"
         }}
 
         //send email to verify
@@ -135,7 +136,8 @@ io.on('connection', (socket) => {
                 email: accounts[0].email,
                 verified: accounts[0].verified,
                 notifications: accounts[0].notifications,
-                friendList: friendList
+                friendList: friendList,
+                highlightColor: accounts[0].highlightColor
             }
             socket.emit("userInfoResponse", {status: "Ok" ,...response})
         }else{
@@ -158,7 +160,8 @@ io.on('connection', (socket) => {
                 username: accounts[0].username,
                 imageUrl: accounts[0].imageUrl,
                 bio: accounts[0].bio,
-                verified: accounts[0].verified
+                verified: accounts[0].verified,
+                highlightColor: accounts[0].highlightColor
             }
 
             if(requester[0]){
@@ -207,6 +210,15 @@ io.on('connection', (socket) => {
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
             accounts[0].update({imageUrl: obj.imageUrl})
+        }
+    })
+    socket.on("updateHighlightColor", async(obj)=>{
+        var validRequest = validateRequest(obj, {token: "string", color: regEx.color})
+        if(!validRequest){ return }
+
+        var accounts = await account.getAccount({token: obj.token})
+        if(accounts[0]){
+            accounts[0].update({highlightColor: obj.color})
         }
     })
     socket.on("viewNotifications", async(obj) => {
@@ -276,6 +288,7 @@ http.listen(PORT, async()=>{
         verified: Boolean,
         following: Array,
         notifications: Array,
+        highlightColor: String
     })
 
     // start the account database and email system
