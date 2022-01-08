@@ -25,6 +25,7 @@ div#logo h1{
 div#logo h1::after{
     content: "|";
     animation: 1s blink step-end infinite;
+    font-weight: normal;
 }
 
 div#logo h2{

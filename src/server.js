@@ -268,20 +268,24 @@ io.on('connection', (socket) => {
         })
 
         // and notify
-        if(followAccount[0].following.indexOf(requester[0].username) == -1){
-            followAccount[0].update({
-                notifications: [
-                    ...followAccount[0].notifications,
-                    {
-                        by: requester[0].username,
-                        type: "friendRequest",
-                        date: new Date,
-                        viewed: false,
-                        text: null
-                    }
-                ]
-            })
+        if(followAccount[0].following.indexOf(requester[0].username) != -1){
+            return
         }
+        
+        var newNotification = {
+            by: requester[0].username,
+            type: "friendRequest",
+            date: new Date,
+            viewed: false,
+            text: null
+        }
+
+        followAccount[0].update({
+            notifications: [
+                ...followAccount[0].notifications,
+                newNotification
+            ]
+        })
     })
 })
 
