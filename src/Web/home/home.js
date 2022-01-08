@@ -6,11 +6,20 @@ class App extends React.Component{
         super()
 
         this.state = {
-            logoAnimationKey: -5
+            logoAnimationKey: -15,
+            reduce: false,
+            showContent: false
         }
 
         var interval = setInterval(() => {
             if(this.state.logoAnimationKey == textToType.length){
+                setTimeout(() => {
+                    this.setState({reduce: true})
+                }, 2000)
+                setTimeout(() => {
+                    this.setState({showContent: true})
+                }, 3000)
+
                 clearInterval(interval)
                 return
             }
@@ -26,13 +35,21 @@ class App extends React.Component{
 
         return(
         <div className="homeScreen">
-            <div id="logo">
+            <div id="logo" data-reduce={this.state.reduce}>
                 <h1>
                     {textToType.substring(0, logoAnimationKey)}
                 </h1>
                 <h2 style={subtitleStyle}>
                     By Leonardo Kopeski
                 </h2>
+            </div>
+            <div id="content" style={{display: this.state.showContent? "": "none"}}>
+                <h2>O que você precisa?</h2>
+                <button onClick={()=>open("/dashboard", "_SELF")}>Acessar minha conta</button><br/>
+                <button onClick={()=>open("/register", "_SELF")}>Criar uma conta</button><br/>
+                <button onClick={()=>open("#", "_SELF")}>Criar uma API</button><br/>
+                <button onClick={()=>open("#", "_SELF")}>Editar API</button><br/>
+                <button onClick={()=>open("#", "_SELF")}>Enviar feedback</button><br/>
             </div>
         </div>
         )

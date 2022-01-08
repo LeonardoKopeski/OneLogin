@@ -5,7 +5,7 @@ class App extends React.Component{
         return (
         <div className="notFoundScreen">
             <header>
-                <div id="logo">
+                <div id="logo" onClick={()=>open("/","_SELF")}>
                     <h1>OneLogin</h1>
                     <h2>By Leonardo Kopeski</h2>
                 </div>

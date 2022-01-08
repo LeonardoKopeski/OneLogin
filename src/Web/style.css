@@ -55,6 +55,10 @@ header{
     justify-content: space-between;
 }
 
+header div#logo{
+    cursor: pointer;
+}
+
 header div#logo h1{
     font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
