@@ -39,7 +39,7 @@ div.accountScreen div#account h1#username{
     display: flex;
     align-items: center;
     margin-top: 20px;
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
     font-size: 43px;
     text-align: center;
@@ -47,7 +47,7 @@ div.accountScreen div#account h1#username{
 
 div.accountScreen div#account p#bio{
     margin-top: 10px;
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 18px;
     text-align: center;
     color: var(--gray);
@@ -62,7 +62,7 @@ div.accountScreen div#account button{
     width: 300px;
     text-align: center;
     font-size: 30px;
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
     position: relative;
     left: 50%;

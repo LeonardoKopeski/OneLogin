@@ -36,7 +36,7 @@ ul.personalizationSubpage li#header h2{
 }
 
 ul.personalizationSubpage .key{
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
     font-size: 29px;
     color: var(--purple);
@@ -48,7 +48,7 @@ ul.personalizationSubpage .key::after{
 
 ul.personalizationSubpage .value{    
     margin: 10px 0px;
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 29px;
     background-color: transparent;
     border: 1.5px solid var(--gray);

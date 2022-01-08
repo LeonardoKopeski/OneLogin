@@ -35,6 +35,7 @@ var translation = {
     "Yourself": "Você mesmo!",
     "Follow": "Seguir",
     "Following": "Seguindo",
+    "Follower": "Seu seguidor",
     "UnknownError": "Erro desconhecido, tente mais tarde!",
     "NotFoundAccount": "Conta não encontrada!",
     "UsedUsername": "Este nome de usuário já existe!",

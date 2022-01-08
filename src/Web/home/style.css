@@ -1,19 +1,34 @@
+@keyframes blink{
+    from, to{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+}
+
 div#logo{
     position: absolute;
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
 }
+
 div#logo h1{
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
     font-size: 160px;
     color: var(--purple);
     margin: 5px 10px 0px 10px;
 }
 
+div#logo h1::after{
+    content: "|";
+    animation: 1s blink infinite;
+}
+
 div#logo h2{
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 40px;
     color: var(--black);
     margin: 0px 10px;

@@ -20,6 +20,8 @@ const {startDB, account, setSchema} = require("./Libraries/Accounts.js")
 const mailer = require("./Libraries/Mailer.js")
 const validateRequest = require("./Functions/ValidateRequest.js")
 const regEx = require("./Functions/regEx.js")
+const { response } = require('express')
+const res = require('express/lib/response')
 
 // Make the /Web public
 app.use(express.static('Web'))
@@ -161,12 +163,23 @@ io.on('connection', (socket) => {
                 imageUrl: accounts[0].imageUrl,
                 bio: accounts[0].bio,
                 verified: accounts[0].verified,
-                highlightColor: accounts[0].highlightColor
+                highlightColor: accounts[0].highlightColor,
+                friendStatus: 0
             }
 
             if(requester[0]){
-                response.samePerson = obj.requester == accounts[0].token
-                response.following = requester[0].following.indexOf(accounts[0].username) != -1
+                var following = requester[0].following.indexOf(accounts[0].username) != -1
+                var follower = accounts[0].following.indexOf(requester[0].username) != -1
+                if(following && !follower){
+                    response.friendStatus = 1
+                }else if(!following && follower){
+                    response.friendStatus = 2
+                }else{
+                    response.friendStatus = 3
+                }
+                if(requester[0].token == accounts[0].token){
+                    response.friendStatus = 4
+                }
             }
 
             socket.emit("basicInfoResponse", {status: "Ok" ,...response})

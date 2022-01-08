@@ -55,13 +55,13 @@ ul.friendsSubpage li img{
 
 ul.friendsSubpage li h1{
     grid-area: name;
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 28px;
 }
 
 ul.friendsSubpage li h2{
     grid-area: text;
-    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 18px;
     font-weight: normal;
     white-space: nowrap;
