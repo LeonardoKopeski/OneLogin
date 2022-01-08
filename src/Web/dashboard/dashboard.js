@@ -66,7 +66,7 @@ class App extends React.Component{
                 <header>
                     <div id="logo">
                         <h1>OneLogin</h1>
-                        <h2>By One Network</h2>
+                        <h2>By Leonardo Kopeski</h2>
                     </div>
                     <div id="right">
                         <div id="notification" className={this.notificationCount == 0? "": "alert"} onClick={this.openNotifications}>
@@ -79,9 +79,7 @@ class App extends React.Component{
                 <h1 id="username" onClick={()=>{
                     var res = confirm(translation["CopyShareURL"])
                     if(!res){return}
-                    setTimeout(()=>{
-                        navigator.clipboard.writeText(location.origin + "/account?user="+userInfo.username)
-                    },1000)
+                    copy(location.origin + "/account?user="+userInfo.username)
                 }}>{
                     this.state.subpage == "home" ?
                     `${translation["DefaultGreeting"]} ${userInfo.username}!` :

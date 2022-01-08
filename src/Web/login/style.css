@@ -10,12 +10,12 @@ div.loginScreen form{
     width: 450px;
 }
 div.loginScreen form h1{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     color: var(--purple);
     font-size: 40px;
 }
 div.loginScreen form h2{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 25px;
     margin-bottom: 30px;
 }
@@ -42,7 +42,7 @@ div.loginScreen form input#btnSubmit{
 }
 div.loginScreen form a{
     color: var(--red);
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-weight: bolder;
     text-decoration: none;
     font-size: 20px

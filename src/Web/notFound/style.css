@@ -1,6 +1,6 @@
 div.notFoundScreen div#title h1{
     color: var(--purple);
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 150px;
     text-align: center;
     margin-top: 100px;
@@ -8,7 +8,7 @@ div.notFoundScreen div#title h1{
 
 div.notFoundScreen div#title h2{
     color: var(--black);
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 40px;
     text-align: center;
     margin-top: 100px;

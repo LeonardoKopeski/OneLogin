@@ -5,7 +5,7 @@ div#logo{
     transform: translateX(-50%);
 }
 div#logo h1{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-weight: bolder;
     font-size: 160px;
     color: var(--purple);
@@ -13,7 +13,7 @@ div#logo h1{
 }
 
 div#logo h2{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 40px;
     color: var(--black);
     margin: 0px 10px;

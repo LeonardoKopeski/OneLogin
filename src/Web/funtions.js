@@ -5,6 +5,16 @@ const regEx = {
     username: /^(.[a-z0-9_-]*)$/
 }
 
+function copy(text){
+    // DevNote: ExecCommand is deprecated, but works on unsecure sites...
+    var content = document.createElement('textarea')
+    document.body.appendChild(content)
+    content.value = text
+    content.select()
+    document.execCommand('copy')
+    document.body.removeChild(content)
+}
+
 async function sha256(ascii){
     function rightRotate(value, amount){
         return (value>>>amount) | (value<<(32 - amount))

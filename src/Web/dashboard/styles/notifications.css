@@ -28,7 +28,7 @@ ul.notificationsSubpage li#header{
 }
 
 ul.notificationsSubpage li#header h2{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 35px;
     text-align: center;
     position: relative;
@@ -44,14 +44,13 @@ ul.notificationsSubpage li .img{
 
 ul.notificationsSubpage li h1{
     grid-area: name;
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 35px;
-    transform: translateY(-5px);
 }
 
 ul.notificationsSubpage li h2{
     grid-area: text;
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 20px;
     white-space: nowrap;
     overflow: hidden;
@@ -76,7 +75,7 @@ ul.notificationsSubpage li div button{
     width: 100%;
     text-align: center;
     font-size: 30px;
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-weight: bolder;
 }
 

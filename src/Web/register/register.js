@@ -76,7 +76,7 @@ class App extends React.Component{
                 <header>
                     <div id="logo">
                         <h1>OneLogin</h1>
-                        <h2>By One Network</h2>
+                        <h2>By Leonardo Kopeski</h2>
                     </div>
                 </header>
                 <form>

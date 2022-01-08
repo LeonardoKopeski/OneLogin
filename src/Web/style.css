@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap');
+
 @keyframes spin{
     0%{
         transform: rotate(0deg);
@@ -12,6 +14,7 @@
     padding: 0;
     box-sizing: border-box;
     transition: all .5s;
+    overflow-x: hidden;
 }
 
 :root{
@@ -53,7 +56,7 @@ header{
 }
 
 header div#logo h1{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-weight: bolder;
     font-size: 40px;
     color: var(--purple);
@@ -61,7 +64,7 @@ header div#logo h1{
 }
 
 header div#logo h2{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-size: 15px;
     color: var(--black);
     margin: 0px 10px;
@@ -69,19 +72,20 @@ header div#logo h2{
 
 header div#right div#notification{
     background-color: var(--gray);
-    padding: 5px 10px;
+    padding: 10px;
     border-radius: var(--borderRadius);
     margin: 20px;
+    display: flex;
     cursor: pointer;
 }
 
 header div#right div#notification span{
-    display: inline-block;
-    font-family: monospace;
-    font-size: 30px;
-    line-height: 35px;
+    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-size: 23px;
+    line-height: 23px;
     color: var(--white);
     margin-right: 10px;
+    overflow-y: hidden;
 }
 
 header div#right div#notification.alert{
@@ -93,7 +97,6 @@ header div#right div#notification.alert svg{
 }
 
 header div#right div#notification svg{
-    display: inline-block;
     width: 23px;
     height: 23px;
     color: var(--white);

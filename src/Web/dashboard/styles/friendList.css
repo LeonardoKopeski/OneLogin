@@ -13,7 +13,7 @@ ul.friendsSubpage li{
     position: relative;
     border-top: 2px solid var(--gray);
     padding: 10px;
-    height: 80px;
+    height: 85px;
     display: grid;
     grid-template-rows: 35px 25px;
     grid-template-columns: 60px auto;
@@ -23,16 +23,19 @@ ul.friendsSubpage li{
 
 ul.friendsSubpage li#header{
     display: block;
-    line-height: 60px;
     border-top: none;
 }
 
 ul.friendsSubpage li#header h2{
-    font-family: monospace;
+    display: flex;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 35px;
     text-align: center;
     position: relative;
     color: var(--purple);
+    align-items:center;
+    justify-content:center;
+    font-weight: bold;
 }
 
 ul.friendsSubpage li img{
@@ -52,15 +55,14 @@ ul.friendsSubpage li img{
 
 ul.friendsSubpage li h1{
     grid-area: name;
-    font-family: monospace;
-    font-size: 35px;
-    transform: translateY(-5px);
+    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-size: 28px;
 }
 
 ul.friendsSubpage li h2{
     grid-area: text;
-    font-family: monospace;
-    font-size: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-size: 18px;
     font-weight: normal;
     white-space: nowrap;
     overflow: hidden;
@@ -79,37 +81,32 @@ ul.friendsSubpage li h1 svg#verifiedBadge{
     ul.friendsSubpage{
         width: 100%;
     }
-    ul.friendsSubpage h2{
-        font-size: 5vw;
-        margin: 5px 0px;
-    }
+}
+@media screen and (max-width: 500px) {
     ul.friendsSubpage li{
-        height: 10vw;
-        padding: 1vw;
-        grid-template-rows: 4.5vw 3.5vw;
+        height: 16vw;
+        padding: 1.5vw;
+        grid-template-rows: 6.75vw 5.25vw;
         grid-template-columns: 8vw auto;
+        grid-column-gap: 20px;
     }
     ul.friendsSubpage li#header h2{
-        font-size: 8vw;
-        line-height: 8vw;
+        font-size: 9vw;
     }
 
     ul.friendsSubpage li img{
-        width: 8vw;
-        height: 8vw;
-        margin-right: 10px;
+        width: 12vw;
+        height: 12vw;
     }
     ul.friendsSubpage li h1{
         height: 100%;
         line-height: 100%;
-        font-size: 4.5vw;
-        transform: translateY(-5px);
+        font-size: 6vw;
     }
     ul.friendsSubpage li h2{
         height: 100%;
         line-height: 100%;
-        font-size: 3.5vw;
-        transform: translateY(-5px);
+        font-size: 5vw;
     }
     ul.friendsSubpage li h1 svg#verifiedBadge{
         position: relative;

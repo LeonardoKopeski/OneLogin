@@ -292,7 +292,7 @@ http.listen(PORT, async()=>{
     })
 
     // start the account database and email system
-    await startDB("DB_URI")
+    await startDB("DB_ACCOUNTS")
     mailer.createTransporter()
 
     require('dns').lookup(require('os').hostname(), (err, addr, fam) => {

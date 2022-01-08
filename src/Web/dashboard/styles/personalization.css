@@ -19,22 +19,26 @@ ul.personalizationSubpage li{
 }
 
 ul.personalizationSubpage li#header{
-    line-height: 60px;
+    display: block;
     border-top: none;
 }
 
 ul.personalizationSubpage li#header h2{
-    font-family: monospace;
+    display: flex;
+    font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 35px;
-    text-align: right;
+    text-align: center;
     position: relative;
     color: var(--purple);
+    align-items:center;
+    justify-content:center;
+    font-weight: bold;
 }
 
 ul.personalizationSubpage .key{
-    font-family: monospace;
+    font-family: 'Be Vietnam Pro', sans-serif;;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 29px;
     color: var(--purple);
 }
 
@@ -44,8 +48,8 @@ ul.personalizationSubpage .key::after{
 
 ul.personalizationSubpage .value{    
     margin: 10px 0px;
-    font-family: monospace;
-    font-size: 30px;
+    font-family: 'Be Vietnam Pro', sans-serif;;
+    font-size: 29px;
     background-color: transparent;
     border: 1.5px solid var(--gray);
     border-radius: var(--borderRadius);
@@ -65,12 +69,9 @@ ul.personalizationSubpage label.value{
     ul.personalizationSubpage{
         width: 100%;
     }
-    ul.personalizationSubpage h2{
-        font-size: 6vw;
-        margin: 5px 0px;
-    }
+}
+@media screen and (max-width: 500px) {
     ul.personalizationSubpage li#header h2{
-        font-size: 6vw;
-        line-height: 6vw;
+        font-size: 9vw;
     }
 }
