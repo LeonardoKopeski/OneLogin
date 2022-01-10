@@ -1,0 +1,79 @@
+div.fastLoginScreen div#account{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--gray);
+    padding: 40px;
+    border-radius: var(--borderRadius);
+    background-color: var(--white);
+}
+
+div.fastLoginScreen div#account img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--purple);
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+div.fastLoginScreen div#account h1{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+div.fastLoginScreen div#account h1#username{
+    margin-top: 20px;
+    margin-bottom: 0px;
+    font-size: 43px;
+}
+
+div.fastLoginScreen div#account button{
+    border: 3px solid var(--red);
+    border-radius: var(--borderRadius);
+    height: 60px;
+    width: 300px;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+    background-color: var(--red);
+    color: var(--white);
+}
+
+@media screen and (max-width: 460px) {
+    svg.returnSVG{
+        width: 8vw;
+        height: 8vw;
+    }
+
+    div.fastLoginScreen div#account{
+        width: 100%;
+        border: none;
+        padding: 2vw;
+    }
+
+    div.fastLoginScreen div#account h1#username{
+        font-size: 10vw;
+        width: 100%;
+    }
+
+    div.fastLoginScreen div#account img{
+        width: calc(15vw + 100px);
+        height: calc(15vw + 100px);
+    }
+
+    div.fastLoginScreen div#account button{
+        width: 100%;
+    }
+}

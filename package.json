@@ -15,7 +15,7 @@
   "devDependencies": {},
   "scripts": {
     "start": "cd src&&node server.js",
-    "test": "echo test"
+    "test": "cd src&&node client.test.js"
   },
   "repository": {
     "type": "git",

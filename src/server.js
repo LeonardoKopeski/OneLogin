@@ -14,17 +14,23 @@ const cookieParser = require('cookie-parser')
 
 // Create placeholder variables
 var unverifiedEmails = {}
+var uncompletedLogins = {}
 
 // Import functions
-const {startDB, account, setSchema} = require("./Libraries/Accounts.js")
+const accounts = require("./Libraries/Accounts.js")
+const APIs = require("./Libraries/APIs.js")
 const mailer = require("./Libraries/Mailer.js")
 const validateRequest = require("./Functions/ValidateRequest.js")
 const regEx = require("./Functions/regEx.js")
-const { response } = require('express')
-const res = require('express/lib/response')
+
+// Simplify
+const account = accounts.account
+const API = APIs.api
 
 // Make the /Web public
 app.use(express.static('Web'))
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/Web/home/index.html")
@@ -46,6 +52,56 @@ app.get("/verifyEmail", async(req, res)=>{
 })
 // any url else, return /notFound
 app.get("*",(req, res)=> res.redirect("/notFound"))
+
+// API
+app.post("/api/generateLoginToken", async(req, res)=>{
+    var validRequest = validateRequest(req.body, {apiToken: "string", returnTo: regEx.url})
+    if(!validRequest){
+        res.send("BadRequest").status(400)
+        return
+    }
+
+    var apis = await API.getApi({token: req.body.apiToken})
+    if(apis[0]){
+        var token = API.generateToken(50)
+        uncompletedLogins[token] = {
+            apiToken: req.body.apiToken,
+            returnTo: req.body.returnTo
+        }
+        res.send(token).status(200)
+    }else{
+        res.send("InvalidApiToken").status(401)
+    }
+})
+
+app.post("/api/getUserInfo", async(req, res)=>{
+    var validRequest = validateRequest(req.body, {apiToken: "string", userToken: "string"})
+    if(!validRequest){
+        res.send("BadRequest").status(400)
+        return
+    }
+
+    var apis = await API.getApi({token: req.body.apiToken})
+    if(apis[0]){
+        var users = apis[0].users
+        var user = users[req.body.userToken]
+        if(user){
+            var accounts = await account.getAccount({token: user})
+            var response = {
+                username: accounts[0].username,
+                imageUrl: accounts[0].imageUrl,
+                bio: accounts[0].bio,
+                verified: accounts[0].verified,
+                highlightColor: accounts[0].highlightColor
+            }
+            res.send(response).status(200)
+        }else{
+            res.send("UserNotFound").status(404)
+        }
+    }else{
+        res.send("InvalidApiToken").status(401)
+    }
+})
 
 // Socket.io
 io.on('connection', (socket) => {
@@ -96,7 +152,8 @@ io.on('connection', (socket) => {
             following: [],
             notifications: [],
             token: token,
-            highlightColor: "#5603AD"
+            highlightColor: "#5603AD",
+            services: {}
         }}
 
         //send email to verify
@@ -271,7 +328,7 @@ io.on('connection', (socket) => {
         if(followAccount[0].following.indexOf(requester[0].username) != -1){
             return
         }
-        
+
         var newNotification = {
             by: requester[0].username,
             type: "friendRequest",
@@ -287,6 +344,48 @@ io.on('connection', (socket) => {
             ]
         })
     })
+    socket.on("fastLogin", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", loginToken: "string"})
+        if(!validRequest){
+            socket.emit("loginResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        var loginInfo = uncompletedLogins[obj.loginToken]
+        if(!loginInfo){
+            socket.emit("loginResponse", {status: "InvalidLoginToken"})
+            return
+        }
+        
+        var accounts = await account.getAccount({token: obj.token})
+        if(!accounts[0]){
+            socket.emit("loginResponse", {status: "invalidAccount"})
+            return
+        }
+
+        var subtoken
+
+        if(accounts[0].services[loginInfo.apiToken] == undefined){
+            var update = {...accounts[0].services}
+            subtoken = account.generateToken(30)
+            update[loginInfo.apiToken] = {subtoken}
+
+            accounts[0].update({services: update})
+
+            var apis = await API.getApi({token: loginInfo.apiToken})
+
+            var update2 = {...apis[0].users}
+            update2[subtoken] = accounts[0].token
+
+            apis[0].update({users: update2})
+        }else{
+            subtoken = accounts[0].services[loginInfo.apiToken].subToken
+        }
+
+        socket.emit("loginResponse", {status: "ok", token: subtoken, returnTo: uncompletedLogins[obj.loginToken].returnTo})
+
+        delete uncompletedLogins[obj.loginToken]
+    })
 })
 
 // Listen
@@ -295,7 +394,7 @@ const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
     console.log("Starting...")
 
-    setSchema({
+    accounts.setSchema({
         username: String,
         email: String,
         password: String,
@@ -305,11 +404,23 @@ http.listen(PORT, async()=>{
         verified: Boolean,
         following: Array,
         notifications: Array,
-        highlightColor: String
+        highlightColor: String,
+        services: Object
+    })
+    
+    APIs.setSchema({
+        token: String,
+        name: String,
+        createdIn: Date,
+        permissions: Array,
+        verified: Boolean,
+        locked: Boolean,
+        users: Object
     })
 
-    // start the account database and email system
-    await startDB("DB_ACCOUNTS")
+    // start the databases and email system
+    await accounts.startDB("DB_ACCOUNTS")
+    await APIs.startDB("DB_API")
     mailer.createTransporter()
 
     require('dns').lookup(require('os').hostname(), (err, addr, fam) => {
