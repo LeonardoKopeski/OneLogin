@@ -22,6 +22,7 @@ const APIs = require("./Libraries/APIs.js")
 const mailer = require("./Libraries/Mailer.js")
 const validateRequest = require("./Functions/ValidateRequest.js")
 const regEx = require("./Functions/regEx.js")
+const validateAPI = require("./Functions/ValidateApi.js")
 
 // Simplify
 const account = accounts.account
@@ -61,13 +62,18 @@ app.post("/api/generateLoginToken", async(req, res)=>{
         return
     }
 
-    var apis = await API.getApi({token: req.body.apiToken})
-    if(apis[0]){
+    var validApi = await validateAPI(req.body.apiToken, "LOGIN", API.getApi)
+    if(validApi){
         var token = API.generateToken(50)
         uncompletedLogins[token] = {
             apiToken: req.body.apiToken,
             returnTo: req.body.returnTo
         }
+
+        setTimeout(() => {
+            delete uncompletedLogins[token]
+        }, 600000)
+
         res.send(token).status(200)
     }else{
         res.send("InvalidApiToken").status(401)
@@ -81,25 +87,26 @@ app.post("/api/getUserInfo", async(req, res)=>{
         return
     }
 
-    var apis = await API.getApi({token: req.body.apiToken})
-    if(apis[0]){
-        var users = apis[0].users
-        var user = users[req.body.userToken]
-        if(user){
-            var accounts = await account.getAccount({token: user})
-            var response = {
-                username: accounts[0].username,
-                imageUrl: accounts[0].imageUrl,
-                bio: accounts[0].bio,
-                verified: accounts[0].verified,
-                highlightColor: accounts[0].highlightColor
-            }
-            res.send(response).status(200)
-        }else{
-            res.send("UserNotFound").status(404)
-        }
-    }else{
+    var validApi = await validateAPI(req.body.apiToken, "LOGIN", API.getApi)
+    if(!validApi){
         res.send("InvalidApiToken").status(401)
+        return
+    }
+
+    var users = validApi.users
+    var user = users[req.body.userToken]
+    if(user){
+        var accounts = await account.getAccount({token: user})
+        var response = {
+            username: accounts[0].username,
+            imageUrl: accounts[0].imageUrl,
+            bio: accounts[0].bio,
+            verified: accounts[0].verified,
+            highlightColor: accounts[0].highlightColor
+        }
+        res.send(response).status(200)
+    }else{
+        res.send("UserNotFound").status(404)
     }
 })
 

@@ -15,7 +15,8 @@ class App extends React.Component{
         socket.on("loginResponse", (res)=>{
             if(res.status == "Ok"){
                 setCookie("token", res.token, 365)
-                open("/dashboard", "_SELF")
+                const returnTo = new URLSearchParams(window.location.search).get('returnTo')
+                open(returnTo || "/dashboard", "_SELF")
             }else{
                 alert(translation[res.status + "Account"] || translation["UnknownError"])
             }

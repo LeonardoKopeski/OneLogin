@@ -9,24 +9,21 @@ class App extends React.Component{
             infoRequested: false,
             userInfo: {},
         }
-
-        const urlParams = new URLSearchParams(window.location.search)
-        const loginToken = urlParams.get('loginToken')
-        if(loginToken.length < 50||!loginToken){
-            open("/login", "_SELF")
-        }
         
         socket.on("userInfoResponse", (res)=>{
             if(res.status == "Ok"){
                 this.setState({userInfo: {...res}})
             }else{
-                open("/login?loginToken="+loginToken, "_SELF")
+                open("/login?returnTo="+location.href, "_SELF")
             }
         })
 
         socket.on("loginResponse", (res)=>{
             if(res.status == "ok"){
                 postData(res.returnTo, {token: res.token})
+            }else{
+                alert("Invalid LoginRequest, returning...")
+                open(document.referrer || "/", "_SELF")
             }
         })
 
