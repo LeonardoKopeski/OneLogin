@@ -1,0 +1,70 @@
+div.loginScreen form{
+    border: 2px solid var(--purple);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 20px;
+    border-radius: var(--borderRadius);
+    width: 450px;
+}
+div.loginScreen form h1{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: var(--purple);
+    font-size: 40px;
+}
+div.loginScreen form h2{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 25px;
+    margin-bottom: 30px;
+}
+div.loginScreen form input{
+    font-size: 25px;
+    padding: 5px;
+    border-radius: var(--borderRadius);
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    border: 3px solid var(--purple);
+}
+div.loginScreen form input#btnBack{
+    width: 49%;
+    color: var(--purple);
+    border-radius: var(--borderRadius) 0px 0px var(--borderRadius);
+    margin-top: 50px;
+}
+div.loginScreen form input#btnSubmit{
+    width: 49%;
+    background-color: var(--purple);
+    color: white;
+    border-radius: 0px var(--borderRadius) var(--borderRadius) 0px;
+}
+div.loginScreen form a{
+    color: var(--red);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    text-decoration: none;
+    font-size: 20px
+}
+@media screen and (max-width:450px) {
+    div.loginScreen form{
+        width: 100%;
+        border: none;
+    }
+    div#logo{
+        display: none;
+    }
+}
+@media screen and (max-width:370px) {
+    div.loginScreen form input#btnBack{
+        width: 100%;
+        border-radius: var(--borderRadius);
+        margin-top: 80px;
+    }
+    div.loginScreen form input#btnSubmit{
+        width: 100%;
+        border-radius: var(--borderRadius);
+        margin-top: 20px;
+    }
+}

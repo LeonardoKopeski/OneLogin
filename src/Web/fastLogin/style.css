@@ -7,6 +7,7 @@ div.fastLoginScreen div#account{
     padding: 40px;
     border-radius: var(--borderRadius);
     background-color: var(--white);
+    width: 420px;
 }
 
 div.fastLoginScreen div#account img{
@@ -30,7 +31,7 @@ div.fastLoginScreen div#account h1{
 
 div.fastLoginScreen div#account h1#username{
     margin-top: 20px;
-    margin-bottom: 0px;
+    margin-bottom: 60px;
     font-size: 43px;
 }
 
@@ -46,9 +47,43 @@ div.fastLoginScreen div#account button{
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 50px;
+    color: var(--red);
+    background-color: var(--white);
+}
+
+div.fastLoginScreen div#account button.colored{
     background-color: var(--red);
     color: var(--white);
+}
+
+div.fastLoginScreen div#account p#disclaimer{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: normal;
+    font-size: 15px;
+    text-align: center;
+    color: var(--gray);
+    margin: 20px 0px;
+}
+
+div.fastLoginScreen div#account p#disclaimer a{
+    color: var(--purple);
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+div.fastLoginScreen div#account ul#permissionList li::before{
+    content: "~ ";
+}
+
+div.fastLoginScreen div#account ul#permissionList li{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+div.fastLoginScreen div#account ul#permissionList li.warn{
+    font-weight: bolder;
+    color: var(--red)
 }
 
 @media screen and (max-width: 460px) {

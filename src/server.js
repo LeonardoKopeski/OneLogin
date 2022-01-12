@@ -63,21 +63,22 @@ app.post("/api/generateLoginToken", async(req, res)=>{
     }
 
     var validApi = await validateAPI(req.body.apiToken, "LOGIN", API.getApi)
-    if(validApi){
-        var token = API.generateToken(50)
-        uncompletedLogins[token] = {
-            apiToken: req.body.apiToken,
-            returnTo: req.body.returnTo
-        }
-
-        setTimeout(() => {
-            delete uncompletedLogins[token]
-        }, 600000)
-
-        res.send(token).status(200)
-    }else{
-        res.send("InvalidApiToken").status(401)
+    if(validApi.code != 200){
+        res.send(validApi.status).status(validApi.code)
+        return
     }
+
+    var token = API.generateToken(50)
+    uncompletedLogins[token] = {
+        apiToken: req.body.apiToken,
+        returnTo: req.body.returnTo
+    }
+
+    setTimeout(() => {
+        delete uncompletedLogins[token]
+    }, 600000)
+
+    res.send(token).status(200)
 })
 
 app.post("/api/getUserInfo", async(req, res)=>{
@@ -88,26 +89,46 @@ app.post("/api/getUserInfo", async(req, res)=>{
     }
 
     var validApi = await validateAPI(req.body.apiToken, "LOGIN", API.getApi)
-    if(!validApi){
-        res.send("InvalidApiToken").status(401)
+    if(validApi.code != 200){
+        res.send(validApi.status).status(validApi.code)
         return
     }
 
-    var users = validApi.users
+    var users = validApi.data.users
     var user = users[req.body.userToken]
-    if(user){
-        var accounts = await account.getAccount({token: user})
-        var response = {
-            username: accounts[0].username,
-            imageUrl: accounts[0].imageUrl,
-            bio: accounts[0].bio,
-            verified: accounts[0].verified,
-            highlightColor: accounts[0].highlightColor
-        }
-        res.send(response).status(200)
-    }else{
+    if(!user){
         res.send("UserNotFound").status(404)
+        return
     }
+
+    var accounts = await account.getAccount({token: user})
+    var response = {
+        username: accounts[0].username,
+        imageUrl: accounts[0].imageUrl,
+        verified: accounts[0].verified,
+        highlightColor: accounts[0].highlightColor
+    }
+
+    if(validApi.data.permissions.indexOf("GETFRIENDLIST") != -1){
+        response.friendList = []
+        for(var following in accounts[0].following){// for each follow account
+            var username = accounts[0].following[following]
+            var friendAccount = await account.getAccount({username})// search for
+
+            // and save on the list
+            if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
+                response.friendList.push({
+                    username: friendAccount[0].username,
+                    imageUrl: friendAccount[0].imageUrl,
+                    verified: friendAccount[0].verified,
+                    bio: friendAccount[0].bio,
+                    highlightColor: friendAccount[0].highlightColor
+                })
+            }
+        }
+    }
+
+    res.send(response).status(200)
 })
 
 // Socket.io
@@ -351,6 +372,39 @@ io.on('connection', (socket) => {
             ]
         })
     })
+    socket.on("getApiInfo", async(obj) => {
+        var validRequest = validateRequest(obj, {loginToken: "string"})
+        if(!validRequest){
+            socket.emit("apiInfoResponse", {status: "InvalidRequest"})
+            return
+        }
+    
+        var loginInfo = uncompletedLogins[obj.loginToken]
+        if(!loginInfo){
+            socket.emit("apiInfoResponse", {status: "InvalidLoginToken"})
+            return
+        }
+        var apis = await API.getApi({token: loginInfo.apiToken})
+
+        const onLoginPermissions = {
+            "LOGIN": "GetBasicData",
+            "GETFRIENDLIST": "GetFriendList"   
+        }
+
+        var permissions = []
+        apis[0].permissions.forEach(elm => {
+            if(onLoginPermissions[elm] != undefined){
+                permissions.push(onLoginPermissions[elm])
+            }
+        })
+        
+        socket.emit("apiInfoResponse", {
+            status: "Ok",
+            name: apis[0].name,
+            permissions: permissions,
+            termsUrl: apis[0].termsUrl
+        })
+    })
     socket.on("fastLogin", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string", loginToken: "string"})
         if(!validRequest){
@@ -386,10 +440,10 @@ io.on('connection', (socket) => {
 
             apis[0].update({users: update2})
         }else{
-            subtoken = accounts[0].services[loginInfo.apiToken].subToken
+            subtoken = accounts[0].services[loginInfo.apiToken].subtoken
         }
 
-        socket.emit("loginResponse", {status: "ok", token: subtoken, returnTo: uncompletedLogins[obj.loginToken].returnTo})
+        socket.emit("loginResponse", {status: "Ok", token: subtoken, returnTo: uncompletedLogins[obj.loginToken].returnTo})
 
         delete uncompletedLogins[obj.loginToken]
     })
@@ -422,7 +476,8 @@ http.listen(PORT, async()=>{
         permissions: Array,
         verified: Boolean,
         locked: Boolean,
-        users: Object
+        users: Object,
+        termsUrl: String
     })
 
     // start the databases and email system

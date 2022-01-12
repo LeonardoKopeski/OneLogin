@@ -19,7 +19,7 @@ var spinners = [
 
 class Spinner extends React.Component{
     render(){
-        var r = Math.floor(Math.random() * spinners.length)
+        var r = this.props.randomId || Math.floor(Math.random() * spinners.length)
         var spinner = spinners[r]
         return spinner
     }

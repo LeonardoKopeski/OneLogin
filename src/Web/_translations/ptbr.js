@@ -30,6 +30,7 @@ var translation = {
     "Accept": "Aceitar",
     "NewMessage": "Nova mensagem!",
     "Open": "Abrir",
+    "Next": "Proximo",
     "VerificationGroup": "Serviço de verificação",
     "VerifiedAccount": "Sua conta foi verificada!",
     "Yourself": "Você mesmo!",
@@ -40,5 +41,12 @@ var translation = {
     "NotFoundAccount": "Conta não encontrada!",
     "UsedUsername": "Este nome de usuário já existe!",
     "UsedEmail": "Este email já foi usado, que tal fazer login?",
-    "VerifyYourEmail": "Ok, mas agora verifique seu email!"
+    "VerifyYourEmail": "Ok, mas agora verifique seu email!",
+    "FastLoginSlogan": "Entrar rapimente com OneLogin",
+    "Can": "poderá",
+    "FastLoginDisclaimer1": "Ao prosseguir, você aceita todos os ",
+    "TermsOfUse": "Termos de Uso",
+    "FastLoginDisclaimer2": " de ",
+    "GetBasicDataPermission": "Ver seus dados basicos (nome de usuário, foto, biografia, etc...)",
+    "GetFriendListPermission": "Ver sua lista de amigos"
 }
