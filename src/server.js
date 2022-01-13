@@ -28,9 +28,12 @@ const validateAPI = require("./Functions/ValidateApi.js")
 const account = accounts.account
 const API = APIs.api
 
+// Routes
+app.use("/", express.static(__dirname + '/Web'))
+app.use("/", express.static(__dirname + '/Web/Main'))
+app.use("/api", express.static(__dirname + '/Web/Api'))
+
 // Middlewares
-app.use(express.static('Web'))
-app.use("/api", express.static('Api'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
@@ -57,11 +60,11 @@ app.get("/verifyEmail", async(req, res)=>{
 
 // Route other pages
 app.get("/", (req, res)=>{
-    res.sendFile(__dirname + "/Web/home/index.html")
+    res.sendFile(__dirname + "/Web/Main/home/index.html")
 })
-app.get("*", (req, res)=>{
-    res.sendFile(__dirname + "/Web/notFound/index.html")
-})
+//app.get("*", (req, res)=>{
+//    res.sendFile(__dirname + "/Web/_notFound/index.html")
+//})
 
 // API
 app.post("/api/generateLoginToken", async(req, res)=>{
