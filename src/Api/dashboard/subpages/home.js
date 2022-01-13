@@ -8,7 +8,7 @@ subpages["home"] = class extends React.Component{
             <div className="block" data-size="half">
                 <h1>Estatisticas</h1>
                 <p>Aqui você pode ver algumas estatisticas da sua API</p>
-                <a onClick={()=>this.props.changeScreen("statistics")}>
+                <a onClick={()=>alert("wip")}>
                     Ver estatisticas
                 </a>
             </div>
@@ -16,7 +16,7 @@ subpages["home"] = class extends React.Component{
                 <h1>Configurações</h1>
                 <p>Aqui você configura e personaliza, os dados da sua API</p>
                 <a onClick={()=>this.props.changeScreen("configs")}>
-                    {translation["PersonalizeMyAccount"]}
+                    Abrir configurações
                 </a>
             </div>
             <div className="block" data-size="full">

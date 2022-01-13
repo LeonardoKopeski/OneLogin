@@ -47,7 +47,7 @@ class App extends React.Component{
                 <h2>O que você precisa?</h2>
                 <button onClick={()=>open("/dashboard", "_SELF")}>Acessar minha conta</button><br/>
                 <button onClick={()=>open("/register", "_SELF")}>Criar uma conta</button><br/>
-                <button onClick={()=>open("/development", "_SELF")}>Criar e editar uma API</button><br/>
+                <button onClick={()=>open("/api/dashboard", "_SELF")}>Criar e editar uma API</button><br/>
                 <button onClick={()=>open("#", "_SELF")}>Enviar feedback</button><br/>
             </div>
         </div>

@@ -524,11 +524,37 @@ io.on('connection', (socket) => {
                 name: apis[0].name,
                 email: apis[0].email,
                 verified: apis[0].verified,
+                termsUrl: apis[0].termsUrl,
                 token: apis[0].token
             }
             socket.emit("apiInfoResponse", {status: "Ok" ,...response})
         }else{
             socket.emit("apiInfoResponse", {status: "InvalidApiToken"})
+        }
+    })
+    socket.on("updateApiName", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", name: regEx.username})
+        if(!validRequest){ return }
+
+        var nameQuery = await API.getApi({name: obj.name})
+        if(nameQuery[0]){
+            socket.emit("updateApiNameResponse", {status: "NameAlreadyUsed"})
+            return
+        }
+
+        var apis = await API.getApi({token: obj.token})
+        if(apis[0]){
+            apis[0].update({name: obj.name})
+            socket.emit("updateApiNameResponse", {status: "updated"})
+        }
+    })
+    socket.on("updateTermsUrl", async(obj) => {
+        var validRequest = validateRequest(obj, {token: "string", termsUrl: regEx.url})
+        if(!validRequest){ return }
+
+        var apis = await API.getApi({token: obj.token})
+        if(apis[0]){
+            apis[0].update({termsUrl: obj.termsUrl})
         }
     })
 })

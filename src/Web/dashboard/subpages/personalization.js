@@ -34,7 +34,7 @@ subpages["personalization"] = class extends React.Component{
                 break
             case "username":
                 socket.emit("updateUsername", {token: getCookie("token"), username: value})
-                return
+                break
             case "highlightColor":
                 socket.emit("updateHighlightColor", {token: getCookie("token"), color: value})
                 break
