@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneLogin API - Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/home.css">
+    <link rel="stylesheet" href="./styles/configs.css">
+</head>
+<body>
+    <!-- Main div(react.js) -->
+    <div id="root"></div>
+
+    <!-- Libraries -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/_translations/ptbr.js"></script>
+    <script src="/funtions.js"></script>
+
+    <!-- React.js scripts -->
+    <script type="text/babel" src="/_components/spinner.js"></script>
+    <script type="text/babel" src="./dashboard.js"></script>
+
+    <!-- Sub pages -->
+    <script type="text/babel" src="./subpages/home.js"></script>
+    <script type="text/babel" src="./subpages/configs.js"></script>
+</body>
+</html>

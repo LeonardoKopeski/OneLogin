@@ -105,3 +105,10 @@ header div#right div#notification svg{
     height: 23px;
     color: var(--white);
 }
+
+span.apiTag{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: var(--red);
+    font-weight: bolder;
+    font-size: .8em;
+}

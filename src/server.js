@@ -28,31 +28,40 @@ const validateAPI = require("./Functions/ValidateApi.js")
 const account = accounts.account
 const API = APIs.api
 
-// Make the /Web public
+// Middlewares
 app.use(express.static('Web'))
+app.use("/api", express.static('Api'))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
-app.get("/", (req, res)=>{
-    res.sendFile(__dirname + "/Web/home/index.html")
-})
 
 // Route the /verifyEmail
 app.get("/verifyEmail", async(req, res)=>{
     var randomId = req.query.randomId//Get id on querystring
     if(Object.keys(unverifiedEmails).indexOf(randomId) == -1){//if this querystring doesn't exists
         res.send("Invalid Email, sorry!")//return error
-    }else{
-        io.to(unverifiedEmails[randomId].socketId).emit("verifiedEmail", unverifiedEmails[randomId].token)//send a message
-
-        account.createAccount(unverifiedEmails[randomId].data)//create acount
-
-        delete unverifiedEmails[randomId]//remove from the list
-        res.send("Ok :)")//and return
+        return
     }
+
+    io.to(unverifiedEmails[randomId].socketId).emit("verifiedEmail", unverifiedEmails[randomId].token)//send a message
+
+    if(unverifiedEmails[randomId].type == "ACCOUNT"){
+        account.createAccount(unverifiedEmails[randomId].data)//create acount
+    }else{
+        API.createApi(unverifiedEmails[randomId].data)//create API
+    }
+
+    delete unverifiedEmails[randomId]//remove from the list
+    res.send("Ok :)")//and return
 })
-// any url else, return /notFound
-app.get("*",(req, res)=> res.redirect("/notFound"))
+
+// Route other pages
+app.get("/", (req, res)=>{
+    res.sendFile(__dirname + "/Web/home/index.html")
+})
+app.get("*", (req, res)=>{
+    res.sendFile(__dirname + "/Web/notFound/index.html")
+})
 
 // API
 app.post("/api/generateLoginToken", async(req, res)=>{
@@ -68,7 +77,7 @@ app.post("/api/generateLoginToken", async(req, res)=>{
         return
     }
 
-    var token = API.generateToken(50)
+    var token = API.generateToken(16)
     uncompletedLogins[token] = {
         apiToken: req.body.apiToken,
         returnTo: req.body.returnTo
@@ -169,8 +178,8 @@ io.on('connection', (socket) => {
 
         var token = account.generateToken(32)//Real token
         
-        var random = account.generateToken(20)//Fake token
-        unverifiedEmails[random] = {token: token, socketId: socket.id, data:{
+        var random = account.generateToken(16)//Fake token
+        unverifiedEmails[random] = {token: token, socketId: socket.id, type:"ACCOUNT", data:{
             username: obj.username,
             email: obj.email,
             password: obj.password,
@@ -372,7 +381,7 @@ io.on('connection', (socket) => {
             ]
         })
     })
-    socket.on("getApiInfo", async(obj) => {
+    socket.on("getLoginApiInfo", async(obj) => {
         var validRequest = validateRequest(obj, {loginToken: "string"})
         if(!validRequest){
             socket.emit("apiInfoResponse", {status: "InvalidRequest"})
@@ -428,7 +437,7 @@ io.on('connection', (socket) => {
 
         if(accounts[0].services[loginInfo.apiToken] == undefined){
             var update = {...accounts[0].services}
-            subtoken = account.generateToken(30)
+            subtoken = account.generateToken(32)
             update[loginInfo.apiToken] = {subtoken}
 
             accounts[0].update({services: update})
@@ -446,6 +455,81 @@ io.on('connection', (socket) => {
         socket.emit("loginResponse", {status: "Ok", token: subtoken, returnTo: uncompletedLogins[obj.loginToken].returnTo})
 
         delete uncompletedLogins[obj.loginToken]
+    })
+    socket.on('loginApi', async(obj) => {
+        var validRequest = validateRequest(obj, {apiToken: "string"})
+        if(!validRequest){
+            socket.emit("loginResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        var res = await API.getApi({apiToken: obj.apiToken})
+
+        if(res[0] == undefined){
+            socket.emit("loginResponse", {status: "NotFound"})
+        }else{
+            socket.emit("loginResponse", {status: "Ok", token: res[0].token})
+        }
+    })
+    socket.on('registerApi', async(obj) => {
+        var validRequest = validateRequest(obj, {name: regEx.username, email: regEx.email})
+        if(!validRequest){
+            socket.emit("registerResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        var nameQuery = await API.getApi({name: obj.name})
+        var emailQuery = await API.getApi({email: obj.email})
+
+        if(emailQuery[0] != undefined){
+            socket.emit("registerResponse", {status: "EmailAlreadyUsed"})
+            return
+        }
+        if(nameQuery[0] != undefined){
+            socket.emit("registerResponse", {status: "NameAlreadyUsed"})
+            return
+        }
+
+        var token = account.generateToken(64)//Real token
+        
+        var random = account.generateToken(16)//Fake token
+        unverifiedEmails[random] = {token: token, socketId: socket.id, type:"API", data:{
+            token: token,
+            name: obj.name,
+            createdIn: new Date(),
+            permissions: [],
+            verified: true,
+            locked: false,
+            users: {},
+            termsUrl: "",
+            email: obj.email
+        }}
+
+        //send email to verify
+        var email = mailer.generateEmail("VerifyEmail", `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`)
+        mailer.sendEmail(obj.email, email)
+
+        socket.emit("registerResponse", {status: "Created"})            
+    })
+    socket.on('getApiInfo', async(obj) => {
+        var validRequest = validateRequest(obj, {apiToken: "string"})
+        if(!validRequest){
+            socket.emit("apiInfoResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        var apis = await API.getApi({token: obj.apiToken})
+        if(apis[0]){
+            var response = {
+                name: apis[0].name,
+                email: apis[0].email,
+                verified: apis[0].verified,
+                token: apis[0].token
+            }
+            socket.emit("apiInfoResponse", {status: "Ok" ,...response})
+        }else{
+            socket.emit("apiInfoResponse", {status: "InvalidApiToken"})
+        }
     })
 })
 
@@ -466,7 +550,7 @@ http.listen(PORT, async()=>{
         following: Array,
         notifications: Array,
         highlightColor: String,
-        services: Object
+        services: Object,
     })
     
     APIs.setSchema({
@@ -477,7 +561,8 @@ http.listen(PORT, async()=>{
         verified: Boolean,
         locked: Boolean,
         users: Object,
-        termsUrl: String
+        termsUrl: String,
+        email: String
     })
 
     // start the databases and email system

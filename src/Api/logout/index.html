@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneLogin API - Logout</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Main div(react.js) -->
+    <div id="root"></div>
+
+    <!-- Libraries -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="/funtions.js"></script>
+
+    <!-- React.js scripts -->
+    <script type="text/babel" src="/_components/spinner.js"></script>
+    <script type="text/babel">
+        var root = document.querySelector("div#root")
+        deleteCookie("apiToken")
+        open("/api/login", "_SELF")
+        ReactDOM.render(<Spinner />,root)
+    </script>
+</body>
+</html>

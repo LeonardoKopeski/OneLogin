@@ -7,7 +7,7 @@
     }
 }
 
-div#logo{
+div.homeScreen div#logo{
     position: absolute;
     top: 20%;
     left: 50%;
@@ -15,59 +15,59 @@ div#logo{
     animation: all .1s;
 }
 
-div#logo h1{
+div.homeScreen div#logo h1{
     font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
     font-size: 160px;
     color: var(--purple);
 }
 
-div#logo h1::after{
+div.homeScreen div#logo h1::after{
     content: "|";
     animation: 1s blink step-end infinite;
     font-weight: normal;
 }
 
-div#logo h2{
+div.homeScreen div#logo h2{
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 40px;
     color: var(--black);
     text-align: end;
 }
 
-div#logo[data-reduce=true]{
+div.homeScreen div#logo[data-reduce=true]{
     position: fixed;
     top: 0;
     left: 0;
     transform: translateX(-0%);
 }
 
-div#logo[data-reduce=true] h1{
+div.homeScreen div#logo[data-reduce=true] h1{
     font-size: 40px;
 }
 
-div#logo[data-reduce=true] h1::after{
+div.homeScreen div#logo[data-reduce=true] h1::after{
     content: "";
     animation: none;
 }
 
-div#logo[data-reduce=true] h2{
+div.homeScreen div#logo[data-reduce=true] h2{
     font-size: 15px;
 }
 
-div#content{
+div.homeScreen div#content{
     text-align: center;
     margin-top: 80px;
 }
 
-div#content h2{
+div.homeScreen div#content h2{
     font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
     font-size: 65px;
     margin-bottom: 50px;
 }
 
-div#content button{
+div.homeScreen div#content button{
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 30px;
     text-align: center;

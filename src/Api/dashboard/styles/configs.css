@@ -1,0 +1,77 @@
+ul.personalizationSubpage{
+    list-style: none;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 750px;
+    border: 2px solid var(--gray);
+    border-radius: var(--borderRadius);
+    margin: 50px 0px;
+}
+
+ul.personalizationSubpage li{
+    border-top: 2px solid var(--gray);
+    padding: 10px;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+ul.personalizationSubpage li#header{
+    display: block;
+    border-top: none;
+}
+
+ul.personalizationSubpage li#header h2{
+    display: flex;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 35px;
+    text-align: center;
+    position: relative;
+    color: var(--purple);
+    align-items:center;
+    justify-content:center;
+    font-weight: bold;
+}
+
+ul.personalizationSubpage .key{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 29px;
+    color: var(--purple);
+}
+
+ul.personalizationSubpage .key::after{
+    content: ":";
+}
+
+ul.personalizationSubpage .value{    
+    margin: 10px 0px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 29px;
+    background-color: transparent;
+    border: 1.5px solid var(--gray);
+    border-radius: var(--borderRadius);
+    width: 100%;
+    overflow: hidden;
+}
+
+ul.personalizationSubpage label.value{
+    color: var(--purple);
+    border: 3px solid var(--purple);
+    cursor: pointer;
+    text-align: center;
+}
+
+
+@media screen and (max-width: 750px) {
+    ul.personalizationSubpage{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 500px) {
+    ul.personalizationSubpage li#header h2{
+        font-size: 9vw;
+    }
+}

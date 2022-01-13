@@ -61,7 +61,7 @@ class App extends React.Component{
     componentDidMount(){
         if(this.state.infoRequested == false){
             socket.emit("getUserInfo", {token: getCookie("token")})
-            socket.emit("getApiInfo", {loginToken: new URLSearchParams(window.location.search).get("loginToken")})
+            socket.emit("getLoginApiInfo", {loginToken: new URLSearchParams(window.location.search).get("loginToken")})
             this.setState({infoRequested: true})
         }
     }

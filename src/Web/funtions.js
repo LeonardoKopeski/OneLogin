@@ -2,7 +2,7 @@ const alternativePhoto = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9Gc
 
 const regEx = {
     email: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    username: /^(.[a-z0-9_-]*)$/
+    username: /^(.[a-zA-Z0-9_-]*)$/
 }
 
 function postData(url, obj){
