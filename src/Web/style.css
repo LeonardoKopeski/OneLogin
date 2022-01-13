@@ -23,6 +23,7 @@
     --black: #050505;
     --gray: #9C9C9C;
     --red: #FA1133;
+    --gold: #BE4A1B;
     --borderRadius: 7px;
 }
 
@@ -109,6 +110,13 @@ header div#right div#notification svg{
 span.apiTag{
     font-family: 'Be Vietnam Pro', sans-serif;
     color: var(--red);
+    font-weight: bolder;
+    font-size: .8em;
+}
+
+span.adminTag{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: var(--gold);
     font-weight: bolder;
     font-size: .8em;
 }

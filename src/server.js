@@ -32,6 +32,7 @@ const API = APIs.api
 app.use("/", express.static(__dirname + '/Web'))
 app.use("/", express.static(__dirname + '/Web/Main'))
 app.use("/api", express.static(__dirname + '/Web/Api'))
+app.use("/admin", express.static(__dirname + '/Web/Admin'))
 
 // Middlewares
 app.use(express.json())
@@ -62,9 +63,15 @@ app.get("/verifyEmail", async(req, res)=>{
 app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/Web/Main/home/index.html")
 })
-//app.get("*", (req, res)=>{
-//    res.sendFile(__dirname + "/Web/_notFound/index.html")
-//})
+app.get("/api", (req, res)=>{
+    res.redirect("/api/login")
+})
+app.get("/admin", (req, res)=>{
+    res.sendFile(__dirname + "/Web/Admin/home/index.html")
+})
+app.get("*", (req, res)=>{
+    res.sendFile(__dirname + "/Web/_notFound/index.html")
+})
 
 // API
 app.post("/api/generateLoginToken", async(req, res)=>{
@@ -193,7 +200,8 @@ io.on('connection', (socket) => {
             notifications: [],
             token: token,
             highlightColor: "#5603AD",
-            services: {}
+            services: {},
+            accountTier: 0
         }}
 
         //send email to verify
@@ -580,6 +588,7 @@ http.listen(PORT, async()=>{
         notifications: Array,
         highlightColor: String,
         services: Object,
+        accountTier: Number,
     })
     
     APIs.setSchema({
