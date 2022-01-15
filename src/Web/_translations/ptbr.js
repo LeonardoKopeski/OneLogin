@@ -48,5 +48,9 @@ var translation = {
     "TermsOfUse": "Termos de Uso",
     "FastLoginDisclaimer2": " de ",
     "GetBasicDataPermission": "Ver seus dados basicos (nome de usuário, foto, biografia, etc...)",
-    "GetFriendListPermission": "Ver sua lista de amigos"
+    "GetFriendListPermission": "Ver sua lista de amigos",
+    "InvalidEmail": "Email invalido!",
+    "InvalidUsername": "Nome de usuario invalido (deve ter entre 5 e 20 caracteres alfanuméricos)",
+    "InvalidPassword": "Senha invalida(deve ter mais de 5 caracteres)",
+    "ReturnToHome": "Voltar para a homepage"
 }

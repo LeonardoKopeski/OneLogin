@@ -26,7 +26,7 @@ class App extends React.Component{
                     return
                 case "EmailAlreadyUsed":
                     this.setState({emailTriggered: true})
-                    alert(translation["usedEmail"])
+                    alert(translation["UsedEmail"])
                     return
                 case "UsernameAlreadyUsed":
                     this.setState({usernameTriggered: true})
@@ -48,14 +48,17 @@ class App extends React.Component{
 
         if(!regEx.email.test(email)){
             this.setState({emailTriggered: true})
+            alert(translation["InvalidEmail"])
             ok = false
         }
         if(!regEx.username.test(username)){
             this.setState({usernameTriggered: true})
+            alert(translation["InvalidUsername"])
             ok = false
         }
         if(password.length < 5){
             this.setState({passwordTriggered: true})
+            alert(translation["InvalidPassword"])
             ok = false
         }
 

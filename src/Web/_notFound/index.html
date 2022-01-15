@@ -21,6 +21,20 @@
             text-align: center;
             margin-top: 100px;
         }
+
+        div.notFoundScreen div#title button{
+            border: none;
+            height: 60px;
+            width: 100%;
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Be Vietnam Pro', sans-serif;
+            font-weight: bolder;
+            position: absolute;
+            bottom: 0;
+            background-color: var(--red);
+            color: var(--white);
+        }
     </style>
 </head>
 <body>
@@ -50,6 +64,7 @@
                     <div id="title">
                         <h1>:(</h1>
                         <h2>{translation["NotFoundSlogan"]}</h2>
+                        <button onClick={() => open("/", "_SELF")}>{translation["ReturnToHome"]}</button>
                     </div>
                 </div>
                 )

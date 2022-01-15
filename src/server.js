@@ -588,7 +588,7 @@ http.listen(PORT, async()=>{
         notifications: Array,
         highlightColor: String,
         services: Object,
-        accountTier: Number,
+        accountTier: Number
     })
     
     APIs.setSchema({

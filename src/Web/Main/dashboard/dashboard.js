@@ -58,6 +58,10 @@ class App extends React.Component{
         const userInfo = this.state.userInfo
         const SubPage = subpages[this.state.subpage]
 
+        if(!SubPage){
+            open("/notFound", "_SELF")
+        }
+
         if(userInfo.username == undefined){
             return <Spinner/>
         }else{

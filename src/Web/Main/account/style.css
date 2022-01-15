@@ -75,6 +75,29 @@ div.accountScreen div#account button.colored{
     color: var(--white);
 }
 
+div.accountScreen div#adminArea{
+    display: flex;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 120vh;
+}
+
+div.accountScreen div#adminArea button.adminButtons{
+    margin: 20px;
+    border: 3px solid var(--gold);
+    color: var(--gold);
+    margin-top: 10px;
+    border-radius: var(--borderRadius);
+    background-color: var(--white);
+    height: 60px;
+    width: 300px;
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+}
+
 @media screen and (max-width: 460px) {
     svg.returnSVG{
         width: 8vw;
