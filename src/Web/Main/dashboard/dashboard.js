@@ -58,13 +58,10 @@ class App extends React.Component{
         const userInfo = this.state.userInfo
         const SubPage = subpages[this.state.subpage]
 
-        if(!SubPage){
-            open("/notFound", "_SELF")
-        }
-
         if(userInfo.username == undefined){
             return <Spinner/>
         }else{
+            if(!SubPage){ open("/notFound", "_SELF") }
             return(
             <div className="dashboardScreen">
                 <header>
@@ -81,12 +78,12 @@ class App extends React.Component{
                 </header>
                 <img style={{borderColor: userInfo.highlightColor}} src={userInfo.imageUrl || alternativePhoto} alt="image"/>
                 <h1 id="username" onClick={()=>{
-                    var res = confirm(translation["CopyShareURL"])
+                    var res = confirm("Copiar o link da sua conta?")
                     if(!res){return}
                     copy(location.origin + "/account?user="+userInfo.username)
                 }}>{
                     this.state.subpage == "home" ?
-                    `${translation["DefaultGreeting"]} ${userInfo.username}!` :
+                    `Olá ${userInfo.username}!` :
                     `@${userInfo.username}`
                 }</h1>
 

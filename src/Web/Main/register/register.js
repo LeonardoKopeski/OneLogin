@@ -22,18 +22,18 @@ class App extends React.Component{
         socket.on("registerResponse", (res)=>{
             switch (res.status){
                 case "Created":
-                    alert(translation["VerifyYourEmail"])
+                    alert("Ok, mas agora verifique seu email!")
                     return
                 case "EmailAlreadyUsed":
                     this.setState({emailTriggered: true})
-                    alert(translation["UsedEmail"])
+                    alert("Email já usado, que tal fazer login?")
                     return
                 case "UsernameAlreadyUsed":
                     this.setState({usernameTriggered: true})
-                    alert(translation["UsedUsername"])
+                    alert("Este nome de usuário já existe")
                     return
                 default:
-                    alert(translation["UnknownError"])
+                    alert("Erro desconhecido, tente mais tarde!")
             }
         })
 
@@ -48,17 +48,17 @@ class App extends React.Component{
 
         if(!regEx.email.test(email)){
             this.setState({emailTriggered: true})
-            alert(translation["InvalidEmail"])
+            alert("Email invalido!")
             ok = false
         }
         if(!regEx.username.test(username)){
             this.setState({usernameTriggered: true})
-            alert(translation["InvalidUsername"])
+            alert("Nome de usuário invalido (deve ter entre 5 e 20 caracteres alfanuméricos)")
             ok = false
         }
         if(password.length < 5){
             this.setState({passwordTriggered: true})
-            alert(translation["InvalidPassword"])
+            alert("Senha invalida(deve ter mais de 5 caracteres)")
             ok = false
         }
 
@@ -84,38 +84,38 @@ class App extends React.Component{
                 </header>
                 <form>
                     <h1>OneLogin</h1>
-                    <h2>{translation["RegisterSubtitle"]}</h2>
+                    <h2>Crie sua conta!</h2>
                     <input
                         style={{borderColor: this.state.usernameTriggered ? "#FA1133" : "#5603AD"}}
                         type="text"
                         id="username"
-                        placeholder={translation["Username"]}
+                        placeholder="Nome de usuário"
                         onKeyUp={this.setValue}
                     /><br/>
                     <input
                         style={{borderColor: this.state.emailTriggered ? "#FA1133" : "#5603AD"}}
                         type="email"
                         id="email"
-                        placeholder={translation["Email"]}
+                        placeholder="Email"
                         onKeyUp={this.setValue}
                     /><br/>
                     <input
                         style={{borderColor: this.state.passwordTriggered ? "#FA1133" : "#5603AD"}}
                         type="password"
                         id="password"
-                        placeholder={translation["Password"]}
+                        placeholder="Senha"
                         onKeyUp={this.setValue}
                     /><br/>
                     <input
                         type="button"
                         id="btnBack"
                         onClick={()=>open("/login", "_SELF")}
-                        value={translation["Login"]}
+                        value="Login"
                     />
                     <input
                         type="button"
                         id="btnSubmit"
-                        value={translation["Register"]}
+                        value="Registrar-se"
                         onClick={this.submit}
                     />
                 </form>

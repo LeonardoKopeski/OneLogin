@@ -16,7 +16,7 @@ class App extends React.Component{
                 setCookie("apiToken", res.token)
                 open("/api/dashboard", "_SELF")
             }else{
-                alert(translation[res.status] || translation["UnknownError"])
+                alert("Não encontrada!")
             }
         })
 
@@ -62,12 +62,12 @@ class App extends React.Component{
                         type="button"
                         id="btnBack"
                         onClick={()=>open("/api/register", "_SELF")}
-                        value={translation["Register"]}
+                        value="Registar-se"
                     />
                     <input
                         type="button"
                         id="btnSubmit"
-                        value={translation["Login"]}
+                        value="Login"
                         onClick={this.submit}
                     />
                 </form>

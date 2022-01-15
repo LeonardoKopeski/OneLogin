@@ -25,7 +25,7 @@ subpages["friendList"] = class extends React.Component{
                     {this.props.returnSVG}
                 </div>
                 <h2>
-                    {translation["Friends"]}
+                    Amigos
                 </h2>
             </li>
             {this.makeList()}

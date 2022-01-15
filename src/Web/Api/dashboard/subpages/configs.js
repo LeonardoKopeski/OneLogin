@@ -10,7 +10,7 @@ subpages["configs"] = class extends React.Component{
             }else{
                 input.value = this.props.apiInfo.name
                 input.focus()
-                alert(translation["UsedUsername"])
+                alert("Este nome de usuário já existe!")
             }
         })
 
@@ -67,7 +67,7 @@ subpages["configs"] = class extends React.Component{
                 />
             </li>
             <li>
-                <span className="key">{translation["Email"]}</span>
+                <span className="key">Email</span>
                 <span className="value">{this.props.apiInfo.email}</span>
             </li>
             <li>

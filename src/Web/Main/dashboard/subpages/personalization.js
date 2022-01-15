@@ -10,7 +10,7 @@ subpages["personalization"] = class extends React.Component{
             }else{
                 input.value = this.props.userInfo.username
                 input.focus()
-                alert(translation["UsedUsername"])
+                alert("Este nome de usuário já existe!")
             }
         })
 
@@ -60,11 +60,11 @@ subpages["personalization"] = class extends React.Component{
                     {this.props.returnSVG}
                 </div>
                 <h2>
-                    {translation["Personalization"]}
+                    Personalização
                 </h2>
             </li>
             <li>
-                <span className="key">{translation["Username"]}</span>
+                <span className="key">Nome de usuário</span>
                 <input
                     className="value"
                     onBlur={this.saveChanges}
@@ -74,7 +74,7 @@ subpages["personalization"] = class extends React.Component{
                 />
             </li>
             <li>
-                <span className="key">{translation["Bio"]}</span>
+                <span className="key">Biografia</span>
                 <input
                     className="value"
                     onBlur={this.saveChanges}
@@ -84,11 +84,11 @@ subpages["personalization"] = class extends React.Component{
                 />
             </li>
             <li>
-                <span className="key">{translation["Email"]}</span>
+                <span className="key">Email</span>
                 <span className="value">{this.props.userInfo.email}</span>
             </li>
             <li>
-                <span className="key">{translation["ProfilePicture"]}</span>
+                <span className="key">Foto de perfil</span>
                 <input
                     style={{display: "none"}}
                     onChange={this.saveChanges}
@@ -96,11 +96,11 @@ subpages["personalization"] = class extends React.Component{
                     type="file"
                 />
                 <label htmlFor="imageUrl" className="value">
-                    {translation["ChangeProfilePicture"]}
+                    Trocar foto de perfil
                 </label>
             </li>
             <li>
-                <span className="key">{translation["HighlightColor"]}</span>
+                <span className="key">Cor de destaque</span>
                 <input
                     style={{display: "none"}}
                     id="highlightColor"
@@ -108,7 +108,7 @@ subpages["personalization"] = class extends React.Component{
                     defaultValue={this.props.userInfo.highlightColor}
                 />
                 <label htmlFor="highlightColor" className="value">
-                    {translation["ChangeHighlightColor"]}
+                     Mudar minha cor de destaque
                 </label>
             </li>
         </ul>

@@ -20,18 +20,18 @@ class App extends React.Component{
         socket.on("registerResponse", (res)=>{
             switch (res.status){
                 case "Created":
-                    alert(translation["VerifyYourEmail"])
+                    alert("Ok, mas agora verifique seu email!")
                     return
                 case "EmailAlreadyUsed":
                     this.setState({emailTriggered: true})
-                    alert(translation["UsedEmail"])
+                    alert("Este email já foi usado, que tal fazer login?")
                     return
                 case "NameAlreadyUsed":
                     this.setState({nameTriggered: true})
-                    alert(translation["UsedName"] || "Nome já usado")
+                    alert("Nome já usado")
                     return
                 default:
-                    alert(translation["UnknownError"])
+                    alert("Erro desconhecido, tente mais tarde!")
             }
         })
 
@@ -85,19 +85,19 @@ class App extends React.Component{
                         style={{borderColor: this.state.emailTriggered ? "#FA1133" : "#5603AD"}}
                         type="email"
                         id="email"
-                        placeholder={translation["Email"]}
+                        placeholder="Email"
                         onKeyUp={this.setValue}
                     /><br/>
                     <input
                         type="button"
                         id="btnBack"
                         onClick={()=>open("/api/login", "_SELF")}
-                        value={translation["Login"]}
+                        value="Login"
                     />
                     <input
                         type="button"
                         id="btnSubmit"
-                        value={translation["Register"]}
+                        value="Registrar-se"
                         onClick={this.submit}
                     />
                 </form>

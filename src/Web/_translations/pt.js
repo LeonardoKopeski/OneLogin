@@ -9,7 +9,6 @@ var translation = {
     "ProfilePicture": "Foto de perfil",
     "Login": "Login",
     "Register": "Registrar",
-    "NotFoundSlogan": "Essa pagina... Não exite!",
     "DefaultGreeting": "Olá",
     "Friends": "Amigos",
     "FriendsSlogan": "Você pode adicionar e remover amigos, enviar mensagens diretas, bloquear pessoas, etc...",
@@ -17,7 +16,6 @@ var translation = {
     "Personalization": "Personalização",
     "PersonalizationSlogan": "Você pode personalizar sua conta editando seu username, foto de perfil, ou até sua cor de destaque",
     "PersonalizeMyAccount": "Personalizar minha conta",
-    "Security": "Privacidade e Segurança",
     "SecuritySlogan": "Aqui você vê recomendações de segurança, controla quem pode ver sua conta e bloqueia serviços indesejados",
     "OpenSecurityPanel": "Abrir painel de segurança e privacidade",
     "Notifications": "Notificações",
@@ -50,7 +48,6 @@ var translation = {
     "GetBasicDataPermission": "Ver seus dados basicos (nome de usuário, foto, biografia, etc...)",
     "GetFriendListPermission": "Ver sua lista de amigos",
     "InvalidEmail": "Email invalido!",
-    "InvalidUsername": "Nome de usuario invalido (deve ter entre 5 e 20 caracteres alfanuméricos)",
+    "InvalidUsername": "Nome de usuário invalido (deve ter entre 5 e 20 caracteres alfanuméricos)",
     "InvalidPassword": "Senha invalida(deve ter mais de 5 caracteres)",
-    "ReturnToHome": "Voltar para a homepage"
 }

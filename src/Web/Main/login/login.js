@@ -20,7 +20,7 @@ class App extends React.Component{
                 const returnTo = new URLSearchParams(window.location.search).get('returnTo')
                 open(location.origin + (returnTo || "/dashboard"), "_SELF")
             }else{
-                alert(translation[res.status + "Account"] || translation["UnknownError"])
+                alert("Email e/ou senha invalidos!")
             }
         })
 
@@ -63,32 +63,32 @@ class App extends React.Component{
                 </header>
                 <form>
                     <h1>OneLogin</h1>
-                    <h2>{translation["LoginSubtitle"]}</h2>
+                    <h2>Faça login na sua conta!</h2>
                     <input
                         style={{borderColor: this.state.emailTriggered ? "#FA1133" : "#5603AD"}}
                         type="email"
                         id="email"
-                        placeholder={translation["Email"]}
+                        placeholder="Email"
                         onKeyUp={this.setValue}
                     /><br/>
                     <input
                         style={{borderColor: this.state.passwordTriggered ? "#FA1133" : "#5603AD"}}
                         type="password"
                         id="password"
-                        placeholder={translation["Password"]}
+                        placeholder="Senha"
                         onKeyUp={this.setValue}
                     /><br/>
-                    <a>{translation["ForgotenPassword"]}</a><br/>
+                    <a>Esqueci minha senha!</a><br/>
                     <input
                         type="button"
                         id="btnBack"
                         onClick={()=>open("/register", "_SELF")}
-                        value={translation["Register"]}
+                        value="Registrar-se"
                     />
                     <input
                         type="button"
                         id="btnSubmit"
-                        value={translation["Login"]}
+                        value="Login"
                         onClick={this.submit}
                     />
                 </form>

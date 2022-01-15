@@ -3,6 +3,11 @@ var socket = io()
 
 var randomId = Math.floor(Math.random()*spinners.length)
 
+const permissions = {
+    "GetBasicData": "Ver seus dados basicos (nome de usuário, foto, biografia, etc...)",
+    "GetFriendList": "Ver sua lista de amigos"
+}
+
 class App extends React.Component{
     constructor(){
         super()
@@ -53,7 +58,7 @@ class App extends React.Component{
         return this.state.apiInfo.permissions.map(elm => {
             return(
             <li className={warnPermissions.indexOf(elm) != -1? "warn": ""} key={elm}>
-                {translation[elm+"Permission"] || ""}
+                {permission[elm] || ""}
             </li>
             )
         })
@@ -81,12 +86,12 @@ class App extends React.Component{
                     </div>
                 </header>
                 <div id="account">
-                    <h1>{translation["FastLoginSlogan"]}</h1>
+                    <h1>Entrar rapimente com OneLogin</h1>
                     <img src={userInfo.imageUrl || alternativePhoto} style={{borderColor: userInfo.highlightColor}} alt="image"/>
                     <h1 id="username">
                         @{userInfo.username}
                     </h1>
-                    <button onClick={()=>this.setState({page: 2})}>{translation["Next"]}</button>
+                    <button onClick={()=>this.setState({page: 2})}>Proximo</button>
                 </div>
             </div>
             )
@@ -100,19 +105,18 @@ class App extends React.Component{
                     </div>
                 </header>
                 <div id="account">
-                    <h1>{apiInfo.name} {translation["Can"]}:</h1>
+                    <h1>{apiInfo.name} poderá:</h1>
                     <ul id="permissionList">
                         {this.getPermissionList()}
                     </ul>
                     <p id="disclaimer">
-                        {translation["FastLoginDisclaimer1"]}
+                        Ao prosseguir, você aceita todos os 
                         <a onClick={()=> open(apiInfo.termsUrl)}>
-                            {translation["TermsOfUse"]}
+                            termos de uso 
                         </a>
-                        {translation["FastLoginDisclaimer2"]}
-                        "{apiInfo.name}"
+                        de "{apiInfo.name}"
                     </p>
-                    <button className="colored" onClick={this.login}>{translation["Login"]}</button>
+                    <button className="colored" onClick={this.login}>Login</button>
                 </div>
             </div>
             )
