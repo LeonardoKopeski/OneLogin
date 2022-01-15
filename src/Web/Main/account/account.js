@@ -14,13 +14,21 @@ class App extends React.Component{
     constructor(){
         super()
 
+        var localData = localStorage.getItem("loggedUserInfo")
+        try{
+            localData = JSON.parse(localData)
+        }catch(err){
+            localData = undefined
+        }
+
         this.state = {
             infoRequested: false,
-            userInfo: {},
+            userInfo: localData || {},
         }
         
         socket.on("basicInfoResponse", (res)=>{
             if(res.status == "Ok"){
+                localStorage.setItem("loggedUserInfo", JSON.stringify(res))
                 this.setState({userInfo: {...res}})
             }else{
                 open("/notFound", "_SELF")

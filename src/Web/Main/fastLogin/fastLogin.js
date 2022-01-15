@@ -12,15 +12,23 @@ class App extends React.Component{
     constructor(){
         super()
 
+        var localData = localStorage.getItem("loggedUserInfo")
+        try{
+            localData = JSON.parse(localData)
+        }catch(err){
+            localData = undefined
+        }
+
         this.state = {
             infoRequested: false,
-            userInfo: {},
+            userInfo: localData || {},
             apiInfo: {},
             page: 1
         }
         
         socket.on("userInfoResponse", (res)=>{
             if(res.status == "Ok"){
+                localStorage.setItem("loggedUserInfo", JSON.stringify(res))
                 this.setState({userInfo: {...res}})
             }else{
                 open("/login?returnTo=" + location.pathname + location.search, "_SELF")
@@ -58,7 +66,7 @@ class App extends React.Component{
         return this.state.apiInfo.permissions.map(elm => {
             return(
             <li className={warnPermissions.indexOf(elm) != -1? "warn": ""} key={elm}>
-                {permission[elm] || ""}
+                {permissions[elm] || ""}
             </li>
             )
         })
@@ -110,11 +118,11 @@ class App extends React.Component{
                         {this.getPermissionList()}
                     </ul>
                     <p id="disclaimer">
-                        Ao prosseguir, você aceita todos os 
+                        Ao prosseguir, você aceita todos os&nbsp;
                         <a onClick={()=> open(apiInfo.termsUrl)}>
-                            termos de uso 
+                            termos de uso
                         </a>
-                        de "{apiInfo.name}"
+                        &nbsp;de "{apiInfo.name}"
                     </p>
                     <button className="colored" onClick={this.login}>Login</button>
                 </div>
