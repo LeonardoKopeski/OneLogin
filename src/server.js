@@ -205,7 +205,7 @@ io.on('connection', (socket) => {
         }}
 
         //send email to verify
-        var email = mailer.generateEmail("VerifyEmail", `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`)
+        var email = mailer.generateEmail("verifyEmail", {link: `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`})
         mailer.sendEmail(obj.email, email)
 
         socket.emit("registerResponse", {status: "Created"})            
@@ -517,7 +517,7 @@ io.on('connection', (socket) => {
         }}
 
         //send email to verify
-        var email = mailer.generateEmail("VerifyEmail", `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`)
+        var email = mailer.generateEmail("verifyEmail", {link: `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`})
         mailer.sendEmail(obj.email, email)
 
         socket.emit("registerResponse", {status: "Created"})            
