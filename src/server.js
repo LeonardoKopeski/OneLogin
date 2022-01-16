@@ -20,6 +20,8 @@ var uncompletedLogins = {}
 const accounts = require("./Libraries/Accounts.js")
 const APIs = require("./Libraries/APIs.js")
 const mailer = require("./Libraries/Mailer.js")
+const filesDB = require("./Libraries/FilesDB.js")
+
 const validateRequest = require("./Functions/ValidateRequest.js")
 const regEx = require("./Functions/regEx.js")
 const validateAPI = require("./Functions/ValidateApi.js")
@@ -59,15 +61,31 @@ app.get("/verifyEmail", async(req, res)=>{
     res.send("Ok :)")//and return
 })
 
+// Route the /files
+app.get("/files", async(req, res)=>{
+    var file = await filesDB.file.getFile(req.query.fileId)
+    if(file){
+        var type = file.substring(5, file.length).split(";")[0]
+        var base64 = file.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')
+        var img = Buffer.from(base64, 'base64')
+
+        res.writeHead(200, {
+            'Content-Type': type,
+            'Content-Length': img.length
+        })
+
+        res.end(img)
+    }else{
+        res.send("")
+    }
+})
+
 // Route other pages
 app.get("/", (req, res)=>{
     res.sendFile(__dirname + "/Web/Main/home/index.html")
 })
 app.get("/api", (req, res)=>{
     res.redirect("/api/login")
-})
-app.get("/admin", (req, res)=>{
-    res.sendFile(__dirname + "/Web/Admin/home/index.html")
 })
 app.get("*", (req, res)=>{
     res.sendFile(__dirname + "/Web/_notFound/index.html")
@@ -123,7 +141,7 @@ app.post("/api/getUserInfo", async(req, res)=>{
     var accounts = await account.getAccount({token: user})
     var response = {
         username: accounts[0].username,
-        imageUrl: accounts[0].imageUrl,
+        imageUrl: `http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`,
         verified: accounts[0].verified,
         highlightColor: accounts[0].highlightColor
     }
@@ -253,7 +271,7 @@ io.on('connection', (socket) => {
 
             var response = {
                 username: accounts[0].username,
-                imageUrl: accounts[0].imageUrl,
+                imageUrl: `http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`,
                 bio: accounts[0].bio,
                 email: accounts[0].email,
                 verified: accounts[0].verified,
@@ -280,7 +298,7 @@ io.on('connection', (socket) => {
         if(accounts[0]){
             var response = {
                 username: accounts[0].username,
-                imageUrl: accounts[0].imageUrl,
+                imageUrl: `http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`,
                 bio: accounts[0].bio,
                 verified: accounts[0].verified,
                 highlightColor: accounts[0].highlightColor,
@@ -342,7 +360,8 @@ io.on('connection', (socket) => {
 
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
-            accounts[0].update({imageUrl: obj.imageUrl})
+            var key = filesDB.file.createFile(obj.imageUrl).key
+            accounts[0].update({imageUrl: key})
         }
     })
     socket.on("updateHighlightColor", async(obj)=>{
@@ -621,6 +640,7 @@ http.listen(PORT, async()=>{
     // start the databases and email system
     await accounts.startDB("DB_ACCOUNTS")
     await APIs.startDB("DB_API")
+    await filesDB.startDB("DB_FILES")
     mailer.createTransporter()
 
     require('dns').lookup(require('os').hostname(), (err, addr, fam) => {
