@@ -9,7 +9,7 @@ module.exports = async (api, permission, getApi)=>{
         return {status: "InvalidApiToken", code: 401}
     }
 
-    if(apis[0].permissions.indexOf(permission) == -1) {
+    if(apis[0].permissions.indexOf(permission) == -1 && permission !== null) {
         return {status: "InsufficientPermissions", code: 403}
     }
 

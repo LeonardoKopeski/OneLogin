@@ -77,13 +77,13 @@ app.get("*", (req, res)=>{
 app.post("/api/generateLoginToken", async(req, res)=>{
     var validRequest = validateRequest(req.body, {apiToken: "string", returnTo: regEx.url})
     if(!validRequest){
-        res.send("BadRequest").status(400)
+        res.status(400).send("BadRequest")
         return
     }
 
     var validApi = await validateAPI(req.body.apiToken, "LOGIN", API.getApi)
     if(validApi.code != 200){
-        res.send(validApi.status).status(validApi.code)
+        res.status(validApi.code).send(validApi.status)
         return
     }
 
@@ -97,26 +97,26 @@ app.post("/api/generateLoginToken", async(req, res)=>{
         delete uncompletedLogins[token]
     }, 600000)
 
-    res.send(token).status(200)
+    res.status(200).send(token)
 })
 
 app.post("/api/getUserInfo", async(req, res)=>{
     var validRequest = validateRequest(req.body, {apiToken: "string", userToken: "string"})
     if(!validRequest){
-        res.send("BadRequest").status(400)
+        res.status(400).send("BadRequest")
         return
     }
 
     var validApi = await validateAPI(req.body.apiToken, "LOGIN", API.getApi)
     if(validApi.code != 200){
-        res.send(validApi.status).status(validApi.code)
+        res.status(validApi.code).send(validApi.status)
         return
     }
 
     var users = validApi.data.users
     var user = users[req.body.userToken]
     if(!user){
-        res.send("UserNotFound").status(404)
+        res.status(404).send("UserNotFound")
         return
     }
 
@@ -147,7 +147,22 @@ app.post("/api/getUserInfo", async(req, res)=>{
         }
     }
 
-    res.send(response).status(200)
+    res.status(200).send(response)
+})
+
+app.post("/api/validateApiToken", async(req, res)=>{
+    var validRequest = validateRequest(req.body, {apiToken: "string"})
+    if(!validRequest){
+        res.status(400).send("BadRequest")
+        return
+    }
+
+    var validApi = await validateAPI(req.body.apiToken, null, API.getApi)
+    if(validApi.code != 200){
+        res.status(validApi.code).send(validApi.status)
+    }else{
+        res.status(200).send("Found")
+    }
 })
 
 // Socket.io

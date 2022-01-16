@@ -6,13 +6,13 @@ module.exports = (res, expected)=>{
 
     Object.keys(expected).forEach(key => {
         if(res[key] === null){ok = false}
-        if(res[key] == ""){ok = false}
+        if(res[key] === undefined){ok = false}
+        if(res[key] === ""){ok = false}
         if(typeof expected[key] == "string"){
             if(typeof res[key] != expected[key]){ok = false}
         }else{
             if(!expected[key].test(res[key])){ok = false}
         }
-        
     })
     
     return ok
