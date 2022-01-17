@@ -28,6 +28,11 @@ class file{
         model.updateOne(this, update, ()=>{})
     }
 
+    delete(){
+        model.bulkWrite([{ deleteOne:{ filter: this} }])
+        //</document>model.find(this).remove().exec()
+    }
+
     static createFile(value){
         var token = ""
         for(var c = 0; c < 4;c++){
@@ -55,11 +60,7 @@ class file{
                         res.push(new file(r))
                     })
 
-                    if(res[0]){
-                        resolve(res[0].value)   
-                    }else{
-                        resolve(null)
-                    }
+                    resolve(res[0])
                 }
             })
         })

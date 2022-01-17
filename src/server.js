@@ -63,7 +63,18 @@ app.get("/verifyEmail", async(req, res)=>{
 
 // Route the /files
 app.get("/files", async(req, res)=>{
-    var file = await filesDB.file.getFile(req.query.fileId)
+    if(!req.query.fileId){
+        res.send()
+        return
+    }
+    
+    var fileQuery = await filesDB.file.getFile(req.query.fileId)
+    if(fileQuery == undefined){
+        res.send()
+        return
+    }
+
+    var file = fileQuery.value
     if(file){
         var type = file.substring(5, file.length).split(";")[0]
         var base64 = file.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')
@@ -141,12 +152,13 @@ app.post("/api/getUserInfo", async(req, res)=>{
     var accounts = await account.getAccount({token: user})
     var response = {
         username: accounts[0].username,
-        imageUrl: `http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`,
+        imageUrl: accounts[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`: null,
         verified: accounts[0].verified,
         highlightColor: accounts[0].highlightColor
     }
 
-    if(validApi.data.permissions.indexOf("GETFRIENDLIST") != -1){
+    var canGetFriendList = await validateAPI(req.body.apiToken, "GETFRIENDLIST", API.getApi, accounts[0])
+    if(canGetFriendList.code == 200){
         response.friendList = []
         for(var following in accounts[0].following){// for each follow account
             var username = accounts[0].following[following]
@@ -156,7 +168,7 @@ app.post("/api/getUserInfo", async(req, res)=>{
             if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
                 response.friendList.push({
                     username: friendAccount[0].username,
-                    imageUrl: friendAccount[0].imageUrl,
+                    imageUrl: friendAccount[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${friendAccount[0].imageUrl}`: null,
                     verified: friendAccount[0].verified,
                     bio: friendAccount[0].bio,
                     highlightColor: friendAccount[0].highlightColor
@@ -262,7 +274,7 @@ io.on('connection', (socket) => {
                 if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
                     friendList.push({
                         username: friendAccount[0].username,
-                        imageUrl: friendAccount[0].imageUrl,
+                        imageUrl: friendAccount[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${friendAccount[0].imageUrl}`: null,
                         verified: friendAccount[0].verified,
                         bio: friendAccount[0].bio,
                     })
@@ -271,7 +283,7 @@ io.on('connection', (socket) => {
 
             var response = {
                 username: accounts[0].username,
-                imageUrl: `http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`,
+                imageUrl: accounts[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`: null,
                 bio: accounts[0].bio,
                 email: accounts[0].email,
                 verified: accounts[0].verified,
@@ -298,7 +310,7 @@ io.on('connection', (socket) => {
         if(accounts[0]){
             var response = {
                 username: accounts[0].username,
-                imageUrl: `http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`,
+                imageUrl: accounts[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`: null,
                 bio: accounts[0].bio,
                 verified: accounts[0].verified,
                 highlightColor: accounts[0].highlightColor,
@@ -360,6 +372,10 @@ io.on('connection', (socket) => {
 
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
+            if(accounts[0].imageUrl){
+                var oldImg = await filesDB.file.getFile(accounts[0].imageUrl)
+                oldImg.delete()
+            }
             var key = filesDB.file.createFile(obj.imageUrl).key
             accounts[0].update({imageUrl: key})
         }
@@ -480,22 +496,29 @@ io.on('connection', (socket) => {
 
         var subtoken
 
+        // If not logged
         if(accounts[0].services[loginInfo.apiToken] == undefined){
-            var update = {...accounts[0].services}
             subtoken = account.generateToken(32)
-            update[loginInfo.apiToken] = {subtoken}
-
-            accounts[0].update({services: update})
-
-            var apis = await API.getApi({token: loginInfo.apiToken})
-
-            var update2 = {...apis[0].users}
-            update2[subtoken] = accounts[0].token
-
-            apis[0].update({users: update2})
         }else{
             subtoken = accounts[0].services[loginInfo.apiToken].subtoken
         }
+
+        // Update the Api
+        var apis = await API.getApi({token: loginInfo.apiToken})
+
+        var apiUpdate = {...apis[0].users}
+        apiUpdate[subtoken] = accounts[0].token
+
+        apis[0].update({users: apiUpdate})
+
+        // And the account
+        var accountUpdate = {...accounts[0].services}
+        accountUpdate[loginInfo.apiToken] = {
+            subtoken: subtoken,
+            acceptedPermissions: apis[0].permissions
+        }
+
+        accounts[0].update({services: accountUpdate})
 
         socket.emit("loginResponse", {status: "Ok", token: subtoken, returnTo: uncompletedLogins[obj.loginToken].returnTo})
 
@@ -605,11 +628,11 @@ io.on('connection', (socket) => {
 })
 
 // Listen
+console.log("Starting...")
+
 var serverAddr
 const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
-    console.log("Starting...")
-
     accounts.setSchema({
         username: String,
         email: String,
