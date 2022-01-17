@@ -10,7 +10,6 @@ const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
-const cookieParser = require('cookie-parser')
 
 // Create placeholder variables
 var unverifiedEmails = {}
@@ -21,85 +20,25 @@ const accounts = require("./Libraries/Accounts.js")
 const APIs = require("./Libraries/APIs.js")
 const mailer = require("./Libraries/Mailer.js")
 const filesDB = require("./Libraries/FilesDB.js")
+const {accountSchema, apiSchema, splitSchema} = require("./Libraries/Schemas.js")
 
 const validateRequest = require("./Functions/ValidateRequest.js")
 const regEx = require("./Functions/regEx.js")
 const validateAPI = require("./Functions/ValidateApi.js")
+const routeAllPages = require("./Functions/Routes.js")
 
 // Simplify
 const account = accounts.account
 const API = APIs.api
 
 // Routes
-app.use("/", express.static(__dirname + '/Web'))
-app.use("/", express.static(__dirname + '/Web/Main'))
-app.use("/api", express.static(__dirname + '/Web/Api'))
-app.use("/admin", express.static(__dirname + '/Web/Admin'))
-
-// Middlewares
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-app.use(cookieParser())
-
-// Route the /verifyEmail
-app.get("/verifyEmail", async(req, res)=>{
-    var randomId = req.query.randomId//Get id on querystring
-    if(Object.keys(unverifiedEmails).indexOf(randomId) == -1){//if this querystring doesn't exists
-        res.send("Invalid Email, sorry!")//return error
-        return
-    }
-
-    io.to(unverifiedEmails[randomId].socketId).emit("verifiedEmail", unverifiedEmails[randomId].token)//send a message
-
-    if(unverifiedEmails[randomId].type == "ACCOUNT"){
-        account.createAccount(unverifiedEmails[randomId].data)//create acount
-    }else{
-        API.createApi(unverifiedEmails[randomId].data)//create API
-    }
-
-    delete unverifiedEmails[randomId]//remove from the list
-    res.send("Ok :)")//and return
-})
-
-// Route the /files
-app.get("/files", async(req, res)=>{
-    if(!req.query.fileId){
-        res.send()
-        return
-    }
-    
-    var fileQuery = await filesDB.file.getFile(req.query.fileId)
-    if(fileQuery == undefined){
-        res.send()
-        return
-    }
-
-    var file = fileQuery.value
-    if(file){
-        var type = file.substring(5, file.length).split(";")[0]
-        var base64 = file.replace(/^data:image\/(png|jpeg|jpg);base64,/, '')
-        var img = Buffer.from(base64, 'base64')
-
-        res.writeHead(200, {
-            'Content-Type': type,
-            'Content-Length': img.length
-        })
-
-        res.end(img)
-    }else{
-        res.send("")
-    }
-})
-
-// Route other pages
-app.get("/", (req, res)=>{
-    res.sendFile(__dirname + "/Web/Main/home/index.html")
-})
-app.get("/api", (req, res)=>{
-    res.redirect("/api/login")
-})
-app.get("*", (req, res)=>{
-    res.sendFile(__dirname + "/Web/_notFound/index.html")
+routeAllPages(__dirname, express, app, {
+    getFile: filesDB.file.getFile,
+    getUnverifiedEmails: ()=>unverifiedEmails,
+    deleteUnverifiedEmail: (id)=> delete unverifiedEmails[id],
+    createAccount: accounts.account.createAccount,
+    createApi: APIs.api.createApi,
+    io: io
 })
 
 // API
@@ -150,12 +89,8 @@ app.post("/api/getUserInfo", async(req, res)=>{
     }
 
     var accounts = await account.getAccount({token: user})
-    var response = {
-        username: accounts[0].username,
-        imageUrl: accounts[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`: null,
-        verified: accounts[0].verified,
-        highlightColor: accounts[0].highlightColor
-    }
+    var response = splitSchema(accountSchema, accounts[0], "basicInfo")
+    response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
 
     var canGetFriendList = await validateAPI(req.body.apiToken, "GETFRIENDLIST", API.getApi, accounts[0])
     if(canGetFriendList.code == 200){
@@ -166,13 +101,10 @@ app.post("/api/getUserInfo", async(req, res)=>{
 
             // and save on the list
             if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
-                response.friendList.push({
-                    username: friendAccount[0].username,
-                    imageUrl: friendAccount[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${friendAccount[0].imageUrl}`: null,
-                    verified: friendAccount[0].verified,
-                    bio: friendAccount[0].bio,
-                    highlightColor: friendAccount[0].highlightColor
-                })
+                var friend = splitSchema(accountSchema, friendAccount[0], "basicInfo")
+                friend.imageUrl = friend.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${friend.imageUrl}`:null
+    
+                response.friendList.push(friend)
             }
         }
     }
@@ -272,25 +204,16 @@ io.on('connection', (socket) => {
 
                 // and save on the list
                 if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
-                    friendList.push({
-                        username: friendAccount[0].username,
-                        imageUrl: friendAccount[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${friendAccount[0].imageUrl}`: null,
-                        verified: friendAccount[0].verified,
-                        bio: friendAccount[0].bio,
-                    })
+                    var res = splitSchema(accountSchema, friendAccount[0], "basicInfo")
+                    res.imageUrl = res.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${res.imageUrl}`:null
+                    friendList.push(res)
                 }
             }
 
-            var response = {
-                username: accounts[0].username,
-                imageUrl: accounts[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`: null,
-                bio: accounts[0].bio,
-                email: accounts[0].email,
-                verified: accounts[0].verified,
-                notifications: accounts[0].notifications,
-                friendList: friendList,
-                highlightColor: accounts[0].highlightColor
-            }
+            var response = splitSchema(accountSchema, accounts[0], "visibleInfo")
+            response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
+            response.friendList = friendList
+
             socket.emit("userInfoResponse", {status: "Ok" ,...response})
         }else{
             socket.emit("userInfoResponse", {status: "InvalidQuery"})
@@ -308,14 +231,8 @@ io.on('connection', (socket) => {
         var requester = await account.getAccount({token: obj.requester})
 
         if(accounts[0]){
-            var response = {
-                username: accounts[0].username,
-                imageUrl: accounts[0].imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${accounts[0].imageUrl}`: null,
-                bio: accounts[0].bio,
-                verified: accounts[0].verified,
-                highlightColor: accounts[0].highlightColor,
-                friendStatus: 0
-            }
+            var response = splitSchema(accountSchema, accounts[0], "basicInfo")
+            response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
 
             if(requester[0]){
                 var following = requester[0].following.indexOf(accounts[0].username) != -1
@@ -442,39 +359,6 @@ io.on('connection', (socket) => {
             ]
         })
     })
-    socket.on("getLoginApiInfo", async(obj) => {
-        var validRequest = validateRequest(obj, {loginToken: "string"})
-        if(!validRequest){
-            socket.emit("apiInfoResponse", {status: "InvalidRequest"})
-            return
-        }
-    
-        var loginInfo = uncompletedLogins[obj.loginToken]
-        if(!loginInfo){
-            socket.emit("apiInfoResponse", {status: "InvalidLoginToken"})
-            return
-        }
-        var apis = await API.getApi({token: loginInfo.apiToken})
-
-        const onLoginPermissions = {
-            "LOGIN": "GetBasicData",
-            "GETFRIENDLIST": "GetFriendList"   
-        }
-
-        var permissions = []
-        apis[0].permissions.forEach(elm => {
-            if(onLoginPermissions[elm] != undefined){
-                permissions.push(onLoginPermissions[elm])
-            }
-        })
-        
-        socket.emit("apiInfoResponse", {
-            status: "Ok",
-            name: apis[0].name,
-            permissions: permissions,
-            termsUrl: apis[0].termsUrl
-        })
-    })
     socket.on("fastLogin", async(obj) => {
         var validRequest = validateRequest(obj, {token: "string", loginToken: "string"})
         if(!validRequest){
@@ -523,6 +407,39 @@ io.on('connection', (socket) => {
         socket.emit("loginResponse", {status: "Ok", token: subtoken, returnTo: uncompletedLogins[obj.loginToken].returnTo})
 
         delete uncompletedLogins[obj.loginToken]
+    })
+    socket.on("getLoginApiInfo", async(obj) => {
+        var validRequest = validateRequest(obj, {loginToken: "string"})
+        if(!validRequest){
+            socket.emit("apiInfoResponse", {status: "InvalidRequest"})
+            return
+        }
+    
+        var loginInfo = uncompletedLogins[obj.loginToken]
+        if(!loginInfo){
+            socket.emit("apiInfoResponse", {status: "InvalidLoginToken"})
+            return
+        }
+        var apis = await API.getApi({token: loginInfo.apiToken})
+
+        const onLoginPermissions = {
+            "LOGIN": "GetBasicData",
+            "GETFRIENDLIST": "GetFriendList"   
+        }
+
+        var permissions = []
+        apis[0].permissions.forEach(elm => {
+            if(onLoginPermissions[elm] != undefined){
+                permissions.push(onLoginPermissions[elm])
+            }
+        })
+        
+        socket.emit("apiInfoResponse", {
+            status: "Ok",
+            name: apis[0].name,
+            permissions: permissions,
+            termsUrl: apis[0].termsUrl
+        })
     })
     socket.on('loginApi', async(obj) => {
         var validRequest = validateRequest(obj, {apiToken: "string"})
@@ -633,32 +550,8 @@ console.log("Starting...")
 var serverAddr
 const PORT = process.env.PORT || 3000
 http.listen(PORT, async()=>{
-    accounts.setSchema({
-        username: String,
-        email: String,
-        password: String,
-        token: String,
-        imageUrl: String,
-        bio: String,
-        verified: Boolean,
-        following: Array,
-        notifications: Array,
-        highlightColor: String,
-        services: Object,
-        accountTier: Number
-    })
-    
-    APIs.setSchema({
-        token: String,
-        name: String,
-        createdIn: Date,
-        permissions: Array,
-        verified: Boolean,
-        locked: Boolean,
-        users: Object,
-        termsUrl: String,
-        email: String
-    })
+    accounts.setSchema(splitSchema(accountSchema, "type"))
+    APIs.setSchema(splitSchema(apiSchema, "type"))
 
     // start the databases and email system
     await accounts.startDB("DB_ACCOUNTS")

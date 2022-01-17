@@ -26,7 +26,6 @@ function generateEmail(type, replace){
     Object.keys(replace).forEach(key => {
         email.html = email.html.split("%"+key.toUpperCase()+"%").join(replace[key])
     })
-    console.log(email)
     return email
 }
 const emails = {

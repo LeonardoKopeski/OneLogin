@@ -1,5 +1,3 @@
-const regEx = require("../../../Functions/regEx")
-
 var root = document.querySelector("div#root")
 var socket = io()
 
