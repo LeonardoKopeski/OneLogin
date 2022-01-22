@@ -1,6 +1,8 @@
 const cookieParser = require('cookie-parser')
 
 module.exports = (dirname, express, app, sharedVariables)=>{
+    const globalDirname = dirname.substr(0, dirname.length-4)
+    
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(cookieParser())
@@ -9,6 +11,8 @@ module.exports = (dirname, express, app, sharedVariables)=>{
     app.use("/", express.static(dirname + '/Web/Main'))
     app.use("/api", express.static(dirname + '/Web/Api'))
     app.use("/admin", express.static(dirname + '/Web/Admin'))
+
+    app.use("/beta", express.static(globalDirname + '/_Client'))
 
     app.get("/files", async(req, res)=>{
         if(!req.query.fileId){

@@ -2,7 +2,7 @@
   "name": "onelogin",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "/_Server/server.js",
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
@@ -14,8 +14,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "cd src&&node server.js",
-    "test": "cd src&&node client.test.js"
+    "start": "cd _Server&&node server.js",
+    "test": "cd _API&&node client.test.js"
   },
   "repository": {
     "type": "git",
