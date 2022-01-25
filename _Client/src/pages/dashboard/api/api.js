@@ -41,6 +41,7 @@ export default class DashboardApi extends Component{
         this.saveChanges = this.saveChanges.bind(this)
         this.generatePermissionList = this.generatePermissionList.bind(this)
         this.disconnectUsers = this.disconnectUsers.bind(this)
+        this.toggleLock = this.toggleLock.bind(this)
     }
     componentDidMount(){
         if(this.state.infoRequested === false){
@@ -60,6 +61,10 @@ export default class DashboardApi extends Component{
     disconnectUsers(){
         this.socket.emit("disconnectApiUsers", {token: getCookie("token")})
         this.setState({apiInfo: {...this.state.apiInfo, users: 0}})
+    }
+    toggleLock(){
+        this.socket.emit("toogleApiLock", {token: getCookie("token"), state:!this.state.apiInfo.locked})
+        this.setState({apiInfo: {...this.state.apiInfo, locked: !this.state.apiInfo.locked}})
     }
     async saveChanges(ev){
         var value = ev.target.value
@@ -123,6 +128,10 @@ export default class DashboardApi extends Component{
                 <span className="key">Usuarios</span>
                 <p className='value'>Usuarios conectados: {this.state.apiInfo.users}</p>
                 <button className="value" onClick={this.disconnectUsers}>Desconectar todos os usuarios</button>
+            </li>
+            <li>
+                <span className="key">Acesso</span>
+                <button className="value" onClick={this.toggleLock}>{this.state.apiInfo.locked?"Permitir": "Proibir"} acesso</button>
             </li>
         </ul>
         )

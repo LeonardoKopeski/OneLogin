@@ -448,21 +448,6 @@ io.on('connection', (socket) => {
             termsUrl: apis[0].termsUrl
         })
     })
-    socket.on('loginApi', async(obj) => {
-        var validRequest = validateRequest(obj, {apiToken: "string"})
-        if(!validRequest){
-            socket.emit("loginResponse", {status: "InvalidRequest"})
-            return
-        }
-
-        var res = await API.getApi({apiToken: obj.apiToken})
-
-        if(res[0] == undefined){
-            socket.emit("loginResponse", {status: "NotFound"})
-        }else{
-            socket.emit("loginResponse", {status: "Ok", token: res[0].token})
-        }
-    })
     socket.on('registerApi', async(obj) => {
         var validRequest = validateRequest(obj, {name: regEx.username, email: regEx.email})
         if(!validRequest){
@@ -518,7 +503,8 @@ io.on('connection', (socket) => {
                 termsUrl: apis[0].termsUrl,
                 token: apis[0].token,
                 users: Object.keys(apis[0].users).length,
-                permissions: apis[0].permissions
+                permissions: apis[0].permissions,
+                locked: apis[0].locked
             }
             socket.emit("apiInfoResponse", {status: "Ok" ,...response})
         }else{
@@ -563,6 +549,15 @@ io.on('connection', (socket) => {
                 accounts[0].update({services: update})
             })
             apis[0].update({users: {}})
+        }
+    })
+    socket.on("toogleApiLock", async(obj)=>{
+        var validRequest = validateRequest(obj, {token: "string", state: "boolean"})
+        if(!validRequest){ return }
+
+        var apis = await API.getApi({vinculatedAccount: obj.token})
+        if(apis[0]){
+            apis[0].update({locked: obj.state})
         }
     })
 })
