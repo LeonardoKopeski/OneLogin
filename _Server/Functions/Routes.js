@@ -1,11 +1,14 @@
 const cookieParser = require('cookie-parser')
+const cors = require("cors")
 
 module.exports = (dirname, express, app, sharedVariables)=>{
-    const globalDirname = dirname.substr(0, dirname.length-8)
-    
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(cookieParser())
+    app.use(cors({
+        origin: "*",
+        methods: ["GET", "POST"]
+    }))
 
     app.use("/", express.static(dirname + '/Web'))
     app.use("/", express.static(dirname + '/Web/Main'))
@@ -14,7 +17,7 @@ module.exports = (dirname, express, app, sharedVariables)=>{
 
     app.get("/files", async(req, res)=>{
         if(!req.query.fileId){
-            res.send()
+            res.send("invalid")
             return
         }
         

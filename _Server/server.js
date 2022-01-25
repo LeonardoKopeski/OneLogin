@@ -9,8 +9,12 @@
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
-const io = require('socket.io')(http)
-
+const io = require('socket.io')(http, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+})
 // Create placeholder variables
 var unverifiedEmails = {}
 var uncompletedLogins = {}
@@ -548,8 +552,8 @@ io.on('connection', (socket) => {
 console.log("Starting...")
 
 var serverAddr
-const PORT = process.env.PORT || 3000
-http.listen(PORT, async()=>{
+const PORT = process.env.PORT || 4000
+http.listen(PORT, "0.0.0.0", async()=>{
     accounts.setSchema(splitSchema(accountSchema, "type"))
     APIs.setSchema(splitSchema(apiSchema, "type"))
 
@@ -560,7 +564,7 @@ http.listen(PORT, async()=>{
     mailer.createTransporter()
 
     require('dns').lookup(require('os').hostname(), (err, addr, fam) => {
-        serverAddr = addr
-        console.log("Listening on "+serverAddr+":"+PORT)
+        serverAddr = "localhost"//addr
+        console.log("Listening on http://"+serverAddr+":"+PORT)
     })
 })

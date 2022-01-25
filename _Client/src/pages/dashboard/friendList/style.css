@@ -1,0 +1,117 @@
+ul.friendList{
+    list-style: none;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 750px;
+    border: 2px solid var(--gray);
+    border-radius: var(--borderRadius);
+    margin: 50px 0px;
+}
+
+ul.friendList li{
+    position: relative;
+    border-top: 2px solid var(--gray);
+    padding: 10px;
+    height: 85px;
+    display: grid;
+    grid-template-rows: 35px 25px;
+    grid-template-columns: 60px auto;
+    grid-column-gap: 20px;
+    grid-template-areas: "img name" "img text";
+}
+
+ul.friendList li#header{
+    display: block;
+    border-top: none;
+}
+
+ul.friendList li#header h2{
+    display: flex;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 35px;
+    text-align: center;
+    position: relative;
+    color: var(--purple);
+    align-items:center;
+    justify-content:center;
+    font-weight: bold;
+}
+
+ul.friendList li img{
+    grid-area: img;
+    width: 60px;
+    height: 60px;
+    color: var(--purple);
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--black);
+    box-shadow: none;
+    position: relative;
+    left: 0;
+    transform: none;
+    margin-right: 20px;
+}
+
+ul.friendList li h1{
+    grid-area: name;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 28px;
+}
+
+ul.friendList li h2{
+    grid-area: text;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    height: 100%;
+}
+
+ul.friendList li h1 svg#verifiedBadge{
+    position: relative;
+    left: 12px;
+    top: 2px; 
+}
+
+@media screen and (max-width: 750px) {
+    ul.friendList{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 500px) {
+    ul.friendList li{
+        height: 16vw;
+        padding: 1.5vw;
+        grid-template-rows: 6.75vw 5.25vw;
+        grid-template-columns: 8vw auto;
+        grid-column-gap: 20px;
+    }
+    ul.friendList li#header h2{
+        font-size: 9vw;
+    }
+
+    ul.friendList li img{
+        width: 12vw;
+        height: 12vw;
+    }
+    ul.friendList li h1{
+        height: 100%;
+        line-height: 100%;
+        font-size: 6vw;
+    }
+    ul.friendList li h2{
+        height: 100%;
+        line-height: 100%;
+        font-size: 5vw;
+    }
+    ul.friendList li h1 svg#verifiedBadge{
+        position: relative;
+        left: 5px;
+        width: 4vw;
+        height: 4vw;
+    }
+}

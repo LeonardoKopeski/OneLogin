@@ -1,32 +1,31 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"
+import "./style.css"
+
+import Login from "./pages/login/login.js"
+import Register from "./pages/register/register.js"
+import DashboardHome from "./pages/dashboard/dashboard.js"
+import DashboardFriendList from "./pages/dashboard/friendList/friendList.js"
+import DashboardPersonalization from "./pages/dashboard/personalization/personalization.js"
+import DashboardNotifications from "./pages/dashboard/notifications/notifications.js"
+import Account from "./pages/account/account"
+import FastLogin from "./pages/fastLogin/fastLogin.js"
+import Logout from "./pages/logout/logout.js"
+import NotFound from "./pages/notFound/notFound"
 
 function App(){
     return (
-        <div className="App">
-        <h1>Welcome to React Router!</h1>
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-        </Routes>
-        </div>
-    )
-}
-
-function Home(){
-    return (
-    <div>
-        hello world, home!
-        <Link to="/about">Go to about page...</Link>
-    </div>
-    )
-}
-
-function About(){
-    return (
-    <div>
-        There's not to say about me...
-        <Link to="/">Go back to the homepage...</Link>    
-    </div>
+    <Routes>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/dashboard" element={<DashboardHome/>}/>
+        <Route path="/dashboard/friendList" element={<DashboardFriendList/>}/>
+        <Route path="/dashboard/personalization" element={<DashboardPersonalization/>}/>
+        <Route path="/dashboard/notifications" element={<DashboardNotifications/>}/>
+        <Route path="/account/:username" element={<Account/>}/>
+        <Route path="/fastLogin" element={<FastLogin/>}/>
+        <Route path="/logout" element={<Logout/>}/>
+        <Route path="*" element={<NotFound/>}/>
+    </Routes>
     )
 }
 

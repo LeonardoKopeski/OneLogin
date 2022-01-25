@@ -1,0 +1,114 @@
+svg.returnSVG{
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 3px solid var(--red);
+    border-radius: 50%;
+    padding: 2.5px;
+    color: var(--red);
+    z-index: 5;
+}
+
+div.dashboardScreen{
+    margin-top: 80px;
+}
+
+div.dashboardScreen img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border-width: 3px;
+    border-style: solid;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+div.dashboardScreen h1#username{
+    margin-top: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 40px;
+    text-align: center;
+}
+
+div.dashboardScreen nav{
+    display: inline-flex;
+    flex-wrap: wrap;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 50px 0px;
+    max-width: 750px;
+}
+
+div.dashboardScreen nav div.block{
+    display: inline-block;
+    position: relative;
+    margin: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    width: 100%;
+    border: 2px solid var(--gray);
+    border-radius: var(--borderRadius);
+    padding: 20px;
+    padding-bottom: 30px;
+}
+
+div.dashboardScreen nav div.block[data-size="half"]{
+    width: calc(50% - 10px);
+}
+
+div.dashboardScreen nav div.block h1{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 35px;
+}
+
+div.dashboardScreen nav div.block p{
+    margin: 13px 0px;
+}
+
+div.dashboardScreen nav div.block[data-size="full"] p{
+    margin-bottom: 28px;
+}
+
+div.dashboardScreen nav div.block a{
+    position: absolute;
+    bottom: 15px;
+    font-weight: bolder;
+    color: var(--purple);
+    font-size: 20px;
+}
+
+@media (min-width: 750px){
+    div.dashboardScreen nav div.block{
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    div.dashboardScreen nav,
+    div.dashboardScreen nav div.block[data-size="half"]{
+        width: 100%;
+    }
+
+    svg.returnSVG{
+        width: 8vw;
+        height: 8vw;
+    }
+
+    div.dashboardScreen h1#username{
+        font-size: 7vw;
+    }
+
+    div.dashboardScreen img{
+        width: calc(15vw + 50px);
+        height: calc(15vw + 50px);
+    }
+}
