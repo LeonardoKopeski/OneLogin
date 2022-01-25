@@ -217,6 +217,9 @@ io.on('connection', (socket) => {
             var response = splitSchema(accountSchema, accounts[0], "visibleInfo")
             response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
             response.friendList = friendList
+            
+            var apis = await API.getApi({vinculatedAccount: obj.token})
+            response.haveApi = apis.length != 0
 
             socket.emit("userInfoResponse", {status: "Ok" ,...response})
         }else{
@@ -501,24 +504,25 @@ io.on('connection', (socket) => {
         socket.emit("registerResponse", {status: "Created"})            
     })
     socket.on('getApiInfo', async(obj) => {
-        var validRequest = validateRequest(obj, {apiToken: "string"})
+        var validRequest = validateRequest(obj, {token: "string"})
         if(!validRequest){
             socket.emit("apiInfoResponse", {status: "InvalidRequest"})
             return
         }
 
-        var apis = await API.getApi({token: obj.apiToken})
+        var apis = await API.getApi({vinculatedAccount: obj.token})
         if(apis[0]){
             var response = {
                 name: apis[0].name,
-                email: apis[0].email,
                 verified: apis[0].verified,
                 termsUrl: apis[0].termsUrl,
-                token: apis[0].token
+                token: apis[0].token,
+                users: Object.keys(apis[0].users).length,
+                permissions: apis[0].permissions
             }
             socket.emit("apiInfoResponse", {status: "Ok" ,...response})
         }else{
-            socket.emit("apiInfoResponse", {status: "InvalidApiToken"})
+            socket.emit("apiInfoResponse", {status: "InvalidToken"})
         }
     })
     socket.on("updateApiName", async(obj) => {
@@ -541,9 +545,24 @@ io.on('connection', (socket) => {
         var validRequest = validateRequest(obj, {token: "string", termsUrl: regEx.url})
         if(!validRequest){ return }
 
-        var apis = await API.getApi({token: obj.token})
+        var apis = await API.getApi({vinculatedAccount: obj.token})
         if(apis[0]){
             apis[0].update({termsUrl: obj.termsUrl})
+        }
+    })
+    socket.on("disconnectApiUsers", async(obj)=>{
+        var validRequest = validateRequest(obj, {token: "string"})
+        if(!validRequest){ return }
+
+        var apis = await API.getApi({vinculatedAccount: obj.token})
+        if(apis[0]){
+            Object.keys(apis[0].users).forEach(async(key)=>{
+                var accounts = await account.getAccount({token: apis[0].users[key]})
+                var update = {...accounts[0].services}
+                delete update[apis[0].token]
+                accounts[0].update({services: update})
+            })
+            apis[0].update({users: {}})
         }
     })
 })

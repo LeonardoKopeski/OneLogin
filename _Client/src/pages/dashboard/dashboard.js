@@ -44,7 +44,6 @@ export default class DashboardHome extends Component{
 
         this.openNotifications = this.openNotifications.bind(this)
     }
-    
     componentDidMount(){
         if(this.state.infoRequested === false){
             this.socket.emit("getUserInfo", {token: getCookie("token")})
@@ -100,6 +99,20 @@ export default class DashboardHome extends Component{
                     <p>Aqui você vê recomendações de segurança, controla quem pode ver sua conta e bloqueia serviços indesejados...</p>
                     <Link to="/dashboard/security">
                         Abrir painel de segurança e privacidade
+                    </Link>
+                </div>
+                <div className="block" data-size="half">
+                    <h1>Desenvolvimento</h1>
+                    <p>Aqui você controla seu token de API, podendo bloquear, mudar nome, editar configurações, etc...</p>
+                    <Link to="/dashboard/api">
+                        Abrir painel do desenvolvedor
+                    </Link>
+                </div>
+                <div className="block" data-size="half">
+                    <h1>Desenvolvimento</h1>
+                    <p>Aqui você controla seu token de API, podendo bloquear, mudar nome, editar configurações, etc...</p>
+                    <Link to="/dashboard/api">
+                        Abrir painel do desenvolvedor
                     </Link>
                 </div>
             </nav>        

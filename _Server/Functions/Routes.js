@@ -5,10 +5,6 @@ module.exports = (dirname, express, app, sharedVariables)=>{
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(cookieParser())
-    app.use(cors({
-        origin: "*",
-        methods: ["GET", "POST"]
-    }))
 
     app.use("/", express.static(dirname + '/Web'))
     app.use("/", express.static(dirname + '/Web/Main'))
@@ -64,14 +60,4 @@ module.exports = (dirname, express, app, sharedVariables)=>{
         res.send("Ok :)")//and return
     })
 
-    app.get("/", (req, res)=>{
-        res.sendFile(dirname + "/Web/Main/home/index.html")
-    })
-    app.get("/api", (req, res)=>{
-        res.redirect("/api/login")
-    })
-
-    app.get("*", (req, res)=>{
-        res.sendFile(dirname + "/Web/_notFound/index.html")
-    })
 }

@@ -83,6 +83,6 @@ module.exports = {
         locked: {type: Boolean},
         users: {type: Object},
         termsUrl: {type: String},
-        email: {type: String}
+        vinculatedAccount: {type: String}
     }
 }

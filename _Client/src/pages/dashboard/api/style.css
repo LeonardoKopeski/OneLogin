@@ -1,4 +1,4 @@
-ul.personalization{
+ul.api{
     list-style: none;
     position: relative;
     left: 50%;
@@ -9,18 +9,20 @@ ul.personalization{
     margin: 50px 0px;
 }
 
-ul.personalization li{
+ul.api li{
     border-top: 2px solid var(--gray);
     position: relative;
     padding: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
-ul.personalization li#header{
+ul.api li#header{
     display: block;
     border-top: none;
 }
 
-ul.personalization li#header h2{
+ul.api li#header h2{
     display: flex;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 35px;
@@ -32,7 +34,7 @@ ul.personalization li#header h2{
     font-weight: bold;
 }
 
-ul.personalization li .key{
+ul.api li .key{
     display: block;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-weight: bolder;
@@ -40,11 +42,11 @@ ul.personalization li .key{
     color: var(--purple);
 }
 
-ul.personalization li .key::after{
+ul.api li .key::after{
     content: ":";
 }
 
-ul.personalization li .value{
+ul.api li .value{
     display: block;
     margin: 10px 0px;
     font-family: 'Be Vietnam Pro', sans-serif;
@@ -56,7 +58,15 @@ ul.personalization li .value{
     overflow: hidden;
 }
 
-ul.personalization label.value{
+ul.api li p.value{
+    border: none;
+    border-radius: 0px;
+    margin: 0px;
+    font-size: 20px;
+}
+
+ul.api label.value,
+ul.api button.value{
     color: var(--purple);
     border-width: 3px;
     border-color: var(--purple);
@@ -66,12 +76,12 @@ ul.personalization label.value{
 
 
 @media screen and (max-width: 750px) {
-    ul.personalization{
+    ul.api{
         width: 100%;
     }
 }
 @media screen and (max-width: 500px) {
-    ul.personalization li#header h2{
+    ul.api li#header h2{
         font-size: 9vw;
     }
 }

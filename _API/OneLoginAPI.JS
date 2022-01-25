@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const urlRegEx = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
-const serverUrl = "http://192.168.0.105:3000"
+const serverUrl = "http://localhost:4000"
 
 var apiToken
 
@@ -12,7 +12,7 @@ module.exports = {
         }
 
         try{
-            var res = await axios.post(serverUrl + '/api/validateApiToken', { apiToken: token })
+            await axios.post(serverUrl + '/api/validateApiToken', { apiToken: token })
             apiToken = token
             return "Ok"
         }catch(err){
