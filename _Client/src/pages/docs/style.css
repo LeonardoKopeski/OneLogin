@@ -1,0 +1,99 @@
+div.docsScreen header{
+    position: fixed;
+    background-color: var(--white);
+    border-bottom: 1px solid lightgray;
+    width: 100vw;
+    z-index: 2;
+}
+
+div.docsScreen nav{
+    position: fixed;
+    height: calc(100vh - 90px);
+    top: 75px;
+    border-right: 1px solid lightgray;
+    overflow-x: hidden;
+    width: 300px;
+}
+
+div.docsScreen nav li{
+    margin-left: 35px;
+    margin: 9px;
+    padding: 9px;
+    color: var(--black);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    transition: all .1s;
+    border-radius: var(--borderRadius);
+}
+
+div.docsScreen nav li:not(.hasSubItems):hover{
+    background-color: lightgray;
+}
+
+div.docsScreen nav li.selected{
+    color: var(--purple);
+    background-color: lightgray;
+}
+
+div.docsScreen div#content{
+    margin-top: 65px;
+    padding: 20px;
+    width: calc(100% - 300px);
+    position: relative;
+    left: 300px;
+}
+
+div.docsScreen div#content div:not(.show){
+    display: none;
+}
+
+div.docsScreen div#content h1{
+    margin-bottom: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 45px;
+    color: var(--red);
+}
+
+div.docsScreen div#content h2{
+    margin-bottom: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+div.docsScreen div#content p{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 100;
+}
+
+div.docsScreen div#content img{
+    border: 3px dashed var(--red);
+    border-radius: var(--borderRadius);
+    padding: 20px;
+}
+
+div.docsScreen div#content a{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 20px;
+    text-decoration: underline;
+    color: var(--purple)
+}
+
+@media screen and (max-width: 550px) {
+    div.docsScreen nav{
+        position: relative;
+        width: 100%;
+        display: block;
+        border: none;
+        border-bottom: 1px solid gray;
+    }
+    div.docsScreen div#content{
+        width: 100%;
+        left: 0px;
+    }
+}

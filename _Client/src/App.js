@@ -1,19 +1,32 @@
 import { Routes, Route } from "react-router-dom"
 import "./style.css"
 
-import Login from "./pages/login/login.js"
-import Register from "./pages/register/register.js"
-import DashboardHome from "./pages/dashboard/dashboard.js"
-import DashboardFriendList from "./pages/dashboard/friendList/friendList.js"
-import DashboardPersonalization from "./pages/dashboard/personalization/personalization.js"
-import DashboardNotifications from "./pages/dashboard/notifications/notifications.js"
-import Account from "./pages/account/account.js"
-import FastLogin from "./pages/fastLogin/fastLogin.js"
-import Logout from "./pages/logout/logout.js"
-import NotFound from "./pages/notFound/notFound.js"
-import DashboardApi from "./pages/dashboard/api/api.js"
+import Login from "./pages/login/login"
+import Register from "./pages/register/register"
+import DashboardHome from "./pages/dashboard/dashboard"
+import DashboardFriendList from "./pages/dashboard/friendList/friendList"
+import DashboardPersonalization from "./pages/dashboard/personalization/personalization"
+import DashboardNotifications from "./pages/dashboard/notifications/notifications"
+import Account from "./pages/account/account"
+import FastLogin from "./pages/fastLogin/fastLogin"
+import Logout from "./pages/logout/logout"
+import NotFound from "./pages/notFound/notFound"
+import DashboardApi from "./pages/dashboard/api/api"
+import Docs from "./pages/docs/docs"
+
+const pageTitles = {
+    "/login": "Login",
+    "/register": "Registro",
+    "/dashboard": "Dashboard",
+    "/account": "Conta",
+    "/fastLogin": "Login rápido",
+    "/logout": "Logout",
+    "/docs": "Documentação"
+}
 
 function App(){
+    var page = "/" + window.location.pathname.split("/")[1]
+    document.title = "OneLogin - " + (pageTitles[page] || "404 Page")
     return (
     <Routes>
         <Route path="/login" element={<Login/>}/>
@@ -26,6 +39,7 @@ function App(){
         <Route path="/account/:username" element={<Account/>}/>
         <Route path="/fastLogin" element={<FastLogin/>}/>
         <Route path="/logout" element={<Logout/>}/>
+        <Route path="/docs" element={<Docs/>}/>
         <Route path="*" element={<NotFound/>}/>
     </Routes>
     )
