@@ -59,7 +59,7 @@ export default class DashboardHome extends Component{
     render(){
         const userInfo = this.state.userInfo
         return (
-            <div className="dashboardScreen">
+        <div className="dashboardScreen">
             <header>
                 <div id="logo" onClick={()=>window.open("/","_SELF")}>
                     <h1>OneLogin</h1>
@@ -104,14 +104,14 @@ export default class DashboardHome extends Component{
                 <div className="block" data-size="half">
                     <h1>Desenvolvimento</h1>
                     <p>Aqui você controla seu token de API, podendo bloquear, mudar nome, editar configurações, etc...</p>
-                    <Link to="/dashboard/api">
+                    <Link to={this.state.userInfo.hasApi?"/dashboard/api": "/createAPI"}>
                         Abrir painel do desenvolvedor
                     </Link>
                 </div>
                 <div className="block" data-size="half">
                     <h1>Desenvolvimento</h1>
                     <p>Aqui você controla seu token de API, podendo bloquear, mudar nome, editar configurações, etc...</p>
-                    <Link to="/dashboard/api">
+                    <Link to="/dashboard">
                         Abrir painel do desenvolvedor
                     </Link>
                 </div>

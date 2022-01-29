@@ -7,7 +7,7 @@ div.fastLoginScreen div#account{
     padding: 40px;
     border-radius: var(--borderRadius);
     background-color: var(--white);
-    width: 420px;
+    width: 500px;
 }
 
 div.fastLoginScreen div#account img{

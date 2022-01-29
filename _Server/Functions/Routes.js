@@ -53,7 +53,7 @@ module.exports = (dirname, express, app, sharedVariables)=>{
         if(unverifiedEmails[randomId].type == "ACCOUNT"){
             sharedVariables.createAccount(unverifiedEmails[randomId].data)//create acount
         }else{
-            sharedVariables.createApi(unverifiedEmails[randomId].data)//create API
+            sharedVariables.createAPI(unverifiedEmails[randomId].data)//create API
         }
     
         sharedVariables.deleteUnverifiedEmail(randomId)//remove from the list

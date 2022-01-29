@@ -41,7 +41,7 @@ class api{
         return token.substring(0, len)
     }
 
-    static createApi(obj){
+    static createAPI(obj){
         var res = new model(obj)
         res.save()
 

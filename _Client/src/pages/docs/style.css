@@ -26,6 +26,7 @@ div.docsScreen nav li{
     position: relative;
     transition: all .1s;
     border-radius: var(--borderRadius);
+    cursor: pointer;
 }
 
 div.docsScreen nav li:not(.hasSubItems):hover{
@@ -43,10 +44,6 @@ div.docsScreen div#content{
     width: calc(100% - 300px);
     position: relative;
     left: 300px;
-}
-
-div.docsScreen div#content div:not(.show){
-    display: none;
 }
 
 div.docsScreen div#content h1{
@@ -71,6 +68,11 @@ div.docsScreen div#content p{
     font-weight: 100;
 }
 
+div.docsScreen div#content p.obs{
+    color: var(--red);
+    font-weight: bolder;
+}
+
 div.docsScreen div#content img{
     border: 3px dashed var(--red);
     border-radius: var(--borderRadius);
@@ -82,6 +84,24 @@ div.docsScreen div#content a{
     font-size: 20px;
     text-decoration: underline;
     color: var(--purple)
+}
+
+div.docsScreen .code{
+    background-color: #282a36;
+    padding: 10px;
+    border-radius: var(--borderRadius);
+    width: 100%;
+    overflow-x: scroll;
+    word-break: keep-all;
+    word-wrap: none;
+    font-family: monospace;
+    color: #f8f8f2;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+div.docsScreen .code span.comment{
+    color: #6272a4;
 }
 
 @media screen and (max-width: 550px) {

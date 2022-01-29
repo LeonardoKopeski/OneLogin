@@ -1,3 +1,5 @@
+const {Schema} = require("mongoose")
+
 module.exports = {
     splitSchema(schemaObj, splitKey, filter){
         var obj = {}

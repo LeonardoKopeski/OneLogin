@@ -41,7 +41,7 @@ routeAllPages(__dirname, express, app, {
     getUnverifiedEmails: ()=>unverifiedEmails,
     deleteUnverifiedEmail: (id)=> delete unverifiedEmails[id],
     createAccount: accounts.account.createAccount,
-    createApi: APIs.api.createApi,
+    createAPI: APIs.api.createAPI,
     io: io
 })
 
@@ -219,7 +219,7 @@ io.on('connection', (socket) => {
             response.friendList = friendList
             
             var apis = await API.getApi({vinculatedAccount: obj.token})
-            response.haveApi = apis.length != 0
+            response.hasApi = apis.length != 0
 
             socket.emit("userInfoResponse", {status: "Ok" ,...response})
         }else{
@@ -448,46 +448,6 @@ io.on('connection', (socket) => {
             termsUrl: apis[0].termsUrl
         })
     })
-    socket.on('registerApi', async(obj) => {
-        var validRequest = validateRequest(obj, {name: regEx.username, email: regEx.email})
-        if(!validRequest){
-            socket.emit("registerResponse", {status: "InvalidRequest"})
-            return
-        }
-
-        var nameQuery = await API.getApi({name: obj.name})
-        var emailQuery = await API.getApi({email: obj.email})
-
-        if(emailQuery[0] != undefined){
-            socket.emit("registerResponse", {status: "EmailAlreadyUsed"})
-            return
-        }
-        if(nameQuery[0] != undefined){
-            socket.emit("registerResponse", {status: "NameAlreadyUsed"})
-            return
-        }
-
-        var token = account.generateToken(64)//Real token
-        
-        var random = account.generateToken(16)//Fake token
-        unverifiedEmails[random] = {token: token, socketId: socket.id, type:"API", data:{
-            token: token,
-            name: obj.name,
-            createdIn: new Date(),
-            permissions: [],
-            verified: true,
-            locked: false,
-            users: {},
-            termsUrl: "",
-            email: obj.email
-        }}
-
-        //send email to verify
-        var email = mailer.generateEmail("verifyEmail", {link: `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`})
-        mailer.sendEmail(obj.email, email)
-
-        socket.emit("registerResponse", {status: "Created"})            
-    })
     socket.on('getApiInfo', async(obj) => {
         var validRequest = validateRequest(obj, {token: "string"})
         if(!validRequest){
@@ -502,7 +462,7 @@ io.on('connection', (socket) => {
                 verified: apis[0].verified,
                 termsUrl: apis[0].termsUrl,
                 token: apis[0].token,
-                users: Object.keys(apis[0].users).length,
+                users: Object.keys(apis[0].users || {}).length,
                 permissions: apis[0].permissions,
                 locked: apis[0].locked
             }
@@ -560,6 +520,51 @@ io.on('connection', (socket) => {
             apis[0].update({locked: obj.state})
         }
     })
+    socket.on('createAPI', async(obj) => {
+        var validRequest = validateRequest(obj, {name: regEx.username, password: "string", token: "string"})
+        if(!validRequest){
+            socket.emit("createAPIResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        var apiQuery = await API.getApi({name: obj.name})
+        var accountQuery = await account.getAccount({token: obj.token})
+        var apiQuery2 = await API.getApi({vinculatedAccount: obj.token})
+
+        if(apiQuery[0] != undefined){
+            socket.emit("createAPIResponse", {status: "NameAlreadyUsed"})
+            apiQuery2[0].update({name: obj.name})
+            return
+        }
+        if(apiQuery2[0] != undefined){
+            socket.emit("createAPIResponse", {status: "AccountAlreadyUsed"})
+            return
+        }
+        if(accountQuery[0] == undefined){
+            socket.emit("createAPIResponse", {status: "InvalidRequest"})
+            return
+        }
+
+        if(accountQuery[0].password != obj.password){
+            socket.emit("createAPIResponse", {status: "InvalidPassword"})
+            return
+        }
+
+        API.createAPI({
+            token: API.generateToken(64),
+            name: obj.name,
+            createdIn: new Date(),
+            permissions: [],
+            verified: true,
+            locked: false,
+            users: new Object(),
+            termsUrl: "",
+            email: obj.email,
+            vinculatedAccount: obj.token
+        })
+
+        socket.emit("createAPIResponse", {status: "Created"})            
+    })
 })
 
 // Listen
@@ -568,8 +573,8 @@ console.log("Starting...")
 var serverAddr
 const PORT = process.env.PORT || 4000
 http.listen(PORT, "0.0.0.0", async()=>{
-    accounts.setSchema(splitSchema(accountSchema, "type"))
-    APIs.setSchema(splitSchema(apiSchema, "type"))
+    accounts.setSchema(splitSchema(accountSchema, "type"), { minimize: false })
+    APIs.setSchema(splitSchema(apiSchema, "type"), { minimize: false })
 
     // start the databases and email system
     await accounts.startDB("DB_ACCOUNTS")

@@ -34,7 +34,7 @@ export default class DashboardApi extends Component{
             if(res.status === "Ok"){
                 this.setState({apiInfo: {...res}})
             }else{
-                window.open("/createApi", "_SELF")
+                window.open("/createAPI", "_SELF")
             }
         })
 

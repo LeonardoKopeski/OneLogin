@@ -13,6 +13,7 @@ import Logout from "./pages/logout/logout"
 import NotFound from "./pages/notFound/notFound"
 import DashboardApi from "./pages/dashboard/api/api"
 import Docs from "./pages/docs/docs"
+import CreateAPI from "./pages/createAPI/createAPI"
 
 const pageTitles = {
     "/login": "Login",
@@ -21,27 +22,29 @@ const pageTitles = {
     "/account": "Conta",
     "/fastLogin": "Login rápido",
     "/logout": "Logout",
-    "/docs": "Documentação"
+    "/docs": "Documentação",
+    "/createAPI": "Criação de API"
 }
 
 function App(){
     var page = "/" + window.location.pathname.split("/")[1]
     document.title = "OneLogin - " + (pageTitles[page] || "404 Page")
     return (
-    <Routes>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/dashboard" element={<DashboardHome/>}/>
-        <Route path="/dashboard/friendList" element={<DashboardFriendList/>}/>
-        <Route path="/dashboard/personalization" element={<DashboardPersonalization/>}/>
-        <Route path="/dashboard/notifications" element={<DashboardNotifications/>}/>
-        <Route path="/dashboard/api" element={<DashboardApi/>}/>
-        <Route path="/account/:username" element={<Account/>}/>
-        <Route path="/fastLogin" element={<FastLogin/>}/>
-        <Route path="/logout" element={<Logout/>}/>
-        <Route path="/docs" element={<Docs/>}/>
-        <Route path="*" element={<NotFound/>}/>
-    </Routes>
+        <Routes>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/dashboard" element={<DashboardHome/>}/>
+            <Route path="/dashboard/friendList" element={<DashboardFriendList/>}/>
+            <Route path="/dashboard/personalization" element={<DashboardPersonalization/>}/>
+            <Route path="/dashboard/notifications" element={<DashboardNotifications/>}/>
+            <Route path="/dashboard/api" element={<DashboardApi/>}/>
+            <Route path="/account/:username" element={<Account/>}/>
+            <Route path="/fastLogin" element={<FastLogin/>}/>
+            <Route path="/logout" element={<Logout/>}/>
+            <Route path="/docs" element={<Docs/>}/>
+            <Route path="/createAPI" element={<CreateAPI/>}/>
+            <Route path="*" element={<NotFound/>}/>
+        </Routes>
     )
 }
 
