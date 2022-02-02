@@ -24,7 +24,8 @@ const pageTitles = {
     "/fastLogin": "Login rápido",
     "/logout": "Logout",
     "/docs": "Documentação",
-    "/createAPI": "Criação de API"
+    "/createAPI": "Criação de API",
+    "/forgotPassword": "Redefinição de senha"
 }
 
 function App(){

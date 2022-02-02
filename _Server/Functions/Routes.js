@@ -59,5 +59,16 @@ module.exports = (dirname, express, app, sharedVariables)=>{
         sharedVariables.deleteUnverifiedEmail(randomId)//remove from the list
         res.send("Ok :)")//and return
     })
+    app.get("/passwordReset", async(req, res)=>{
+        var randomId = req.query.randomId//Get id on querystring
+        var uncompletedPasswordReset = sharedVariables.getUncompletedPasswordReset()
+        if(Object.keys(uncompletedPasswordReset).indexOf(randomId) == -1){//if this querystring doesn't exists
+            res.send("Invalid link, sorry!")//return error
+            return
+        }
+    
+        sharedVariables.io.to(uncompletedPasswordReset[randomId].socketId).emit("forgotPasswordVerified", randomId)//send a message
 
+        res.send("Ok :)")//and return
+    })
 }

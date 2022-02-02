@@ -18,6 +18,7 @@ const io = require('socket.io')(http, {
 // Create placeholder variables
 var unverifiedEmails = {}
 var uncompletedLogins = {}
+var uncompletedPasswordReset = {}
 
 // Import functions
 const accounts = require("./Libraries/Accounts.js")
@@ -42,6 +43,7 @@ routeAllPages(__dirname, express, app, {
     deleteUnverifiedEmail: (id)=> delete unverifiedEmails[id],
     createAccount: accounts.account.createAccount,
     createAPI: APIs.api.createAPI,
+    getUncompletedPasswordReset: ()=>uncompletedPasswordReset,
     io: io
 })
 
@@ -583,17 +585,35 @@ io.on('connection', (socket) => {
         var validRequest = validateRequest(obj, {email: regEx.email})
         if(!validRequest){return}
 
-        var user = account.getAccount({email: obj.email})
+        var user = await account.getAccount({email: obj.email})
         if(!user[0]){return}
 
         var random = account.generateToken(16)//Fake token
         uncompletedPasswordReset[random] = {token: user[0].token, socketId: socket.id}
 
         //send email to verify
-        var email = mailer.generateEmail("verifyEmail", {link: `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`})
+        var email = mailer.generateEmail("passwordReset", {link: `http://${serverAddr}:${PORT}/passwordReset?randomId=${random}`})
         mailer.sendEmail(obj.email, email)
 
-        socket.emit("registerResponse", {status: "Created"})            
+        socket.emit("registerResponse", {status: "Created"})    
+    })
+    socket.on('updateForgotPassword', async(obj) => {
+        var validRequest = validateRequest(obj, {resetToken: "string", password: "string"})
+        if(!validRequest){return}
+
+        var resetRequest = uncompletedPasswordReset[obj.resetToken]
+        if(!resetRequest){return}
+        
+        var resetRequest = {
+            token: 'kgj1ma2egjhurszigbo0wg8sa17ehtq5',
+            socketId: '5RVjVc2NXo7YeHtGAAAD'
+        }
+
+        var accounts = await account.getAccount({token: resetRequest.token})
+        if(accounts[0]){
+            accounts[0].update({password: obj.password})
+        }
+  
     })
 })
 
