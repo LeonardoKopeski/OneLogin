@@ -9,17 +9,32 @@ export default class DashboardPersonalization extends Component{
     constructor(){
         super()
         
+        this.socket = io("http://localhost:4000")
+        if(getCookie("token") === ""){
+            window.open("/login", "_SELF")
+        }
+
         var localData = localStorage.getItem("loggedUserInfo")
         try{
             localData = JSON.parse(localData)
         }catch(err){
-            alert("No data")
+            localData = undefined
         }
 
         this.state = {
-            userInfo: localData
+            infoRequested: false,
+            userInfo: localData || {}
         }
-        this.socket = io("http://localhost:4000")
+
+        this.socket.on("userInfoResponse", (res)=>{
+            console.log(res)
+            if(res.status === "Ok"){
+                localStorage.setItem("loggedUserInfo", JSON.stringify(res))
+                this.setState({userInfo: {...res}})
+            }else{
+                window.open("/logout", "_SELF")
+            }
+        })
 
         this.socket.on("updateUsernameResponse", ({status})=>{
             var input = document.querySelector("input#username")
@@ -34,6 +49,13 @@ export default class DashboardPersonalization extends Component{
 
         this.saveChanges = this.saveChanges.bind(this)
         this.fileToBase64 = this.fileToBase64.bind(this)
+    }
+    UNSAFE_componentWillMount(){
+        if(this.state.infoRequested === false){
+            this.socket.emit("getUserInfo", {token: getCookie("token")})
+            this.setState({infoRequested: true})
+            this.forceUpdate()
+        }
     }
     componentDidMount(){
         document.querySelector("#highlightColor").addEventListener("change", this.saveChanges, false)
@@ -63,7 +85,7 @@ export default class DashboardPersonalization extends Component{
         var update = {...this.state.userInfo}
         update[ev.target.id] = value
         this.setState({userInfo: update})
-        localStorage.setItem("loggedUserInfo", JSON.stringify(update))
+        //localStorage.setItem("loggedUserInfo", JSON.stringify(update))
         alert("Atualizado!")
     }
     fileToBase64(file){

@@ -29,21 +29,40 @@ export default class DashboardNotifications extends Component{
     constructor(){
         super()
 
+        this.socket = io("http://localhost:4000")
+        if(getCookie("token") === ""){
+            window.open("/login", "_SELF")
+        }
+
         var localData = localStorage.getItem("loggedUserInfo")
         try{
             localData = JSON.parse(localData)
         }catch(err){
-            alert("No data")
+            localData = undefined
         }
 
         this.state = {
-            userInfo: localData
+            infoRequested: false,
+            userInfo: localData || {}
         }
 
-        this.socket = io("http://localhost:4000")
+        this.socket.on("userInfoResponse", (res)=>{
+            if(res.status === "Ok"){
+                localStorage.setItem("loggedUserInfo", JSON.stringify(res))
+                this.setState({userInfo: {...res}})
+            }else{
+                window.open("/logout", "_SELF")
+            }
+        })
 
         this.socket.emit("viewNotifications", {token: getCookie("token")})
         this.makeList = this.makeList.bind(this)
+    }
+    componentDidMount(){
+        if(this.state.infoRequested === false){
+            this.socket.emit("getUserInfo", {token: getCookie("token")})
+            this.setState({infoRequested: true})
+        }
     }
     makeList(){
         return this.state.userInfo.notifications.map((elm, index) => {

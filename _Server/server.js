@@ -338,13 +338,25 @@ io.on('connection', (socket) => {
         // if is the same person, don't do anything
         if(requester[0].token == followAccount[0].token){return}
 
-        // else, add follow
-        requester[0].update({
-            following: [
-                ...requester[0].following,
-                followAccount[0].username
-            ]
-        })
+        if(requester[0].following.indexOf(followAccount[0].username) == -1){
+            // else, add follow
+            requester[0].update({
+                following: [
+                    ...requester[0].following,
+                    followAccount[0].username
+                ]
+            })
+        }else{
+            // case already is following, unfollow
+            var update = [...requester[0].following]
+            var index = update.indexOf(followAccount[0].username)
+
+            update.splice(index, 1);
+
+            requester[0].update({
+                following: [update]
+            })
+        }
 
         // and notify
         if(followAccount[0].following.indexOf(requester[0].username) != -1){
@@ -464,7 +476,8 @@ io.on('connection', (socket) => {
                 token: apis[0].token,
                 users: Object.keys(apis[0].users || {}).length,
                 permissions: apis[0].permissions,
-                locked: apis[0].locked
+                locked: apis[0].locked,
+                token: apis[0].token
             }
             socket.emit("apiInfoResponse", {status: "Ok" ,...response})
         }else{
@@ -564,6 +577,23 @@ io.on('connection', (socket) => {
         })
 
         socket.emit("createAPIResponse", {status: "Created"})            
+    })
+
+    socket.on('forgotPassword', async(obj) => {
+        var validRequest = validateRequest(obj, {email: regEx.email})
+        if(!validRequest){return}
+
+        var user = account.getAccount({email: obj.email})
+        if(!user[0]){return}
+
+        var random = account.generateToken(16)//Fake token
+        uncompletedPasswordReset[random] = {token: user[0].token, socketId: socket.id}
+
+        //send email to verify
+        var email = mailer.generateEmail("verifyEmail", {link: `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`})
+        mailer.sendEmail(obj.email, email)
+
+        socket.emit("registerResponse", {status: "Created"})            
     })
 })
 

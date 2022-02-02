@@ -41,7 +41,7 @@ export default class Account extends Component{
         }
     }
     follow(){
-        if(this.state.userInfo.samePerson || this.state.userInfo.following){
+        if(this.state.userInfo.samePerson){
             return
         }
         if(getCookie("token") === ""){
@@ -49,7 +49,23 @@ export default class Account extends Component{
         }
         this.socket.emit("follow", {token: getCookie("token"), follow: this.state.userInfo.username})
         var userInfo = this.state.userInfo
-        userInfo.following = true
+        switch(userInfo.friendStatus){
+            case 0:
+                userInfo.friendStatus = 1
+                break;
+            case 1:
+                userInfo.friendStatus = 0
+                break
+            case 2:
+                userInfo.friendStatus = 3
+                break;
+            case 3:
+                userInfo.friendStatus = 2
+                break;
+            default:
+                break
+        }
+        
         this.setState({userInfo})
     }
     render(){

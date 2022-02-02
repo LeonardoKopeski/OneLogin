@@ -14,6 +14,7 @@ import NotFound from "./pages/notFound/notFound"
 import DashboardApi from "./pages/dashboard/api/api"
 import Docs from "./pages/docs/docs"
 import CreateAPI from "./pages/createAPI/createAPI"
+import ForgotPassword from "./pages/forgotPassword/forgotPassword"
 
 const pageTitles = {
     "/login": "Login",
@@ -43,6 +44,7 @@ function App(){
             <Route path="/logout" element={<Logout/>}/>
             <Route path="/docs" element={<Docs/>}/>
             <Route path="/createAPI" element={<CreateAPI/>}/>
+            <Route path="/forgotPassword" element={<ForgotPassword/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
     )

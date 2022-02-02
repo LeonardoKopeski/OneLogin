@@ -10,6 +10,14 @@ ul.notifications{
 }
 
 ul.notifications li{
+    padding: 10px;
+    height: 85px;
+    display: grid;
+    grid-template-rows: 35px 25px;
+    grid-template-columns: 60px auto;
+    grid-column-gap: 20px;
+    grid-template-areas: "img name" "img text";
+
     position: relative;
     border-top: 2px solid var(--gray);
     padding: 10px;
@@ -23,22 +31,25 @@ ul.notifications li{
 
 ul.notifications li#header{
     display: block;
-    line-height: 60px;
     border-top: none;
 }
 
 ul.notifications li#header h2{
+    display: flex;
     font-family: 'Be Vietnam Pro', sans-serif;
     font-size: 35px;
     text-align: center;
     position: relative;
     color: var(--purple);
+    align-items:center;
+    justify-content:center;
+    font-weight: bold;
 }
 
 ul.notifications li .img{
     grid-area: img;
-    width: 60px;
-    height: 60px;
+    width: 100%;
+    height: 100%;
     color: var(--purple);
 }
 
@@ -96,27 +107,46 @@ ul.notifications li.viewed div button{
     background-color: var(--white);
     color: var(--red);
 }
-
 @media screen and (max-width: 750px) {
     ul.notifications{
         width: 100%;
     }
-    ul.notifications h2{
-        font-size: 6vw;
-        margin: 5px 0px;
-    }
+}
+@media screen and (max-width: 500px) {
     ul.notifications li{
-        height: 10vw;
-        padding: 1vw;
+        height: 16vw;
+        padding: 1.5vw;
+        grid-template-rows: 6.75vw 5.25vw;
+        grid-template-columns: 8vw auto;
+        grid-column-gap: 20px;
     }
     ul.notifications li#header h2{
-        font-size: 6vw;
-        line-height: 6vw;
+        font-size: 9vw;
     }
 
     ul.notifications li img{
-        width: 8vw;
-        height: 8vw;
-        margin-right: 10px;
+        width: 12vw;
+        height: 12vw;
+    }
+    ul.notifications li h1{
+        height: 100%;
+        line-height: 100%;
+        font-size: 6vw;
+    }
+    ul.notifications li h2{
+        height: 100%;
+        line-height: 100%;
+        font-size: 5vw;
+    }
+    ul.notifications li h1 svg#verifiedBadge{
+        position: relative;
+        left: 5px;
+        width: 4vw;
+        height: 4vw;
+    }
+    ul.notifications li div button{
+        height: 100%;
+        width: 100%;
+        font-size: 6vw;
     }
 }

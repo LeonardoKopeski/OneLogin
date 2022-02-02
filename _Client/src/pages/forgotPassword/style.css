@@ -1,0 +1,82 @@
+div.forgotPasswordScreen div#account{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--gray);
+    padding: 40px;
+    border-radius: var(--borderRadius);
+    background-color: var(--white);
+    width: 500px;
+}
+div.forgotPasswordScreen div#account h1{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: var(--purple);
+    font-size: 40px;
+    text-align: center;
+}
+div.forgotPasswordScreen div#account h2{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+div.forgotPasswordScreen div#account input{
+    font-size: 25px;
+    padding: 5px;
+    border-radius: var(--borderRadius);
+    text-align: center;
+    width: 100%;
+    margin: 20px 0px;
+    border: 3px solid var(--purple);
+}
+
+div.forgotPasswordScreen div#account button{
+    width: 60%;
+    background-color: var(--purple);
+    border: 3px solid var(--purple);
+    color: var(--white);
+    border-radius: var(--borderRadius);
+    font-size: 25px;
+    padding: 5px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 30px;
+    text-align: center;
+}
+
+div.forgotPasswordScreen div#account p#disclaimer{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: normal;
+    font-size: 25px;
+    text-align: center;
+    margin: 20px 0px;
+}
+
+@media screen and (max-width: 460px) {
+    svg.returnSVG{
+        width: 8vw;
+        height: 8vw;
+    }
+
+    div.forgotPasswordScreen div#account{
+        width: 100%;
+        border: none;
+        padding: 2vw;
+    }
+
+    div.forgotPasswordScreen div#account h1#username{
+        font-size: 10vw;
+        width: 100%;
+    }
+
+    div.forgotPasswordScreen div#account img{
+        width: calc(15vw + 100px);
+        height: calc(15vw + 100px);
+    }
+
+    div.forgotPasswordScreen div#account button{
+        width: 100%;
+    }
+}

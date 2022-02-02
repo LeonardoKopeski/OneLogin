@@ -100,6 +100,10 @@ export default class DashboardApi extends Component{
                 </h2>
             </li>
             <li>
+                <span className="key">Token de API</span>
+                <button className="value" onClick={()=>window.alert(this.state.apiInfo.token)}>Mostrar</button>
+            </li>
+            <li>
                 <span className="key">Nome</span>
                 <input
                     className="value"
