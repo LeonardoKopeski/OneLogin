@@ -14,9 +14,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "server": "cd _Server&&node server.js",
-    "client": "cd _Client&&npm start",
-    "test": "cd _API&&node client.test.js"
+    "start": "cd _Server&&node server.js",
+    "client": "cd _Client&&npm start"
   },
   "repository": {
     "type": "git",
