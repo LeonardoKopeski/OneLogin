@@ -9,12 +9,9 @@
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
-const io = require('socket.io')(http, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-})
+const io = require('socket.io')(http)
+require("dotenv").config()
+
 // Create placeholder variables
 var unverifiedEmails = {}
 var uncompletedLogins = {}
@@ -108,7 +105,7 @@ app.post("/api/getUserInfo", async(req, res)=>{
             // and save on the list
             if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
                 var friend = splitSchema(accountSchema, friendAccount[0], "basicInfo")
-                friend.imageUrl = friend.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${friend.imageUrl}`:null
+                friend.imageUrl = friend.imageUrl?`${serverAddr}/files?fileId=${friend.imageUrl}`:null
     
                 response.friendList.push(friend)
             }
@@ -188,7 +185,7 @@ io.on('connection', (socket) => {
         }}
 
         //send email to verify
-        var email = mailer.generateEmail("verifyEmail", {link: `http://${serverAddr}:${PORT}/verifyEmail?randomId=${random}`})
+        var email = mailer.generateEmail("verifyEmail", {link: `${serverAddr}/verifyEmail?randomId=${random}`})
         mailer.sendEmail(obj.email, email)
 
         socket.emit("registerResponse", {status: "Created"})            
@@ -212,7 +209,7 @@ io.on('connection', (socket) => {
                 // and save on the list
                 if(friendAccount[0] != undefined && friendAccount[0].following.indexOf(accounts[0].username) != -1){
                     var res = splitSchema(accountSchema, friendAccount[0], "basicInfo")
-                    res.imageUrl = res.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${res.imageUrl}`:null
+                    res.imageUrl = res.imageUrl?`${serverAddr}/files?fileId=${res.imageUrl}`:null
                     friendList.push(res)
                 }
             }
@@ -231,7 +228,7 @@ io.on('connection', (socket) => {
             }
 
             var response = splitSchema(accountSchema, accounts[0], "visibleInfo")
-            response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
+            response.imageUrl = response.imageUrl?`${serverAddr}/files?fileId=${response.imageUrl}`:null
             response.friendList = friendList
             response.services = services
             
@@ -256,7 +253,7 @@ io.on('connection', (socket) => {
 
         if(accounts[0]){
             var response = splitSchema(accountSchema, accounts[0], "basicInfo")
-            response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
+            response.imageUrl = response.imageUrl?`${serverAddr}/files?fileId=${response.imageUrl}`:null
 
             if(requester[0]){
                 var following = requester[0].following.indexOf(accounts[0].username) != -1
@@ -607,7 +604,7 @@ io.on('connection', (socket) => {
         uncompletedPasswordReset[random] = {token: user[0].token, socketId: socket.id}
 
         //send email to verify
-        var email = mailer.generateEmail("passwordReset", {link: `http://${serverAddr}:${PORT}/passwordReset?randomId=${random}`})
+        var email = mailer.generateEmail("passwordReset", {link: `${serverAddr}/passwordReset?randomId=${random}`})
         mailer.sendEmail(obj.email, email)
 
         socket.emit("registerResponse", {status: "Created"})    
@@ -648,7 +645,7 @@ io.on('connection', (socket) => {
 // Listen
 console.log("Starting...")
 
-var serverAddr
+var serverAddr = process.env.SERVER_URL
 const PORT = process.env.PORT || 4000
 http.listen(PORT, "0.0.0.0", async()=>{
     accounts.setSchema(splitSchema(accountSchema, "type"), { minimize: false })
@@ -660,8 +657,5 @@ http.listen(PORT, "0.0.0.0", async()=>{
     await filesDB.startDB("DB_FILES")
     mailer.createTransporter()
 
-    require('dns').lookup(require('os').hostname(), (err, addr, fam) => {
-        serverAddr = addr
-        console.log("Listening on http://"+serverAddr+":"+PORT)
-    })
+    console.log("Listening on " + process.env.SERVER_URL)
 })
