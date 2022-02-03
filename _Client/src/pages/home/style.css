@@ -1,0 +1,135 @@
+*{
+    overflow: visible;
+}
+div.highlight{
+    background-color: var(--purple);
+    height: calc(100vh - 80px);
+    transition: height 1s;
+    position: relative;
+}
+div.highlight .information{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+div.highlight h1{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 15vw;
+    text-align: center;
+    color: var(--white)
+}
+div.highlight h2{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 4.5vw;
+    text-align: center;
+    color: var(--white)
+}
+div.highlight svg{
+    position: absolute;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 80px;
+    bottom: -80px;
+    fill: var(--purple);
+}
+div.details{
+    position: relative;
+    margin-top: 80px;
+    height: 100vh;
+    width: 100%;
+}
+div.details svg{
+    position: absolute;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 80px;
+    bottom: -80px;
+    fill: var(--white);
+}
+div.details .content{
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+}
+div.details .content .accounts{
+    border-right: 2px solid var(--gray);
+}
+div.details .content div{
+    text-align: center;
+    padding: 50px 20px;
+    width: 550px;
+}
+div.details .content div h2{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: bolder;
+    font-size: 3vw;
+    color: var(--red);
+    margin-bottom: 120px;
+}
+div.details .content div button{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    width: 80%;
+    font-size: 2vw;
+    color: var(--red);
+    background-color: var(--white);
+    padding: 10px;
+    border: 3px solid var(--red);
+    margin-top: 30px;
+    border-radius: var(--borderRadius);
+}
+div.bottom{
+    background-color: #333;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    padding: 10px 15vw;
+    padding-top: 110px;
+}
+
+div.bottom a{
+    color: var(--red);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 1.5vw;
+    text-decoration: underline;
+}
+
+div.bottom p{
+    color: var(--white);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 1.5vw;
+}
+
+@media screen and (max-width:1000px) {
+    div.details .content div{
+        width: calc(50vw);
+    }
+}
+
+@media screen and (max-width:750px) {
+    div.details .content{
+        display: block;
+    }
+    div.details .content .accounts{
+        border: none;
+    }
+    div.details .content div{
+        width: 100vw;
+    }
+    div.details .content div h2{
+        margin-bottom: 20px;
+        font-size: 7vw;
+    }
+    div.details .content div button{
+        font-size: 5vw;
+    }
+}
+
+@media screen and (max-width:500px) {
+    div.highlight.show{
+        height: calc(60vh - 80px);
+    }
+}

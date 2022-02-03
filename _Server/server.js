@@ -203,6 +203,7 @@ io.on('connection', (socket) => {
         var accounts = await account.getAccount({token: obj.token})
         if(accounts[0]){
             var friendList = []
+            var services = []
             
             for(var following in accounts[0].following){// for each follow account
                 var username = accounts[0].following[following]
@@ -216,9 +217,23 @@ io.on('connection', (socket) => {
                 }
             }
 
+            for(var service in Object.keys(accounts[0].services)){// for each follow account
+                var serviceToken = Object.keys(accounts[0].services)[service]
+                var serviceList = await API.getApi({token: serviceToken})// search for
+
+                // and save on the list
+                if(serviceList[0]){
+                    services.push({
+                        name: serviceList[0].name,
+                        termsUrl: serviceList[0].termsUrl
+                    })
+                }
+            }
+
             var response = splitSchema(accountSchema, accounts[0], "visibleInfo")
             response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
             response.friendList = friendList
+            response.services = services
             
             var apis = await API.getApi({vinculatedAccount: obj.token})
             response.hasApi = apis.length != 0
@@ -356,7 +371,7 @@ io.on('connection', (socket) => {
             update.splice(index, 1);
 
             requester[0].update({
-                following: [update]
+                following: update
             })
         }
 
@@ -603,17 +618,30 @@ io.on('connection', (socket) => {
 
         var resetRequest = uncompletedPasswordReset[obj.resetToken]
         if(!resetRequest){return}
-        
-        var resetRequest = {
-            token: 'kgj1ma2egjhurszigbo0wg8sa17ehtq5',
-            socketId: '5RVjVc2NXo7YeHtGAAAD'
-        }
 
         var accounts = await account.getAccount({token: resetRequest.token})
         if(accounts[0]){
             accounts[0].update({password: obj.password})
         }
-  
+    })
+    socket.on("disconnectService", async(obj)=>{
+        var validRequest = validateRequest(obj, {name: "string", token: "string"})
+        if(!validRequest){return}
+
+        var apis = await API.getApi({name: obj.name})
+        var user = await account.getAccount({token: obj.token})
+    
+        if(apis[0] && user[0]){
+            var subToken = user[0].services[apis[0].token].subtoken
+            
+            var update1 = {...user[0].services}
+            delete update1[apis[0].token]
+            user[0].update({services: update1})
+
+            var update2 = {...apis[0].users}
+            delete update2[subToken]
+            apis[0].update({users: update2})
+        }
     })
 })
 

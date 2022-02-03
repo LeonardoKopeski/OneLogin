@@ -95,23 +95,16 @@ export default class DashboardHome extends Component{
                     </Link>
                 </div>
                 <div className="block" data-size="full">
-                    <h1>Segurança e privacidade</h1>
-                    <p>Aqui você vê recomendações de segurança, controla quem pode ver sua conta e bloqueia serviços indesejados...</p>
-                    <Link to="/dashboard/security">
-                        Abrir painel de segurança e privacidade
+                    <h1>Serviços conectados</h1>
+                    <p>Aqui você vê quais serviços podem ver ou controlar sua conta e bloqueia serviços indesejados</p>
+                    <Link to="/dashboard/services">
+                        Abrir painel de serviços conectados
                     </Link>
                 </div>
-                <div className="block" data-size="half">
+                <div className="block" data-size="full">
                     <h1>Desenvolvimento</h1>
                     <p>Aqui você controla seu token de API, podendo bloquear, mudar nome, editar configurações, etc...</p>
                     <Link to={this.state.userInfo.hasApi?"/dashboard/api": "/createAPI"}>
-                        Abrir painel do desenvolvedor
-                    </Link>
-                </div>
-                <div className="block" data-size="half">
-                    <h1>Desenvolvimento</h1>
-                    <p>Aqui você controla seu token de API, podendo bloquear, mudar nome, editar configurações, etc...</p>
-                    <Link to="/dashboard">
                         Abrir painel do desenvolvedor
                     </Link>
                 </div>

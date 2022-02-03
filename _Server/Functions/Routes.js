@@ -1,5 +1,4 @@
 const cookieParser = require('cookie-parser')
-const cors = require("cors")
 
 module.exports = (dirname, express, app, sharedVariables)=>{
     app.use(express.json())
@@ -39,7 +38,9 @@ module.exports = (dirname, express, app, sharedVariables)=>{
             res.send("")
         }
     })
-
+    app.get("/downloadApiLibrary", (req, res)=>{
+        res.download(__dirname.split("_Server")[0] + "_Api/OneLoginAPI.js")
+    })
     app.get("/verifyEmail", async(req, res)=>{
         var randomId = req.query.randomId//Get id on querystring
         var unverifiedEmails = sharedVariables.getUnverifiedEmails()

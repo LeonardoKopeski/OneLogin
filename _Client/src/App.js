@@ -15,6 +15,8 @@ import DashboardApi from "./pages/dashboard/api/api"
 import Docs from "./pages/docs/docs"
 import CreateAPI from "./pages/createAPI/createAPI"
 import ForgotPassword from "./pages/forgotPassword/forgotPassword"
+import DashboardServices from "./pages/dashboard/services/services"
+import Home from "./pages/home/home"
 
 const pageTitles = {
     "/login": "Login",
@@ -25,7 +27,8 @@ const pageTitles = {
     "/logout": "Logout",
     "/docs": "Documentação",
     "/createAPI": "Criação de API",
-    "/forgotPassword": "Redefinição de senha"
+    "/forgotPassword": "Redefinição de senha",
+    "/": "Home Page"
 }
 
 function App(){
@@ -40,12 +43,14 @@ function App(){
             <Route path="/dashboard/personalization" element={<DashboardPersonalization/>}/>
             <Route path="/dashboard/notifications" element={<DashboardNotifications/>}/>
             <Route path="/dashboard/api" element={<DashboardApi/>}/>
+            <Route path="/dashboard/services" element={<DashboardServices/>}/>
             <Route path="/account/:username" element={<Account/>}/>
             <Route path="/fastLogin" element={<FastLogin/>}/>
             <Route path="/logout" element={<Logout/>}/>
             <Route path="/docs" element={<Docs/>}/>
             <Route path="/createAPI" element={<CreateAPI/>}/>
             <Route path="/forgotPassword" element={<ForgotPassword/>}/>
+            <Route path="/" element={<Home/>}/>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
     )

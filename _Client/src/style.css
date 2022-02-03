@@ -14,7 +14,6 @@
     padding: 0;
     box-sizing: border-box;
     transition: all .5s;
-    overflow-x: hidden;
 }
 
 :root{
@@ -31,11 +30,7 @@ body{
     background-color: var(--white);
     min-height: 100vh;
     min-width: 100vw;
-    filter: grayscale(0);
-}
-  
-html.is-animating body{
-    filter: grayscale(1);
+    overflow-x: hidden;
 }
 
 button, input[type=button], a{
