@@ -93,7 +93,7 @@ app.post("/api/getUserInfo", async(req, res)=>{
 
     var accounts = await account.getAccount({token: user})
     var response = splitSchema(accountSchema, accounts[0], "basicInfo")
-    response.imageUrl = response.imageUrl?`http://${serverAddr}:${PORT}/files?fileId=${response.imageUrl}`:null
+    response.imageUrl = response.imageUrl?`${serverAddr}/files?fileId=${response.imageUrl}`:null
 
     var canGetFriendList = await validateAPI(req.body.apiToken, "GETFRIENDLIST", API.getApi, accounts[0])
     if(canGetFriendList.code == 200){
