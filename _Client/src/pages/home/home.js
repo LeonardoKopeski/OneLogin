@@ -30,8 +30,8 @@ export default class Home extends Component{
                     <div className="content">
                         <div className='accounts'>
                             <h2>Para contas</h2>
-                            <button onClick={()=>window.open("/login", "_SELF")}>Crie já sua conta!</button>
-                            <button onClick={()=>window.open("/register", "_SELF")}>Já tenho uma conta...</button>
+                            <button onClick={()=>window.open("/register", "_SELF")}>Crie já sua conta!</button>
+                            <button onClick={()=>window.open("/login", "_SELF")}>Já tenho uma conta...</button>
                         </div>
                         <div className='apis'>
                             <h2>Para desenvolvedores</h2>

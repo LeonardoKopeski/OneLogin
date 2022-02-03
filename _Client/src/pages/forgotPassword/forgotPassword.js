@@ -17,7 +17,7 @@ export default class ForgotPassword extends Component{
             passwordTriggered: false,
             password: "",
             resetToken: "",
-            page: 3
+            page: 1
         }
 
         this.socket.on("forgotPasswordVerified", (resetToken)=>{
