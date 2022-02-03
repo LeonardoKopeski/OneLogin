@@ -4,11 +4,7 @@ module.exports = (dirname, express, app, sharedVariables)=>{
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
     app.use(cookieParser())
-
-    app.use("/", express.static(dirname + '/Web'))
-    app.use("/", express.static(dirname + '/Web/Main'))
-    app.use("/api", express.static(dirname + '/Web/Api'))
-    app.use("/admin", express.static(dirname + '/Web/Admin'))
+    app.use(express.static("build"));
 
     app.get("/files", async(req, res)=>{
         if(!req.query.fileId){
@@ -39,7 +35,7 @@ module.exports = (dirname, express, app, sharedVariables)=>{
         }
     })
     app.get("/downloadApiLibrary", (req, res)=>{
-        res.download(__dirname.split("_Server")[0] + "_Api/OneLoginAPI.js")
+        res.download(dirname + "/OneLoginAPI.js")
     })
     app.get("/verifyEmail", async(req, res)=>{
         var randomId = req.query.randomId//Get id on querystring
@@ -71,5 +67,9 @@ module.exports = (dirname, express, app, sharedVariables)=>{
         sharedVariables.io.to(uncompletedPasswordReset[randomId].socketId).emit("forgotPasswordVerified", randomId)//send a message
 
         res.send("Ok :)")//and return
+    })
+
+    app.get("*", (req, res)=>{
+        res.sendFile(dirname + "/build/index.html")
     })
 }

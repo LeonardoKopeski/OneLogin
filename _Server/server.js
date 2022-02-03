@@ -661,7 +661,7 @@ http.listen(PORT, "0.0.0.0", async()=>{
     mailer.createTransporter()
 
     require('dns').lookup(require('os').hostname(), (err, addr, fam) => {
-        serverAddr = "localhost"//addr
+        serverAddr = addr
         console.log("Listening on http://"+serverAddr+":"+PORT)
     })
 })
